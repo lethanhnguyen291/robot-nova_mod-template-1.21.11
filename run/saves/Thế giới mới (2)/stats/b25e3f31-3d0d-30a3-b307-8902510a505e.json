@@ -1,0 +1,37 @@
+{
+  "stats": {
+    "minecraft:custom": {
+      "minecraft:time_since_rest": 189604,
+      "minecraft:walk_one_cm": 230720,
+      "minecraft:leave_game": 19,
+      "minecraft:damage_dealt": 468,
+      "minecraft:play_time": 189604,
+      "minecraft:jump": 97,
+      "minecraft:time_since_death": 189604,
+      "minecraft:bell_ring": 3,
+      "minecraft:sprint_one_cm": 145279,
+      "minecraft:open_chest": 64,
+      "minecraft:total_world_time": 473257,
+      "minecraft:fly_one_cm": 163648,
+      "minecraft:crouch_one_cm": 3,
+      "minecraft:sneak_time": 200
+    },
+    "minecraft:used": {
+      "robot-nova_mod:nova_chest": 31,
+      "minecraft:bell": 2,
+      "minecraft:lightning_rod": 3,
+      "minecraft:dirt": 21,
+      "minecraft:copper_chest": 10,
+      "robot-nova_mod:nova_sword": 6,
+      "robot-nova_mod:nova_shovel": 8
+    },
+    "minecraft:picked_up": {
+      "minecraft:poppy": 2,
+      "minecraft:slime_ball": 76,
+      "minecraft:bone": 3,
+      "minecraft:arrow": 3,
+      "minecraft:iron_ingot": 3
+    }
+  },
+  "DataVersion": 4671
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "robot-nova_mod:block/nova_chest"
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+	"schemaVersion": 1,
+	"id": "robot-nova_mod",
+	"version": "${version}",
+	"name": "ROBOT NOVA_MOD",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/robot-nova_mod/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.teogemini.nova.ROBOTNOVA_MOD"
+		],
+		"client": [
+			"net.teogemini.nova.client.ROBOTNOVA_MODClient"
+		],
+		"lambdynlights:initializer": [
+			"net.teogemini.nova.client.light.NovaLampLighting"
+		]
+	},
+
+	"mixins": [
+		"robot-nova_mod.mixins.json",
+		{
+			"config": "robot-nova_mod.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~1.21.11",
+		"java": ">=21",
+		"fabric-api": "*",
+		"geckolib": ">=5.4.5 <5.5"
+	}
+}

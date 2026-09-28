@@ -1,0 +1,28 @@
+{
+  "stats": {
+    "minecraft:custom": {
+      "minecraft:sprint_one_cm": 14950,
+      "minecraft:time_since_rest": 15301,
+      "minecraft:walk_one_cm": 55272,
+      "minecraft:total_world_time": 18349,
+      "minecraft:leave_game": 2,
+      "minecraft:fly_one_cm": 92,
+      "minecraft:play_time": 15301,
+      "minecraft:damage_dealt": 130,
+      "minecraft:jump": 3,
+      "minecraft:time_since_death": 15301,
+      "minecraft:drop": 1
+    },
+    "minecraft:picked_up": {
+      "minecraft:small_amethyst_bud": 1,
+      "minecraft:slime_ball": 20
+    },
+    "minecraft:used": {
+      "minecraft:redstone": 1
+    },
+    "minecraft:dropped": {
+      "minecraft:small_amethyst_bud": 1
+    }
+  },
+  "DataVersion": 4671
+}

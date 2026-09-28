@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/template_chest",
+  "textures": {
+    "particle": "robot-nova_mod:block/quartz_block_side"
+  }
+}

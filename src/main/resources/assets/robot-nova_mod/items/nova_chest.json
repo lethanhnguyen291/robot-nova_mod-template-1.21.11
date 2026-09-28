@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "robot-nova_mod:item/nova_chest",
+    "model": {
+      "type": "minecraft:chest",
+      "texture": "robot-nova_mod:nova_chest"
+    }
+  }
+}

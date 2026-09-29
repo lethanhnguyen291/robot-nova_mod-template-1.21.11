@@ -29,41 +29,40 @@ public final class NovaEquipmentLayer<R extends GeoRenderState>
     // KHU VỰC CẤU HÌNH TAY VÀ CÔNG CỤ / VŨ KHÍ CỦA NOVA (DỄ DÀNG ĐIỀU CHỈNH)
     // =========================================================================
 
-    // --- 1. CẤU HÌNH GÓC CÁNH TAY KHI CẦM VŨ KHÍ ---
-    /** Góc nâng tay lên trước (Độ): -45 độ = đưa tay lên trước 45 độ (Âm: đưa ra trước, Dương: đưa ra sau) */
-    public static float ARM_HOLD_PITCH = -45.0f;
-    /** Góc xoay tay sang ngang (Độ): Dương: xoay vào trong người, Âm: xoay mở ra ngoài */
+    // --- 1. CẤU HÌNH CÁNH TAY ---
+    /** Góc nâng tay lên trước (Độ): -45 độ = đưa tay lên trước 45 độ */
+    public static float ARM_HOLD_PITCH = 45.0f;
+    /** Góc xoay tay sang ngang (Độ): 0 độ giữ thẳng hướng phía trước */
     public static float ARM_HOLD_YAW = 0.0f;
-    /** Góc nghiêng cánh tay (Độ) */
-    public static float ARM_HOLD_ROLL = 0.0f;
+    /** Góc nghiêng cánh tay (Độ): -18 độ giúp triệt tiêu góc nghiêng vai, tay giơ thẳng tắp ra trước (không bị vẹo vào ngực) */
+    public static float ARM_HOLD_ROLL = -18.0f;
 
     // --- 2. CẤU HÌNH CÔNG CỤ / VŨ KHÍ TRÊN TAY ---
     /** 
      * Tỉ lệ kích thước công cụ (Scale):
-     * 1.0f = 100% kích thước gốc
-     * 0.6f = giảm 40% kích thước (còn 60%)
+     * 0.8f: Vừa vặn cân đối với bàn tay robot Nova (không bị quá bé tí hon)
      */
-    public static float TOOL_SCALE = 0.6f;
+    public static float TOOL_SCALE = 0.8f;
 
     /**
-     * Vị trí công cụ (Dời tọa độ X, Y, Z so với bàn tay):
+     * Vị trí công cụ (Dời tọa độ X, Y, Z để chuôi cầm nằm trúng lòng bàn tay):
      * - OFFSET_X: Ngang (Âm: sang trái, Dương: sang phải)
      * - OFFSET_Y: Dọc (Âm: xuống dưới, Dương: lên trên)
      * - OFFSET_Z: Trước/Sau (Âm: ra trước, Dương: ra sau)
      */
-    public static float TOOL_OFFSET_X = 0.0f;
-    public static float TOOL_OFFSET_Y = 0.0f;
-    public static float TOOL_OFFSET_Z = 0.0f;
+    public static float TOOL_OFFSET_X = -0.02f;
+    public static float TOOL_OFFSET_Y = 0.12f;
+    public static float TOOL_OFFSET_Z = -0.10f;
 
     /**
      * Góc xoay công cụ theo độ (Degrees):
-     * - ROT_X: Xoay ngửa / chúc đầu vũ khí (Mặc định 0.0f đầu vũ khí sẽ hướng lên trên)
-     * - ROT_Y: Xoay quanh trục dọc (xoay hướng lưỡi kiếm / mặt công cụ)
-     * - ROT_Z: Xoay nghiêng công cụ sang trái / phải
+     * - ROT_X: Xoay ngửa / chúc đầu vũ khí (Độ)
+     * - ROT_Y: Xoay quanh trục dọc (xoay mặt phẳng lưỡi kiếm)
+     * - ROT_Z: Xoay dựng đứng (-90 độ để đầu vũ khí dựng thẳng đứng lên trên trời)
      */
     public static float TOOL_ROT_X = 0.0f;
     public static float TOOL_ROT_Y = 0.0f;
-    public static float TOOL_ROT_Z = 0.0f;
+    public static float TOOL_ROT_Z = -90.0f;
 
     // =========================================================================
 

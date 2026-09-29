@@ -16,7 +16,7 @@ import software.bernie.geckolib.renderer.base.RenderPassInfo;
 public class NovaRenderer<R extends EntityRenderState & GeoRenderState>
         extends GeoEntityRenderer<NovaEntity, R> {
 
-    public static boolean INVERT_HEAD_PITCH = false;
+    public static boolean INVERT_HEAD_PITCH = true;
 
     public NovaRenderer(EntityRendererProvider.Context context) {
         super(context, new NovaModel());

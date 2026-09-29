@@ -3,6 +3,7 @@ package net.teogemini.nova.client.renderer;
 import java.util.List;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
@@ -13,6 +14,7 @@ import net.teogemini.nova.entity.NovaEntity;
 import net.teogemini.nova.registry.ModBlocks;
 import software.bernie.geckolib.cache.model.BakedGeoModel;
 import software.bernie.geckolib.cache.model.GeoBone;
+import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.renderer.base.BoneSnapshots;
 import software.bernie.geckolib.renderer.base.GeoRenderer;
@@ -22,12 +24,7 @@ import software.bernie.geckolib.renderer.layer.builtin.ItemInHandGeoLayer;
 
 public final class NovaEquipmentLayer<R extends GeoRenderState>
         extends ItemInHandGeoLayer<NovaEntity, Void, R> {
-    private static final DataTicket<Boolean> CARRYING =
-            DataTicket.create("robot-nova_mod:carrying_chest", Boolean.class);
 
-    public NovaEquipmentLayer(GeoRenderer<NovaEntity, Void, R> renderer) {
-        super(renderer, "RightHandItem", "LeftHandItem");
-    }
     // =========================================================================
     // KHU VỰC CẤU HÌNH TAY VÀ CÔNG CỤ / VŨ KHÍ CỦA NOVA (DỄ DÀNG ĐIỀU CHỈNH)
     // =========================================================================
@@ -67,12 +64,26 @@ public final class NovaEquipmentLayer<R extends GeoRenderState>
     public static float TOOL_ROT_X = 0.0f;
     public static float TOOL_ROT_Y = 0.0f;
     public static float TOOL_ROT_Z = 0.0f;
-    
-    
+
+    // =========================================================================
+
+    private static final DataTicket<Boolean> CARRYING =
+            DataTicket.create("robot-nova_mod:carrying_chest", Boolean.class);
+    public static final DataTicket<Boolean> HOLDING_MAINHAND =
+            DataTicket.create("robot-nova_mod:holding_mainhand", Boolean.class);
+    public static final DataTicket<Boolean> HOLDING_OFFHAND =
+            DataTicket.create("robot-nova_mod:holding_offhand", Boolean.class);
+
+    public NovaEquipmentLayer(GeoRenderer<NovaEntity, Void, R> renderer) {
+        super(renderer, "RightHandItem", "LeftHandItem");
+    }
+
     @Override
     public void addRenderData(NovaEntity nova, Void related, R state, float partialTick) {
         super.addRenderData(nova, related, state, partialTick);
         state.addGeckolibData(CARRYING, nova.isCarryingChest());
+        state.addGeckolibData(HOLDING_MAINHAND, !nova.getMainHandItem().isEmpty());
+        state.addGeckolibData(HOLDING_OFFHAND, !nova.getOffhandItem().isEmpty());
     }
 
     @Override
@@ -97,29 +108,91 @@ public final class NovaEquipmentLayer<R extends GeoRenderState>
         }
     }
 
+    public static void applyHoldingPose(RenderPassInfo<?> pass, BoneSnapshots bones) {
+        // Nếu robot đang bê rương thì không áp dụng tư thế cầm vũ khí
+        if (pass.getOrDefaultGeckolibData(CARRYING, false)) {
+            return;
+        }
+
+        boolean holdingMain = pass.getOrDefaultGeckolibData(HOLDING_MAINHAND, false);
+        if (holdingMain) {
+            bones.get("arm_right").ifPresent(arm -> {
+                arm.setRotX(arm.getRotX() + (float) Math.toRadians(ARM_HOLD_PITCH));
+                arm.setRotY(arm.getRotY() + (float) Math.toRadians(ARM_HOLD_YAW));
+                arm.setRotZ(arm.getRotZ() + (float) Math.toRadians(ARM_HOLD_ROLL));
+            });
+        }
+
+        boolean holdingOff = pass.getOrDefaultGeckolibData(HOLDING_OFFHAND, false);
+        if (holdingOff) {
+            bones.get("arm_left").ifPresent(arm -> {
+                arm.setRotX(arm.getRotX() + (float) Math.toRadians(ARM_HOLD_PITCH));
+                arm.setRotY(arm.getRotY() - (float) Math.toRadians(ARM_HOLD_YAW));
+                arm.setRotZ(arm.getRotZ() - (float) Math.toRadians(ARM_HOLD_ROLL));
+            });
+        }
+    }
+
     @Override
     protected void submitItemStackRender(PoseStack pose, GeoBone bone, ItemStack stack,
             ItemDisplayContext context, R state, SubmitNodeCollector tasks,
             CameraRenderState camera, int light, int overlay, int color) {
-        if (!bone.name().equals("carry_anchor")) {
-            super.submitItemStackRender(pose, bone, stack, context, state, tasks,
-                    camera, light, overlay, color);
+        if (bone.name().equals("carry_anchor")) {
+            var minecraft = Minecraft.getInstance();
+            ItemStackRenderState item = new ItemStackRenderState();
+            minecraft.getItemModelResolver().updateForTopItem(item, stack,
+                    ItemDisplayContext.NONE, minecraft.level, null, 0);
+            var bounds = item.getModelBoundingBox();
+            double extent = Math.max(bounds.getXsize(), Math.max(bounds.getYsize(), bounds.getZsize()));
+            if (!Double.isFinite(extent) || extent <= 0) return;
+            // Match the 5x5x5 placeholder centred at (0, 5.5, -5.5) in the user's model.
+            float scale = (float) ((5.0 / 16.0) / extent);
+            var centre = bounds.getCenter();
+            pose.pushPose();
+            pose.scale(scale, scale, scale);
+            pose.translate(-centre.x, -centre.y, -centre.z);
+            item.submit(pose, tasks, light, overlay, 0);
+            pose.popPose();
             return;
         }
-        var minecraft = Minecraft.getInstance();
-        ItemStackRenderState item = new ItemStackRenderState();
-        minecraft.getItemModelResolver().updateForTopItem(item, stack,
-                ItemDisplayContext.NONE, minecraft.level, null, 0);
-        var bounds = item.getModelBoundingBox();
-        double extent = Math.max(bounds.getXsize(), Math.max(bounds.getYsize(), bounds.getZsize()));
-        if (!Double.isFinite(extent) || extent <= 0) return;
-        // Match the 5x5x5 placeholder centred at (0, 5.5, -5.5) in the user's model.
-        float scale = (float) ((5.0 / 16.0) / extent);
-        var centre = bounds.getCenter();
-        pose.pushPose();
-        pose.scale(scale, scale, scale);
-        pose.translate(-centre.x, -centre.y, -centre.z);
-        item.submit(pose, tasks, light, overlay, 0);
-        pose.popPose();
+
+        if (bone.name().equals("RightHandItem") || bone.name().equals("LeftHandItem")) {
+            boolean isLeft = bone.name().equals("LeftHandItem");
+            pose.pushPose();
+
+            // 1. Dời vị trí công cụ (Offset)
+            float offX = isLeft ? -TOOL_OFFSET_X : TOOL_OFFSET_X;
+            pose.translate(offX, TOOL_OFFSET_Y, TOOL_OFFSET_Z);
+
+            // 2. Góc xoay công cụ (Rotation tính bằng độ Degrees)
+            if (TOOL_ROT_X != 0.0f) {
+                pose.mulPose(Axis.XP.rotationDegrees(TOOL_ROT_X));
+            }
+            float rotY = isLeft ? -TOOL_ROT_Y : TOOL_ROT_Y;
+            if (rotY != 0.0f) {
+                pose.mulPose(Axis.YP.rotationDegrees(rotY));
+            }
+            float rotZ = isLeft ? -TOOL_ROT_Z : TOOL_ROT_Z;
+            if (rotZ != 0.0f) {
+                pose.mulPose(Axis.ZP.rotationDegrees(rotZ));
+            }
+
+            // 3. Kích thước công cụ (Scale)
+            pose.scale(TOOL_SCALE, TOOL_SCALE, TOOL_SCALE);
+
+            // 4. Render vật phẩm với đúng ngữ cảnh hiển thị
+            var minecraft = Minecraft.getInstance();
+            ItemStackRenderState item = new ItemStackRenderState();
+            int seed = (int) (long) state.getOrDefaultGeckolibData(DataTickets.ANIMATABLE_INSTANCE_ID, 0L) + context.ordinal();
+            minecraft.getItemModelResolver().updateForTopItem(
+                    item, stack, context, minecraft.level, null, seed);
+            item.submit(pose, tasks, light, overlay, 0);
+
+            pose.popPose();
+            return;
+        }
+
+        super.submitItemStackRender(pose, bone, stack, context, state, tasks,
+                camera, light, overlay, color);
     }
 }

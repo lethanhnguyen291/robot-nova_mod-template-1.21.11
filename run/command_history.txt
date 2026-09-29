@@ -13,3 +13,5 @@
 /time set day
 /summon robot-nova_mod:nova ~ ~ ~
 /time set day
+/time set night
+/summon robot-nova_mod:nova ~ ~ ~

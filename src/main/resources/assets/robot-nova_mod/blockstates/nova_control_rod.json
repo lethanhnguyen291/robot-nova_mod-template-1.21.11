@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "robot-nova_mod:block/nova_control_rod",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "robot-nova_mod:block/nova_control_rod",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "robot-nova_mod:block/nova_control_rod",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "robot-nova_mod:block/nova_control_rod",
+      "y": 270
+    }
+  }
+}

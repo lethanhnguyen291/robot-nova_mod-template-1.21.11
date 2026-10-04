@@ -33,7 +33,7 @@ public record NovaControlPayload(int entityId, UUID entityUuid, int action)
         PayloadTypeRegistry.playC2S().register(TYPE, CODEC);
         ServerPlayNetworking.registerGlobalReceiver(TYPE, (payload, context) -> {
             var player = context.player();
-            if (player.isSpectator() || !player.isAlive()
+            if (player.isSpectator() || !player.isAlive() || !NovaRodControl.holdingRod(player)
                     || !(player.level().getEntity(payload.entityId()) instanceof NovaEntity nova)
                     || !nova.getUUID().equals(payload.entityUuid()) || !nova.isAlive()
                     || !nova.isTame() || !nova.isOwnedBy(player)

@@ -1,5 +1,6 @@
 package net.teogemini.nova.entity;
 
+import net.teogemini.nova.entity.companion.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -45,7 +46,7 @@ import net.minecraft.world.level.gamerules.GameRules;
 import net.teogemini.nova.entity.ai.NovaRallyGoal;
 import net.teogemini.nova.entity.ai.work.*;
 
-public class NovaEntity extends TamableAnimal implements GeoEntity {
+public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraft.world.entity.ContainerUser {
     public static final int WORK_NONE = 0, WORK_CHOP = 1, WORK_MINE = 2,
             WORK_FARM = 3, WORK_DIG = 4, WORK_PLANT = 5, WORK_CHEST = 6;
     private static final EntityDataAccessor<Integer> NOVA_WORK =
@@ -53,6 +54,30 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
     private static final EntityDataAccessor<Boolean> NOVA_CARRYING =
             SynchedEntityData.defineId(NovaEntity.class, EntityDataSerializers.BOOLEAN);
     private final NovaWorkData novaWork = new NovaWorkData();
+    private final NovaCompanion novaCompanion = new NovaCompanion(this);
+    private static final EntityDataAccessor<Integer> NOVA_COMPANION =
+            SynchedEntityData.defineId(NovaEntity.class, EntityDataSerializers.INT);
+    public NovaCompanion companion() { return novaCompanion; }
+    public int getCompanionState() { return entityData.get(NOVA_COMPANION); }
+    public void setCompanionState(int state) {
+        if (!level().isClientSide()) entityData.set(NOVA_COMPANION, Mth.clamp(state,0,6));
+    }
+    public void interruptCompanionAction() {
+        if (!level().isClientSide() && isPerformingAction()) finishNovaAction();
+        stopTriggeredAnim("companion_gesture", null);
+    }
+    @Override public boolean hasContainerOpen(net.minecraft.world.level.block.entity.ContainerOpenersCounter counter, BlockPos pos) {
+        return companion().hasOpenChest(pos);
+    }
+    @Override public double getContainerInteractionRange() { return 3.5; }
+    @Override public int getMaxFallDistance() { return 1; }
+    @Override public boolean causeFallDamage(double distance, float multiplier, DamageSource source) { return false; }
+    @Override protected int decreaseAirSupply(int air) { return getMaxAirSupply(); }
+    @Override public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
+        boolean hurt=super.hurtServer(server,source,amount);
+        if (hurt && isAlive() && isTame()) companion().hurt(source.getSourcePosition());
+        return hurt;
+    }
     public BlockPos lastChoppedRoot;
     public Item expectedSapling;
     private static final RawAnimation[] WORK_ANIMATIONS = {
@@ -137,6 +162,11 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
     public NovaEntity(EntityType<? extends NovaEntity> type, Level level) {
         super(type, level);
         setPersistenceRequired();
+        getNavigation().setCanOpenDoors(true);
+        getNavigation().setCanFloat(false);
+        setPathfindingMalus(net.minecraft.world.level.pathfinder.PathType.WATER, 8);
+        setPathfindingMalus(net.minecraft.world.level.pathfinder.PathType.DANGER_FIRE, -1);
+        setPathfindingMalus(net.minecraft.world.level.pathfinder.PathType.DAMAGE_FIRE, -1);
             this.lookControl = new LookControl(this) {
             @Override
             protected boolean resetXRotOnTick() {
@@ -163,6 +193,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
         BlockPos chest = getLinkedChest();
         return level() instanceof ServerLevel server && isAlive() && !isNoAi() && isTame()
                 && novaWork.enabled() && novaWork.energy() > 0 && !novaWork.inventoryOpen()
+                && companion().workAllowed()
                 && getNovaMoveMode() == MODE_FREE
                 && !isOrderedToSit() && !isPerformingAction() && !isRallying()
                 && !isCarryingChest() && chest != null && level().hasChunkAt(chest)
@@ -176,7 +207,10 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
     }
     public int getWorkAction() { return entityData.get(NOVA_WORK); }
     public void playWorkAnimation(int action) {
-        if (!level().isClientSide()) entityData.set(NOVA_WORK, Mth.clamp(action, 0, 6));
+        if (!level().isClientSide()) {
+            if (action!=WORK_NONE) companion().cancelGesture();
+            entityData.set(NOVA_WORK, Mth.clamp(action, 0, 6));
+        }
     }
     public void clearWorkAnimation() { playWorkAnimation(WORK_NONE); }
     public boolean isCarryingChest() { return entityData.get(NOVA_CARRYING); }
@@ -186,6 +220,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
     public boolean isRallying() { return novaWork.rallyTarget != null; }
     public void startRally(BlockPos target, BlockPos face) {
         if (level().isClientSide()) return;
+        companion().ownerCommand();
         if (isPerformingAction()) finishNovaAction();
         setInSittingPose(false);
         setNovaRunning(false);
@@ -216,6 +251,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
     @Override
         protected void defineSynchedData(SynchedEntityData.Builder builder) {
             super.defineSynchedData(builder);
+            builder.define(NOVA_COMPANION, NovaCompanion.NORMAL);
             builder.define(NOVA_ACTION, ACTION_NONE);
             builder.define(NOVA_RUNNING, false);
             builder.define(NOVA_FACE, 0);
@@ -268,6 +304,12 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
             return;
         }
 
+        int companionFace = companion().contextFace();
+        if (companionFace >= 0) {
+            novaIdleTicks=0;
+            entityData.set(NOVA_FACE, companionFace);
+            return;
+        }
         int contextualFace = -1;
 
         if (getNovaAction() == ACTION_CELEBRATE) {
@@ -299,9 +341,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
 
         // Lúc đứng rảnh: đôi khi đổi mặt, hiếm hơn thì hiện loading.
         if (--novaFaceCooldown <= 0) {
-            novaIdleFace = random.nextInt(8) == 0
-                    ? 39
-                    : IDLE_FACES[random.nextInt(IDLE_FACES.length)];
+            novaIdleFace = companion().memories().personality().idleFace;
 
             novaIdleTicks = novaIdleFace == 39 ? 40 : 60;
             novaFaceCooldown = 160 + random.nextInt(241);
@@ -323,7 +363,8 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
 
     public boolean canNovaRoam() {
         return (!isTame() || getNovaMoveMode() == MODE_FREE)
-                && !isOrderedToSit() && !isPerformingAction() && !isRallying();
+                && !isOrderedToSit() && !isPerformingAction() && !isRallying()
+                && !novaWork.inventoryOpen() && getCompanionState()==NovaCompanion.NORMAL;
     }
 
     public void setNovaMoveMode(int mode) {
@@ -345,6 +386,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
         }
 
         stopRally();
+        companion().ownerCommand();
         clearWorkAnimation();
         setOrderedToSit(sitting);
         entityData.set(NOVA_SIT_REQUESTED, sitting);
@@ -390,6 +432,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
             return;
         }
 
+        if (companion().controlsLook()) return;
         var owner = getOwner();
 
         if (owner != null && owner.isAlive() && !owner.isSpectator()
@@ -455,6 +498,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
     }
         private void tickNovaGreeting() {
         if (level().isClientSide() || !isTame() || isCarryingChest()
+                || companion().controlsLook() || companion().panicking()
                 || getWorkAction() != WORK_NONE || isRallying()) {
             return;
         }
@@ -525,6 +569,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         novaWork.save(output.child("NovaWork"));
+        companion().memories().save(output.child("NovaCompanion"));
         output.storeNullable("NovaLastRoot", BlockPos.CODEC, lastChoppedRoot);
         output.store("NovaSapling", ItemStack.OPTIONAL_CODEC, expectedSapling == null
                 ? ItemStack.EMPTY : new ItemStack(expectedSapling));
@@ -539,6 +584,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         novaWork.load(input.childOrEmpty("NovaWork"));
+        companion().memories().load(input.childOrEmpty("NovaCompanion"));
         novaWork.restoreRallyName(this);
         setNovaCarrying(!novaWork.carriedChest().isEmpty());
         lastChoppedRoot = input.read("NovaLastRoot", BlockPos.CODEC).orElse(null);
@@ -559,10 +605,12 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
 
     private void startNovaAction(int action) {
         if (level().isClientSide() || isPerformingAction() || isCarryingChest()
-                || !onGround() || isInWater()) {
+                || companion().panicking() || !onGround() || isInWater()) {
             return;
         }
 
+        companion().cancelGesture();
+        setCompanionState(NovaCompanion.NORMAL);
         clearWorkAnimation();
         stopRally();
         entityData.set(NOVA_ACTION, action);
@@ -601,10 +649,12 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
             entityData.set(NOVA_SIT_REQUESTED, isOrderedToSit());
 
             // isOrderedToSit thuộc AI; tư thế này được đồng bộ sang máy khách.
-            setInSittingPose(isOrderedToSit() && !isPerformingAction() && !isRallying()
+            setInSittingPose((isOrderedToSit() || getCompanionState()==NovaCompanion.RESTING)
+                && !companion().panicking() && !isPerformingAction() && !isRallying()
                 && onGround() && !isInWater());
         }
 
+        companion().tick();
         tickNovaGreeting();
         super.tick();
         if (!level().isClientSide() && novaWork.tickEnergy(canNovaWork() && getWorkAction() != WORK_NONE)) {
@@ -619,20 +669,24 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
 
     @Override
     protected void registerGoals() {
-        goalSelector.addGoal(0, new FloatGoal(this));
+        goalSelector.addGoal(0, new NovaSafetyGoal(this));
+        goalSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.OpenDoorGoal(this, true));
         goalSelector.addGoal(1, new NovaWaitGoal(this));
         goalSelector.addGoal(2, new NovaRallyGoal(this));
         goalSelector.addGoal(3, new NovaFollowOwnerGoal(this));
-        goalSelector.addGoal(4, new NovaChestLogisticsGoal(this));
+        goalSelector.addGoal(4, new NovaStorageGoal(this));
         goalSelector.addGoal(5, new NovaOffhandUtilityGoal(this));
         goalSelector.addGoal(6, new NovaMineOreGoal(this, 1.2));
         goalSelector.addGoal(7, new NovaChopTreeGoal(this, 1.2));
         goalSelector.addGoal(8, new NovaFarmingGoal(this, 1.2));
         goalSelector.addGoal(9, new NovaShovelDigGoal(this, 1.2));
+        goalSelector.addGoal(10, new NovaRoutineGoal(this));
+        goalSelector.addGoal(10, new NovaSocialGoal(this));
         goalSelector.addGoal(11, new WaterAvoidingRandomStrollGoal(this, 0.75) {
             @Override public boolean canUse() { return canNovaRoam() && super.canUse(); }
             @Override public boolean canContinueToUse() { return canNovaRoam() && super.canContinueToUse(); }
         });
+        goalSelector.addGoal(12, new net.teogemini.nova.entity.ai.NovaLookAtOwnerGoal(this));
     }
 
     @Override
@@ -681,6 +735,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
         if (!isTame() && stack.is(Items.REDSTONE)) {
             if (!level().isClientSide()) {
                 tame(player);
+                companion().memories().meet(player.getName().getString());
                 novaGreetingPending = true;
                 setOrderedToSit(false);
                 getNavigation().stop();
@@ -700,13 +755,13 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
             return InteractionResult.SUCCESS;
         }
 
-        // Chủ nhân dùng tay không để đổi chế độ.
+        // Tay không + chuột phải: mở túi đồ NOVA (Shift vẫn giữ động tác chào).
         if (isTame() && stack.isEmpty()) {
             if (!isOwnedBy(player)) {
                 if (!level().isClientSide()) {
                     player.displayClientMessage(
                             Component.literal(
-                                    "NOVA: Chỉ chủ nhân mới đổi được chế độ."
+                                    "NOVA: Chỉ chủ nhân mới mở được túi đồ."
                             ),
                             true
                     );
@@ -715,6 +770,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
                 return InteractionResult.FAIL;
             }
 
+            net.teogemini.nova.screen.NovaMenus.open(player, this);
             return InteractionResult.SUCCESS;
         }
 
@@ -757,6 +813,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity {
             return state.setAndContinue(IDLE);
         }).triggerableAnim("wave", WAVE)
           .triggerableAnim("celebrate", CELEBRATE));
+        NovaCompanionAnimations.register(this, controllers);
     }
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {

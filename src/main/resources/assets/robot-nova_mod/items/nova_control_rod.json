@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "robot-nova_mod:block/nova_control_rod"
+  }
+}

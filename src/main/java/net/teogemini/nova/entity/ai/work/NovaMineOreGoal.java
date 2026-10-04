@@ -36,7 +36,7 @@ public class NovaMineOreGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (!nova.canNovaWork()) return false;
+        if (!nova.canNovaWork() || !nova.companion().usableTool(nova.getMainHandItem())) return false;
         if (this.searchDelay > 0) {
             this.searchDelay--;
             return false;
@@ -53,7 +53,7 @@ public class NovaMineOreGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        if (!nova.canNovaWork()) return false;
+        if (!nova.canNovaWork() || !nova.companion().usableTool(nova.getMainHandItem())) return false;
         return this.targetOrePos != null 
             && this.nova.getMainHandItem().is(ItemTags.PICKAXES);
     }
@@ -151,7 +151,7 @@ public class NovaMineOreGoal extends Goal {
             }
         } else {
             // Chạy lại gần
-            this.nova.getNavigation().moveTo(
+            if (novaTaskTicks % 20 == 1) this.nova.getNavigation().moveTo(
                 this.currentMiningPos.getX() + 0.5, 
                 this.currentMiningPos.getY(), 
                 this.currentMiningPos.getZ() + 0.5, 
@@ -187,7 +187,7 @@ public class NovaMineOreGoal extends Goal {
             this.nova.blockPosition(), 
             16, 
             9, 
-            pos -> nova.isWithinWorkspace(pos) && isOre(this.nova.level().getBlockState(pos).getBlock())
+            pos -> nova.isWithinWorkspace(pos) && !nova.companion().retry.blocked(pos,nova.level().getGameTime()) && isOre(this.nova.level().getBlockState(pos).getBlock())
         );
         return closestOre.orElse(null);
     }

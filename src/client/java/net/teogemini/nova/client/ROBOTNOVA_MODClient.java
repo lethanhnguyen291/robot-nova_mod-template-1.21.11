@@ -21,6 +21,7 @@ public class ROBOTNOVA_MODClient implements ClientModInitializer {
                 NovaChestRenderer::new
         );
         NovaControlScreen.registerInteraction();
+        net.teogemini.nova.client.screen.NovaCompanionScreen.register();
         
         EntityRenderers.register(
                 ModEntities.NOVA,

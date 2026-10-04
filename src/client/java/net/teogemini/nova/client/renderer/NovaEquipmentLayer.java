@@ -31,7 +31,7 @@ public final class NovaEquipmentLayer<R extends GeoRenderState>
 
     // --- 1. CẤU HÌNH CÁNH TAY ---
     /** Góc nâng tay lên trước (Độ): -45 độ = đưa tay lên trước 45 độ */
-    public static float ARM_HOLD_PITCH = 45.0f;
+    public static float ARM_HOLD_PITCH = 45;
     /** Góc xoay tay sang ngang (Độ): 0 độ giữ thẳng hướng phía trước */
     public static float ARM_HOLD_YAW = 0.0f;
     /** Góc nghiêng cánh tay (Độ): -18 độ giúp triệt tiêu góc nghiêng vai, tay giơ thẳng tắp ra trước (không bị vẹo vào ngực) */
@@ -42,7 +42,7 @@ public final class NovaEquipmentLayer<R extends GeoRenderState>
      * Tỉ lệ kích thước công cụ (Scale):
      * 0.8f: Vừa vặn cân đối với bàn tay robot Nova (không bị quá bé tí hon)
      */
-    public static float TOOL_SCALE = 0.8f;
+    public static float TOOL_SCALE = 0.68f;
 
     /**
      * Vị trí công cụ (Dời tọa độ X, Y, Z để chuôi cầm nằm trúng lòng bàn tay):
@@ -50,9 +50,9 @@ public final class NovaEquipmentLayer<R extends GeoRenderState>
      * - OFFSET_Y: Dọc (Âm: xuống dưới, Dương: lên trên)
      * - OFFSET_Z: Trước/Sau (Âm: ra trước, Dương: ra sau)
      */
-    public static float TOOL_OFFSET_X = -0.02f;
-    public static float TOOL_OFFSET_Y = 0.12f;
-    public static float TOOL_OFFSET_Z = -0.10f;
+    public static float TOOL_OFFSET_X = -0.00f;
+    public static float TOOL_OFFSET_Y = -0.08f;
+    public static float TOOL_OFFSET_Z = -0.05f;
 
     /**
      * Góc xoay công cụ theo độ (Degrees):
@@ -60,9 +60,9 @@ public final class NovaEquipmentLayer<R extends GeoRenderState>
      * - ROT_Y: Xoay quanh trục dọc (xoay mặt phẳng lưỡi kiếm)
      * - ROT_Z: Xoay dựng đứng (-90 độ để đầu vũ khí dựng thẳng đứng lên trên trời)
      */
-    public static float TOOL_ROT_X = 0.0f;
+    public static float TOOL_ROT_X = -90.0f;
     public static float TOOL_ROT_Y = 0.0f;
-    public static float TOOL_ROT_Z = -90.0f;
+    public static float TOOL_ROT_Z = 0.0f;
 
     // =========================================================================
 

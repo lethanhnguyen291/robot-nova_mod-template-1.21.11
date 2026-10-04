@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.teogemini.nova.client.model.NovaModel;
 import net.teogemini.nova.entity.NovaEntity;
 import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.base.BoneSnapshots;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
@@ -17,6 +18,8 @@ public class NovaRenderer<R extends EntityRenderState & GeoRenderState>
         extends GeoEntityRenderer<NovaEntity, R> {
 
     public static boolean INVERT_HEAD_PITCH = true;
+    public static final DataTicket<Boolean> SHOULD_TRACK_OWNER =
+            DataTicket.create("robot-nova_mod:should_track_owner", Boolean.class);
 
     public NovaRenderer(EntityRendererProvider.Context context) {
         super(context, new NovaModel());
@@ -24,6 +27,16 @@ public class NovaRenderer<R extends EntityRenderState & GeoRenderState>
         withRenderLayer(new NovaFaceLayer<>(this));
         withRenderLayer(new NovaLampLayer<>(this));
         withRenderLayer(new NovaEquipmentLayer<>(this));
+    }
+
+    @Override
+    public void addRenderData(NovaEntity nova, Void related, R state, float partialTick) {
+        super.addRenderData(nova, related, state, partialTick);
+        boolean sitting = nova.isInSittingPose() || nova.isOrderedToSit() || nova.getNovaMoveMode() == NovaEntity.MODE_WAIT;
+        boolean free = nova.getNovaMoveMode() == NovaEntity.MODE_FREE;
+        boolean acting = nova.isPerformingAction() || nova.getWorkAction() != NovaEntity.WORK_NONE;
+        boolean shouldTrack = !sitting && !free && !acting;
+        state.addGeckolibData(SHOULD_TRACK_OWNER, shouldTrack);
     }
 
     @Override
@@ -38,12 +51,14 @@ public class NovaRenderer<R extends EntityRenderState & GeoRenderState>
         float turn = (float) Math.toRadians(3.0 * Math.sin(time * 1.1 + 0.8));
         float tilt = (float) Math.toRadians(2.0 * Math.sin(time * 1.3 + 1.6));
 
+        boolean shouldTrack = pass.getOrDefaultGeckolibData(SHOULD_TRACK_OWNER, false);
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
-        float lookPitch;
-        float lookYaw;
+        float lookPitch = 0.0F;
+        float lookYaw = 0.0F;
+        boolean tracking = false;
 
-        if (player != null) {
+        if (shouldTrack && player != null) {
             double novaX = pass.renderState().x;
             double novaY = pass.renderState().y + pass.renderState().eyeHeight;
             double novaZ = pass.renderState().z;
@@ -60,24 +75,27 @@ public class NovaRenderer<R extends EntityRenderState & GeoRenderState>
                 float targetYawDeg = (float) (Mth.atan2(dz, dx) * 180.0 / Math.PI) - 90.0F;
                 float bodyYaw = pass.getOrDefaultGeckolibData(DataTickets.ENTITY_BODY_YAW, 0.0F);
                 lookYaw = Mth.wrapDegrees(targetYawDeg - bodyYaw);
-            } else {
-                lookPitch = 0.0F;
-                lookYaw = pass.getOrDefaultGeckolibData(DataTickets.ENTITY_YAW, 0.0F);
+                tracking = true;
             }
-        } else {
-            lookPitch = 0.0F;
-            lookYaw = pass.getOrDefaultGeckolibData(DataTickets.ENTITY_YAW, 0.0F);
         }
 
-        float pitchRad = (float) Math.toRadians(lookPitch);
-        float yawRad = (float) Math.toRadians(lookYaw);
         float limit = (float) Math.toRadians(85.0);
 
-        bones.get("head").ifPresent(head -> {
-            float finalPitch = INVERT_HEAD_PITCH ? pitchRad : -pitchRad;
-            head.setRotX(Mth.clamp(head.getRotX() + finalPitch + nod, -limit, limit));
-            head.setRotY(Mth.clamp(head.getRotY() - yawRad + turn, -limit, limit));
-            head.setRotZ(head.getRotZ() + tilt);
-        });
+        if (tracking) {
+            float pitchRad = (float) Math.toRadians(lookPitch);
+            float yawRad = (float) Math.toRadians(lookYaw);
+            bones.get("head").ifPresent(head -> {
+                float finalPitch = INVERT_HEAD_PITCH ? pitchRad : -pitchRad;
+                head.setRotX(Mth.clamp(head.getRotX() + finalPitch + nod, -limit, limit));
+                head.setRotY(Mth.clamp(head.getRotY() - yawRad + turn, -limit, limit));
+                head.setRotZ(head.getRotZ() + tilt);
+            });
+        } else {
+            bones.get("head").ifPresent(head -> {
+                head.setRotX(head.getRotX() + nod);
+                head.setRotY(head.getRotY() + turn);
+                head.setRotZ(head.getRotZ() + tilt);
+            });
+        }
     }
 }

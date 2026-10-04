@@ -2,7 +2,6 @@ package net.teogemini.nova.client.screen;
 
 import java.util.UUID;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -24,21 +23,23 @@ public final class NovaControlScreen extends Screen {
     }
 
     public static void registerInteraction() {
-        UseEntityCallback.EVENT.register((player, level, hand, entity, hit) -> {
-            if (level.isClientSide() && hand == InteractionHand.MAIN_HAND
-                    && !player.isSpectator() && !player.isShiftKeyDown()
-                    && player.getMainHandItem().isEmpty()
-                    && entity instanceof NovaEntity nova && nova.isAlive()
-                    && nova.isTame() && nova.isOwnedBy(player)) {
-                Minecraft.getInstance().setScreen(new NovaControlScreen(nova));
-                return InteractionResult.SUCCESS;
-            }
-            return InteractionResult.PASS;
-        });
+        ClientPlayNetworking.registerGlobalReceiver(net.teogemini.nova.network.NovaRodControl.Open.TYPE,
+                (packet, context) -> {
+                    var client = context.client();
+                    if (client.screen != null || client.level == null || client.player == null
+                            || client.player.isSpectator() || !client.player.isAlive()
+                            || !net.teogemini.nova.network.NovaRodControl.holdingRod(client.player)
+                            || !(client.level.getEntity(packet.entityId()) instanceof NovaEntity nova)
+                            || !nova.getUUID().equals(packet.uuid()) || !nova.isAlive()
+                            || !nova.isTame() || !nova.isOwnedBy(client.player)
+                            || client.player.distanceToSqr(nova) > 64) return;
+                    client.setScreen(new NovaControlScreen(nova));
+                });
     }
 
     private NovaEntity getNova() {
-        if (minecraft.level == null || minecraft.player == null) {
+        if (minecraft.level == null || minecraft.player == null
+                || !net.teogemini.nova.network.NovaRodControl.holdingRod(minecraft.player)) {
             return null;
         }
         if (minecraft.level.getEntity(entityId) instanceof NovaEntity nova
@@ -58,15 +59,19 @@ public final class NovaControlScreen extends Screen {
             return;
         }
         int x = width / 2 - 100;
-        int y = height / 2 - 50;
+        int y = height / 2 - 70;
         addCommand("Đi theo", NovaEntity.MODE_FOLLOW, x, y);
         addCommand("Tự do", NovaEntity.MODE_FREE, x, y + 25);
         addCommand("Đứng chờ", NovaEntity.MODE_WAIT, x, y + 50);
         addCommand(nova.isNovaSitRequested() ? "Đứng dậy" : "Ngồi xuống",
                 nova.isNovaSitRequested() ? NovaControlPayload.STAND : NovaControlPayload.SIT,
                 x, y + 75);
+        addRenderableWidget(Button.builder(Component.literal("Tính cách & Kỷ niệm"), button -> {
+            if (getNova()!=null) ClientPlayNetworking.send(
+                    new net.teogemini.nova.network.NovaCompanionCommands.Request(entityId,entityUuid,0));
+        }).bounds(x,y+100,200,20).build());
         addRenderableWidget(Button.builder(Component.literal("Đóng"), button -> onClose())
-                .bounds(x, y + 105, 200, 20).build());
+                .bounds(x, y + 125, 200, 20).build());
     }
 
     private void addCommand(String label, int action, int x, int y) {
@@ -88,7 +93,7 @@ public final class NovaControlScreen extends Screen {
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         super.render(graphics, mouseX, mouseY, partialTick);
-        graphics.drawCenteredString(font, title, width / 2, height / 2 - 85, 0xFFFFFFFF);
+        graphics.drawCenteredString(font, title, width / 2, height / 2 - 105, 0xFFFFFFFF);
         NovaEntity nova = getNova();
         if (nova != null) {
             String mode = switch (nova.getNovaMoveMode()) {
@@ -98,7 +103,7 @@ public final class NovaControlScreen extends Screen {
             };
             graphics.drawCenteredString(font,
                     mode + (nova.isNovaSitRequested() ? " • Đang ngồi" : ""),
-                    width / 2, height / 2 - 68, 0xFF80E5FF);
+                    width / 2, height / 2 - 88, 0xFF80E5FF);
         }
     }
 

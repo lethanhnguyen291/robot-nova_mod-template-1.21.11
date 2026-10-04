@@ -24,56 +24,58 @@ public final class NovaRallyManager {
 
     public static void register() {
         UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
-            if (hand != InteractionHand.MAIN_HAND || player.isSpectator()
-                    || !player.getItemInHand(hand).is(Items.LIGHTNING_ROD)
-                    || !level.getBlockState(hit.getBlockPos()).is(ModBlocks.NOVA_CHEST)) {
+            if (hand != InteractionHand.MAIN_HAND || player.isSpectator() || player.isShiftKeyDown()
+                    || !level.getBlockState(hit.getBlockPos()).is(ModBlocks.NOVA_CONTROL_ROD)) {
                 return InteractionResult.PASS;
             }
-            if (level instanceof ServerLevel server) {
-                return triggerRally(server, hit.getBlockPos(), player);
-            }
-            return InteractionResult.SUCCESS;
+            return level instanceof ServerLevel server ? triggerRally(server, hit.getBlockPos(), player)
+                    : InteractionResult.SUCCESS;
         });
     }
 
-    // Existing bell-on-robot shortcut uses its linked chest, never the player's position.
     public static void toggle(NovaEntity selected, Player owner) {
         if (!(selected.level() instanceof ServerLevel level) || !selected.isOwnedBy(owner)) return;
-        BlockPos chest = selected.getLinkedChest();
-        if (chest == null || !level.hasChunkAt(chest)
-                || !level.getBlockState(chest).is(ModBlocks.NOVA_CHEST)) {
-            NovaWorkSupport.message(owner, "Dùng cột thu lôi bấm vào rương NOVA để tập hợp nhé.");
-            return;
+        BlockPos anchor = selected.work().rallyFace;
+        if (anchor != null && level.hasChunkAt(anchor) && level.getBlockState(anchor).is(ModBlocks.NOVA_CONTROL_ROD)
+                && owner.isWithinBlockInteractionRange(anchor, 0)) {
+            triggerRally(level, anchor, owner);
+        } else {
+            NovaWorkSupport.message(owner, "Đặt gậy điều khiển xuống đất hoặc nhấp phải gậy đã đặt để tập hợp nhé.");
         }
-        triggerRally(level, chest, owner);
     }
 
-    public static InteractionResult triggerRally(ServerLevel level, BlockPos chestPos, Player owner) {
-        if (owner.isSpectator() || owner.level() != level || !level.hasChunkAt(chestPos)) {
+    private static final java.util.Map<Player, Long> LAST_USE = new java.util.WeakHashMap<>();
+
+    public static InteractionResult triggerRally(ServerLevel level, BlockPos anchor, Player owner) {
+        if (owner.isSpectator() || !owner.isAlive() || owner.level() != level || !level.hasChunkAt(anchor)
+                || !owner.isWithinBlockInteractionRange(anchor, 0) || !level.mayInteract(owner, anchor)) {
             return InteractionResult.PASS;
         }
-        var state = level.getBlockState(chestPos);
-        if (!state.is(ModBlocks.NOVA_CHEST)) return InteractionResult.PASS;
-        var robots = level.getEntitiesOfClass(NovaEntity.class, new AABB(chestPos).inflate(64.0),
+        var state = level.getBlockState(anchor);
+        if (!state.is(ModBlocks.NOVA_CONTROL_ROD)) return InteractionResult.PASS;
+        long now = level.getGameTime();
+        if (now < LAST_USE.getOrDefault(owner, Long.MIN_VALUE)) return InteractionResult.SUCCESS;
+        LAST_USE.put(owner, now + 10);
+        var robots = level.getEntitiesOfClass(NovaEntity.class, new AABB(anchor).inflate(64.0),
                 nova -> nova.isAlive() && nova.isOwnedBy(owner) && !nova.isNoAi());
         if (robots.isEmpty()) {
-            NovaWorkSupport.message(owner, "Không có robot của bạn trong vùng 64 khối quanh rương.");
+            NovaWorkSupport.message(owner, "Không có robot của bạn trong vùng 64 khối quanh gậy.");
             return InteractionResult.SUCCESS;
         }
-        if (robots.stream().anyMatch(NovaEntity::isRallying)) {
-            robots.forEach(NovaEntity::stopRally);
-            level.playSound(null, chestPos, SoundEvents.BELL_BLOCK, SoundSource.BLOCKS, 1.0F, 1.0F);
+        var stationed = robots.stream().filter(nova -> nova.isRallying() && anchor.equals(nova.work().rallyFace)).toList();
+        if (!stationed.isEmpty()) {
+            stationed.forEach(NovaEntity::stopRally);
+            level.playSound(null, anchor, SoundEvents.BELL_BLOCK, SoundSource.BLOCKS, 1.0F, 1.0F);
             NovaWorkSupport.message(owner, "Đội hình giải tán! Trở lại chế độ trước đó.");
             return InteractionResult.SUCCESS;
         }
-
-        robots.sort(Comparator.comparingDouble(nova -> nova.distanceToSqr(Vec3.atCenterOf(chestPos))));
-        Direction facing = state.getValue(ChestBlock.FACING);
+        robots.sort(Comparator.comparingDouble(nova -> nova.distanceToSqr(Vec3.atCenterOf(anchor))));
+        Direction facing = state.getValue(net.teogemini.nova.block.NovaControlRodBlock.FACING);
         for (int index = 0; index < robots.size(); index++) {
-            robots.get(index).startRally(formationPosition(chestPos, facing, index), chestPos);
+            robots.get(index).startRally(formationPosition(anchor, facing, index), anchor);
         }
         robots.getFirst().work().showRallyLeader(robots.getFirst(), robots.size());
-        level.playSound(null, chestPos, SoundEvents.RAID_HORN.value(), SoundSource.BLOCKS, 5.0F, 1.0F);
+        level.playSound(null, anchor, SoundEvents.RAID_HORN.value(), SoundSource.BLOCKS, 5.0F, 1.0F);
         owner.displayClientMessage(Component.literal("Tập hợp đội hình!").withStyle(ChatFormatting.RED), true);
         return InteractionResult.SUCCESS;
     }

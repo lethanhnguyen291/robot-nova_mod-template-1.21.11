@@ -4,5 +4,7 @@
   "item.robot-nova_mod.nova_hoe": "NOVA Hoe",
   "item.robot-nova_mod.nova_pickaxe": "NOVA Pickaxe",
   "item.robot-nova_mod.nova_shovel": "NOVA Shovel",
-  "item.robot-nova_mod.nova_sword": "NOVA Sword"
+  "item.robot-nova_mod.nova_sword": "NOVA Sword",
+  "item.robot-nova_mod.nova_spawn_egg": "NOVA Spawn Egg",
+  "block.robot-nova_mod.nova_control_rod": "NOVA Control Rod"
 }

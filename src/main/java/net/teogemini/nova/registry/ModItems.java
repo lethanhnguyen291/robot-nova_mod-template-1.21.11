@@ -12,10 +12,14 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.ToolMaterial;
 import net.teogemini.nova.ROBOTNOVA_MOD;
 
 public final class ModItems {
+    public static final Item NOVA_SPAWN_EGG = register("nova_spawn_egg",
+            properties -> new SpawnEggItem(properties.spawnEgg(ModEntities.NOVA)));
+
     private static final ToolMaterial NOVA_MATERIAL = ToolMaterial.COPPER;
 
     public static final Item NOVA_AXE = register("nova_axe",
@@ -47,6 +51,9 @@ public final class ModItems {
     }
 
     public static void register() {
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS)
+                .register(entries -> entries.accept(NOVA_SPAWN_EGG));
+
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
                 .register(entries -> {
                     entries.accept(NOVA_AXE);

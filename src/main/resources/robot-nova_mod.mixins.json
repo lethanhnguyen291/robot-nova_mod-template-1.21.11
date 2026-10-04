@@ -3,7 +3,8 @@
 	"package": "net.teogemini.nova.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"ExampleMixin",
+		"NovaSummoningMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

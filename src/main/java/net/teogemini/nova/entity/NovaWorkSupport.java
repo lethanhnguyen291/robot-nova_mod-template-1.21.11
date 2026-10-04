@@ -63,24 +63,27 @@ public final class NovaWorkSupport {
         // Keep the existing Shift + redstone celebration shortcut.
         if (held.is(Items.REDSTONE) && player.isShiftKeyDown()) return InteractionResult.PASS;
         boolean tool = isTool(held), supply = isSupply(held);
-        if (!(tool || supply || held.is(Items.COMPASS) || held.is(Items.LIGHTNING_ROD)
+        if (!(tool || supply || held.is(net.teogemini.nova.registry.ModBlocks.NOVA_CONTROL_ROD_ITEM) || held.is(Items.LIGHTNING_ROD)
                 || held.is(Items.EMERALD) || held.is(Items.BELL) || held.is(Items.IRON_NUGGET)
                 || held.is(Items.REDSTONE))) {
             return InteractionResult.PASS;
         }
         if (!(nova.level() instanceof ServerLevel)) return InteractionResult.SUCCESS;
         if (held.is(Items.REDSTONE)) {
+            int previousEnergy = nova.work().energy();
             if (nova.work().recharge()) {
+                nova.companion().recharged(previousEnergy);
                 if (!player.getAbilities().instabuild) held.shrink(1);
                 message(player, "Đã sạc pin: " + (nova.work().energy() / 10) + "%.");
             } else {
                 message(player, "Pin đã đầy.");
             }
-        } else if (held.is(Items.COMPASS)) {
+        } else if (held.is(net.teogemini.nova.registry.ModBlocks.NOVA_CONTROL_ROD_ITEM)) {
             NovaChestHandler.select(nova, player);
         } else if (held.is(Items.LIGHTNING_ROD)) {
             NovaChestHandler.toggleCarry(nova, player);
         } else if (held.is(Items.EMERALD)) {
+            nova.companion().ownerCommand();
             nova.work().setEnabled(!nova.work().enabled());
             nova.clearWorkAnimation();
             nova.getNavigation().stop();
@@ -143,7 +146,9 @@ public final class NovaWorkSupport {
                 ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, nova));
         if (hit.getType() == HitResult.Type.BLOCK && !hit.getBlockPos().equals(pos)) return false;
         var drops = Block.getDrops(original, level, pos, null, nova, tool);
+        if (!nova.companion().usableTool(tool)) return false;
         if (!level.destroyBlock(pos, false, nova)) return false;
+        nova.companion().worked(original);
         for (ItemStack drop : drops) {
             ItemStack remainder = nova.work().inventory.addItem(drop.copy());
             if (!remainder.isEmpty()) Block.popResource(level, pos, remainder);

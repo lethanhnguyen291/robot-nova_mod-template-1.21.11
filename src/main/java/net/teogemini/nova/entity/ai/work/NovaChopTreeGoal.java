@@ -43,7 +43,7 @@ public class NovaChopTreeGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (!nova.canNovaWork()) return false;
+        if (!nova.canNovaWork() || !nova.companion().usableTool(nova.getMainHandItem())) return false;
         if (this.searchDelay > 0) {
             this.searchDelay--;
             return false;
@@ -82,11 +82,13 @@ public class NovaChopTreeGoal extends Goal {
     public void stop() {
         CLAIMED_TREES.remove(this.nova);
         this.targetLogPos = null;
+        nova.clearWorkAnimation();
+        nova.getNavigation().stop();
     }
 
     @Override
     public void tick() {
-        if (this.targetLogPos == null) return;
+        if (this.targetLogPos == null || !nova.canNovaWork()) return;
 
         // Nếu khúc gỗ bị đập mất bởi người chơi hoặc con khác, bỏ mục tiêu
         if (!isLog(this.nova.level().getBlockState(this.targetLogPos).getBlock())) {
@@ -105,11 +107,12 @@ public class NovaChopTreeGoal extends Goal {
 
         // ÉP GÓC ĐỨNG SÁT GỐC (horizontalDistSq <= 3.0)
         if (horizontalDistSq > 3.0) {
-            this.nova.getNavigation().moveTo(targetX, this.targetLogPos.getY(), targetZ, this.speed);
+            if (stuckTimer % 20 == 0) this.nova.getNavigation().moveTo(targetX, this.targetLogPos.getY(), targetZ, this.speed);
             
             // HỆ THỐNG CHỐNG KẸT
             this.stuckTimer++;
-            if (this.stuckTimer > 150) { 
+            if (this.stuckTimer > 150) {
+                nova.companion().stuck(targetLogPos);
                 this.targetLogPos = null; 
             }
         } else {
@@ -137,7 +140,7 @@ public class NovaChopTreeGoal extends Goal {
                 }
 
                 // Vung rìu đập gỗ
-                NovaWorkSupport.breakBlock(nova, this.targetLogPos);
+                if (!NovaWorkSupport.breakBlock(nova, this.targetLogPos)) { stop(); return; }
                 NovaExperienceManager.awardLumberjackExp(this.nova); 
                 this.choppingTick = 0; 
                 
@@ -155,9 +158,10 @@ public class NovaChopTreeGoal extends Goal {
     private BlockPos findNearestLog() {
         Optional<BlockPos> closestLog = BlockPos.findClosestMatch(
             this.nova.blockPosition(), 
-            32, 
-            16, 
+            16,
+            8, 
             pos -> {
+                if (!nova.isWithinWorkspace(pos) || nova.companion().retry.blocked(pos,nova.level().getGameTime())) return false;
                 if (!isLog(this.nova.level().getBlockState(pos).getBlock())) return false;
                 
                 BlockPos base = pos;

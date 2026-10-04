@@ -35,13 +35,22 @@ public final class NovaChestHandler {
     public static void select(NovaEntity nova, Player player) {
         if (!(player instanceof ServerPlayer owner)) return;
         SELECTED.put(owner, new Selection(nova.getUUID(), owner.level().getGameTime() + 1200));
-        NovaWorkSupport.message(player, "Đã chọn mình. Dùng la bàn bấm vào rương NOVA trong 60 giây để liên kết.");
+        NovaWorkSupport.message(player, "Đã chọn mình. Dùng gậy điều khiển bấm vào rương NOVA trong 60 giây để liên kết.");
+    }
+
+    public static NovaEntity selected(net.minecraft.server.level.ServerPlayer owner) {
+        Selection selected=SELECTED.get(owner);
+        if (selected==null || selected.expires()<owner.level().getGameTime()) return null;
+        return owner.level().getEntity(selected.nova()) instanceof NovaEntity nova && nova.isAlive()
+                && nova.isOwnedBy(owner) && owner.distanceToSqr(nova)<=64 ? nova : null;
     }
 
     public static void register() {
         UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
+            var marked=net.teogemini.nova.network.NovaCompanionCommands.markBlock(player,level,hand,hit);
+            if (marked!=InteractionResult.PASS) return marked;
             if (hand != InteractionHand.MAIN_HAND || player.isSpectator()
-                    || !player.getItemInHand(hand).is(Items.COMPASS)
+                    || !player.getItemInHand(hand).is(ModBlocks.NOVA_CONTROL_ROD_ITEM)
                     || !level.getBlockState(hit.getBlockPos()).is(ModBlocks.NOVA_CHEST)) {
                 return InteractionResult.PASS;
             }
@@ -55,10 +64,12 @@ public final class NovaChestHandler {
                     || owner.distanceToSqr(nova) > 64.0
                     || owner.distanceToSqr(Vec3.atCenterOf(hit.getBlockPos())) > 64.0
                     || nova.isCarryingChest() || !server.mayInteract(owner, hit.getBlockPos())) {
-                NovaWorkSupport.message(owner, "Đến gần, chọn mình bằng la bàn rồi chọn rương nhé.");
+                NovaWorkSupport.message(owner, "Đến gần, chọn mình bằng gậy điều khiển rồi chọn rương nhé.");
                 return InteractionResult.SUCCESS;
             }
+            nova.companion().ownerCommand();
             nova.work().link(GlobalPos.of(server.dimension(), hit.getBlockPos().immutable()));
+            nova.companion().memories().remember("Chủ nhân đã chọn một chiếc rương làm nhà cho mình.");
             nova.getNavigation().stop();
             SELECTED.remove(owner);
             NovaWorkSupport.message(owner, "Đã liên kết rương. Vùng làm việc cách rương tối đa 16 khối.");

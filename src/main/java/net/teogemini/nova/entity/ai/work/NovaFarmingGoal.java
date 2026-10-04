@@ -32,7 +32,7 @@ public class NovaFarmingGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (!nova.canNovaWork()) return false;
+        if (!nova.canNovaWork() || !nova.companion().usableTool(nova.getMainHandItem())) return false;
         if (this.searchDelay > 0) {
             this.searchDelay--;
             return false;
@@ -50,7 +50,7 @@ public class NovaFarmingGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        if (!nova.canNovaWork()) return false;
+        if (!nova.canNovaWork() || !nova.companion().usableTool(nova.getMainHandItem())) return false;
         return this.targetFarmPos != null 
             && this.nova.getMainHandItem().is(ItemTags.HOES);
     }
@@ -109,7 +109,7 @@ public class NovaFarmingGoal extends Goal {
             }
         } else {
             // Chạy ra ruộng
-            this.nova.getNavigation().moveTo(
+            if (novaTaskTicks % 20 == 1) this.nova.getNavigation().moveTo(
                     this.targetFarmPos.getX() + 0.5,
                     this.targetFarmPos.getY(),
                     this.targetFarmPos.getZ() + 0.5,
@@ -131,7 +131,7 @@ public class NovaFarmingGoal extends Goal {
 
     // ĐIỀU KIỆN 1: TÌM LÚA ĐÃ CHÍN
     private boolean isMatureCrop(BlockPos pos) {
-        if (!nova.isWithinWorkspace(pos)) return false;
+        if (!nova.isWithinWorkspace(pos) || nova.companion().retry.blocked(pos,nova.level().getGameTime())) return false;
         BlockState state = this.nova.level().getBlockState(pos);
         if (state.getBlock() instanceof CropBlock crop) {
             return crop.isMaxAge(state); 

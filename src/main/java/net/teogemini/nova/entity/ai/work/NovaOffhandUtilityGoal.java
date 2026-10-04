@@ -82,6 +82,8 @@ public final class NovaOffhandUtilityGoal extends Goal {
         if (++actionTicks < 16) return;
         BlockState state = plantedState();
         if (state != null && valid(target) && nova.level().setBlockAndUpdate(target, state)) {
+            if (state.is(net.minecraft.tags.BlockTags.SAPLINGS) || state.is(net.minecraft.tags.BlockTags.CROPS))
+                nova.companion().planted();
             nova.getOffhandItem().shrink(1);
             nova.swing(InteractionHand.OFF_HAND);
             NovaExperienceManager.awardFarmerExp(nova, false);

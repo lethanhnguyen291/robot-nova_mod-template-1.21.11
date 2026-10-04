@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_lightning_rod",
+  "textures": {
+    "texture": "robot-nova_mod:block/nova_control_rod"
+  }
+}

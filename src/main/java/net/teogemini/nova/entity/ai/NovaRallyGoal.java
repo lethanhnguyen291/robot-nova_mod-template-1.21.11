@@ -18,7 +18,16 @@ public final class NovaRallyGoal extends Goal {
         setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
     @Override public boolean requiresUpdateEveryTick() { return true; }
-    @Override public boolean canUse() { return nova.isAlive() && nova.isRallying(); }
+    @Override public boolean canUse() {
+        if (!nova.isAlive() || !nova.isRallying()) return false;
+        var anchor = nova.work().rallyFace;
+        if (anchor == null || !nova.level().hasChunkAt(anchor)
+                || !nova.level().getBlockState(anchor).is(net.teogemini.nova.registry.ModBlocks.NOVA_CONTROL_ROD)) {
+            nova.stopRally();
+            return false;
+        }
+        return true;
+    }
     @Override public boolean canContinueToUse() { return canUse(); }
     @Override public void start() { pathTimer = 0; }
 
@@ -34,7 +43,7 @@ public final class NovaRallyGoal extends Goal {
             nova.getNavigation().stop();
             var centred = nova.getBoundingBox().move(x - nova.getX(), 0, z - nova.getZ());
             if (nova.level().noCollision(nova, centred)) nova.setPos(x, nova.getY(), z);
-            faceChest();
+            faceAnchor();
         } else if (horizontalDistance < 9.0 && directApproachClear(x, z)) {
             nova.getNavigation().stop();
             nova.getMoveControl().setWantedPosition(x, y, z, 1.2);
@@ -50,7 +59,7 @@ public final class NovaRallyGoal extends Goal {
                 ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, nova)).getType() == HitResult.Type.MISS;
     }
 
-    private void faceChest() {
+    private void faceAnchor() {
         var chest = nova.work().rallyFace;
         if (chest == null) return;
         float targetYaw = (float) (Math.atan2(chest.getZ() + .5 - nova.getZ(),
@@ -66,7 +75,7 @@ public final class NovaRallyGoal extends Goal {
         nova.setYBodyRot(yaw);
         nova.setYHeadRot(yaw);
         nova.setXRot(Mth.approachDegrees(nova.getXRot(), 0, 10));
-        // Keep LookControl from turning the flanking soldiers toward the chest's centre.
+        // Keep LookControl from turning the flanking soldiers toward the command post's centre.
         double radians = Math.toRadians(yaw);
         nova.getLookControl().setLookAt(nova.getX() - Math.sin(radians) * 4,
                 nova.getEyeY(), nova.getZ() + Math.cos(radians) * 4, 15, 10);

@@ -35,9 +35,27 @@ public final class ModBlocks {
                             ROBOTNOVA_MOD.id("nova_chest")))
                     .useBlockDescriptionPrefix()));
 
+    private static final ResourceKey<Block> ROD_KEY =
+            ResourceKey.create(Registries.BLOCK, ROBOTNOVA_MOD.id("nova_control_rod"));
+
+    public static final net.teogemini.nova.block.NovaControlRodBlock NOVA_CONTROL_ROD = Registry.register(
+            BuiltInRegistries.BLOCK, ROD_KEY,
+            new net.teogemini.nova.block.NovaControlRodBlock(BlockBehaviour.Properties.of()
+                    .setId(ROD_KEY).mapColor(MapColor.QUARTZ).strength(1.5F, 6.0F)
+                    .sound(SoundType.METAL).noOcclusion()));
+
+    public static final Item NOVA_CONTROL_ROD_ITEM = Registry.register(
+            BuiltInRegistries.ITEM, ROBOTNOVA_MOD.id("nova_control_rod"),
+            new BlockItem(NOVA_CONTROL_ROD, new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, ROBOTNOVA_MOD.id("nova_control_rod")))
+                    .useBlockDescriptionPrefix()));
+
     public static void register() {
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS)
-                .register(entries -> entries.accept(NOVA_CHEST_ITEM));
+                .register(entries -> {
+                    entries.accept(NOVA_CHEST_ITEM);
+                    entries.accept(NOVA_CONTROL_ROD_ITEM);
+                });
     }
 
     private ModBlocks() {

@@ -17,6 +17,7 @@ public class NovaFollowOwnerGoal extends FollowOwnerGoal {
                 return nova.getNovaMoveMode() == NovaEntity.MODE_FOLLOW
                 && !nova.isOrderedToSit()
                 && !nova.isPerformingAction() && !nova.isRallying()
+                && !nova.work().inventoryOpen() && !nova.companion().panicking()
                 && super.canUse();
     }
 
@@ -25,6 +26,7 @@ public class NovaFollowOwnerGoal extends FollowOwnerGoal {
                 return nova.getNovaMoveMode() == NovaEntity.MODE_FOLLOW
                 && !nova.isOrderedToSit()
                 && !nova.isPerformingAction() && !nova.isRallying()
+                && !nova.work().inventoryOpen() && !nova.companion().panicking()
                 && super.canContinueToUse();
     }
 

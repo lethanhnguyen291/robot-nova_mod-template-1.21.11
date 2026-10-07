@@ -1,237 +1,123 @@
 package net.teogemini.nova.entity.ai.work;
 
-import java.util.EnumSet;
-import java.util.Map;
-import java.util.Optional;
-import java.util.WeakHashMap;
+import java.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.core.GlobalPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.phys.Vec3;
 import net.teogemini.nova.entity.NovaEntity;
-import net.teogemini.nova.entity.NovaExperienceManager;
 import net.teogemini.nova.entity.NovaWorkSupport;
+import net.teogemini.nova.entity.ai.tree.*;
+import net.teogemini.nova.entity.companion.NovaCompanion;
 
+/** Select from the shared index, reserve a whole tree, then fell only that snapshot. */
 public class NovaChopTreeGoal extends Goal {
-    
-    // BỘ NHỚ TOÀN CẦU (Dùng chung cho mọi Nova)
-    public static final Map<NovaEntity, BlockPos> CLAIMED_TREES = new WeakHashMap<>();
-
     private final NovaEntity nova;
     private final double speed;
-    private BlockPos targetLogPos;
-    private int choppingTick;
-    private int searchDelay;
-    private int stuckTimer; 
-
-    public NovaChopTreeGoal(NovaEntity nova, double speed) {
-        this.nova = nova;
-        this.speed = speed;
-        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+    private NovaTreePlan plan;
+    private BlockPos stand,tryingRoot;
+    private Path route;
+    private long nextTry;
+    private int standAttempt,walkTicks,noProgress,replans,actionTicks,logIndex;
+    private double previousDistance;
+    private boolean finished;
+    public NovaChopTreeGoal(NovaEntity nova,double speed) {
+        this.nova=nova;this.speed=speed;setFlags(EnumSet.of(Flag.MOVE,Flag.LOOK));
     }
-
-    @Override
-    public boolean requiresUpdateEveryTick() {
-        return true;
-    }
-
-    @Override
-    public boolean canUse() {
-        if (!nova.canNovaWork() || !nova.companion().usableTool(nova.getMainHandItem())) return false;
-        if (this.searchDelay > 0) {
-            this.searchDelay--;
-            return false;
+    @Override public boolean requiresUpdateEveryTick(){return true;}
+    @Override public boolean canUse() {
+        if(!nova.canNovaWork() || nova.work().energy()<=100 || !nova.getMainHandItem().is(ItemTags.AXES)
+                || !nova.companion().usableTool(nova.getMainHandItem()) || nova.trees().full())return false;
+        long now=nova.level().getGameTime();if(now<nextTry)return false;
+        nextTry=now+10+Math.floorMod(nova.getId(),11);
+        NovaTreeService.request(nova);
+        var memory=nova.trees();var level=(ServerLevel)nova.level();
+        if(memory.active()!=null && (!memory.activeRoot().dimension().equals(level.dimension())
+                || !NovaTreeService.area(nova,memory.active().root())))memory.cancel();
+        var options=memory.active()!=null ? List.of(memory.active()) : NovaTreeService.candidates(nova);
+        for(NovaTreePlan candidate:options) {
+            if(memory.protectedTree(level.dimension(),candidate))continue;
+            if(candidate.logs().stream().anyMatch(p->!NovaTreeService.inside(nova,p)))continue;
+            var root=NovaTreeService.read(level,candidate.root());
+            if(root==null)continue;
+            if(memory.active()==null && !root.is(candidate.species().log)) {NovaTreeService.forget(level,candidate);continue;}
+            if(nova.companion().retry.blocked(candidate.root(),now) || !NovaTreeService.claim(nova,candidate))continue;
+            if(!candidate.root().equals(tryingRoot)){tryingRoot=candidate.root();standAttempt=0;}
+            var stands=NovaTreeService.stands(nova,candidate.root());
+            if(standAttempt>=stands.size()) {
+                NovaTreeService.release(nova,candidate);nova.companion().retry.fail(candidate.root(),now);
+                standAttempt=0;continue;
+            }
+            var target=stands.get(standAttempt);
+            var result=NovaTreeService.route(nova,target);
+            if(!result.attempted()){NovaTreeService.release(nova,candidate);return false;}
+            if(result.path()==null){standAttempt++;NovaTreeService.release(nova,candidate);return false;}
+            plan=candidate;stand=target;route=result.path();return true;
         }
-        // Thêm độ nảy random (40-80 ticks) để các Nova không quét vào đúng 1 tích tắc
-        this.searchDelay = 40 + this.nova.getRandom().nextInt(40); 
-
-        // Phải cầm Rìu mới đi chặt
-        if (!this.nova.getMainHandItem().is(ItemTags.AXES)) {
-            return false;
-        }
-
-        this.targetLogPos = findNearestLog();
-        if (this.targetLogPos != null) {
-            CLAIMED_TREES.put(this.nova, this.targetLogPos);
-            return true;
-        }
-        
         return false;
     }
-
-    @Override
-    public boolean canContinueToUse() {
-        return this.targetLogPos != null 
-            && this.nova.getMainHandItem().is(ItemTags.AXES)
-            && this.nova.canNovaWork();
+    @Override public void start() {
+        finished=false;walkTicks=noProgress=replans=actionTicks=logIndex=0;previousDistance=Double.MAX_VALUE;
+        nova.trees().begin(GlobalPos.of(nova.level().dimension(),plan.root()),plan);
+        nova.clearWorkAnimation();nova.getNavigation().moveTo(route,speed);
     }
-
-    @Override
-    public void start() {
-        this.choppingTick = 0;
-        this.stuckTimer = 0;
+    @Override public boolean canContinueToUse() {
+        return !finished && plan!=null && nova.canNovaWork() && nova.work().energy()>100
+                && nova.getMainHandItem().is(ItemTags.AXES) && nova.companion().usableTool(nova.getMainHandItem())
+                && !nova.trees().protectedTree(nova.level().dimension(),plan)
+                && NovaTreeService.inside(nova,plan.root());
     }
-
-    @Override
-    public void stop() {
-        CLAIMED_TREES.remove(this.nova);
-        this.targetLogPos = null;
-        nova.clearWorkAnimation();
-        nova.getNavigation().stop();
-    }
-
-    @Override
-    public void tick() {
-        if (this.targetLogPos == null || !nova.canNovaWork()) return;
-
-        // Nếu khúc gỗ bị đập mất bởi người chơi hoặc con khác, bỏ mục tiêu
-        if (!isLog(this.nova.level().getBlockState(this.targetLogPos).getBlock())) {
-            this.targetLogPos = null;
-            return;
-        }
-
-        // Tọa độ tâm của khối gỗ để tính toán khoảng cách ngang
-        double targetX = this.targetLogPos.getX() + 0.5;
-        double targetZ = this.targetLogPos.getZ() + 0.5;
-        
-        double horizontalDistSq = this.nova.distanceToSqr(targetX, this.nova.getY(), targetZ);
-
-        // Khóa ánh nhìn vào khúc gỗ
-        this.nova.getLookControl().setLookAt(targetX, this.targetLogPos.getY() + 0.5, targetZ, 30.0F, 30.0F);
-
-        // ÉP GÓC ĐỨNG SÁT GỐC (horizontalDistSq <= 3.0)
-        if (horizontalDistSq > 3.0) {
-            if (stuckTimer % 20 == 0) this.nova.getNavigation().moveTo(targetX, this.targetLogPos.getY(), targetZ, this.speed);
-            
-            // HỆ THỐNG CHỐNG KẸT
-            this.stuckTimer++;
-            if (this.stuckTimer > 150) {
-                nova.companion().stuck(targetLogPos);
-                this.targetLogPos = null; 
-            }
-        } else {
-            // ĐÃ ĐỨNG SÁT GỐC CÂY -> DỪNG LẠI VÀ BẮT ĐẦU CHẶT
-            this.nova.getNavigation().stop();
-            this.stuckTimer = 0; 
-            NovaWorkSupport.faceTarget(nova, targetLogPos);
-            nova.playWorkAnimation(1); // 1 = chop animation
-            
-            if (this.choppingTick % 10 == 0) { 
-                this.nova.swing(InteractionHand.MAIN_HAND);
-            }
-            
-            this.choppingTick++;
-            
-            if (this.choppingTick >= 40) {
-                // Kiểm tra gốc cây
-                BlockState belowState = this.nova.level().getBlockState(this.targetLogPos.below());
-                boolean isRoot = belowState.is(Blocks.DIRT) || belowState.is(Blocks.GRASS_BLOCK) || belowState.is(Blocks.PODZOL);
-
-                if (isRoot) {
-                    this.nova.lastChoppedRoot = this.targetLogPos;
-                    Block choppedBlock = this.nova.level().getBlockState(this.targetLogPos).getBlock();
-                    this.nova.expectedSapling = getSaplingForLog(choppedBlock);
-                }
-
-                // Vung rìu đập gỗ
-                if (!NovaWorkSupport.breakBlock(nova, this.targetLogPos)) { stop(); return; }
-                NovaExperienceManager.awardLumberjackExp(this.nova); 
-                this.choppingTick = 0; 
-                
-                // DÒ TÌM NHÁNH CÂY TIẾP THEO
-                this.targetLogPos = findNextLogToChop(this.targetLogPos);
-                
-                if (this.targetLogPos != null) {
-                    CLAIMED_TREES.put(this.nova, this.targetLogPos);
-                }
-            }
-        }
-    }
-
-    // QUÉT TÌM GỐC CÂY
-    private BlockPos findNearestLog() {
-        Optional<BlockPos> closestLog = BlockPos.findClosestMatch(
-            this.nova.blockPosition(), 
-            16,
-            8, 
-            pos -> {
-                if (!nova.isWithinWorkspace(pos) || nova.companion().retry.blocked(pos,nova.level().getGameTime())) return false;
-                if (!isLog(this.nova.level().getBlockState(pos).getBlock())) return false;
-                
-                BlockPos base = pos;
-                while (isLog(this.nova.level().getBlockState(base.below()).getBlock())) {
-                    base = base.below();
-                }
-                
-                // Kiểm tra xem đã có Nova nào nhận cây này chưa
-                for (Map.Entry<NovaEntity, BlockPos> entry : CLAIMED_TREES.entrySet()) {
-                    NovaEntity other = entry.getKey();
-                    BlockPos claimedPos = entry.getValue();
-                    
-                    if (other != this.nova && other.isAlive() && claimedPos != null) {
-                        if (claimedPos.closerThan(base, 2.0)) {
-                            return false;
-                        }
+    @Override public void tick() {
+        if(!canContinueToUse() || !NovaTreeService.claim(nova,plan)){finished=true;return;}
+        double distance=nova.distanceToSqr(Vec3.atBottomCenterOf(stand));
+        if(distance>1.5) {
+            nova.clearWorkAnimation();walkTicks++;
+            if(walkTicks%20==0) {
+                noProgress=distance<previousDistance-.25 ? 0 : noProgress+20;previousDistance=distance;
+                if(noProgress>=80 || nova.getNavigation().isDone()) {
+                    var alternatives=NovaTreeService.stands(nova,plan.root());
+                    var target=alternatives.get((standAttempt+replans+1)%alternatives.size());
+                    var result=NovaTreeService.route(nova,target);
+                    if(result.attempted()) {
+                        replans++;noProgress=0;
+                        if(result.path()!=null){stand=target;nova.getNavigation().moveTo(result.path(),speed);}
                     }
                 }
-
-                // Kiểm tra chiều cao cây (Loại bỏ các cây quá 10 block)
-                int height = 0;
-                BlockPos checkHeightPos = base;
-                while (isLog(this.nova.level().getBlockState(checkHeightPos).getBlock())) {
-                    height++;
-                    if (height > 10) return false; 
-                    checkHeightPos = checkHeightPos.above();
-                }
-                
-                return true; 
             }
-        );
-        
-        if (closestLog.isPresent()) {
-            BlockPos basePos = closestLog.get();
-            while (isLog(this.nova.level().getBlockState(basePos.below()).getBlock())) {
-                basePos = basePos.below();
-            }
-            return basePos;
+            if(walkTicks>600 || replans>=3){nova.companion().stuck(plan.root());finished=true;}
+            return;
         }
-        
-        return null;
-    }
-
-    // HÀM TÌM NHÁNH CÂY
-    private BlockPos findNextLogToChop(BlockPos currentPos) {
-        if (isLog(this.nova.level().getBlockState(currentPos.above()).getBlock())) {
-            return currentPos.above();
+        nova.getNavigation().stop();
+        var rootState=NovaTreeService.read((ServerLevel)nova.level(),plan.root());
+        if(rootState==null){finished=true;return;}
+        if(actionTicks==0 && rootState.is(plan.species().log) && !NovaWorkSupport.canReach(nova,plan.root())) {
+            // A reachable standing spot may still have an obstacle between the axe and trunk.
+            // Try the next side before placing the whole tree on the retry cooldown.
+            standAttempt++;finished=true;return;
         }
-        for (BlockPos pos : BlockPos.betweenClosed(currentPos.offset(-1, 0, -1), currentPos.offset(1, 1, 1))) {
-            if (isLog(this.nova.level().getBlockState(pos).getBlock())) {
-                return pos;
-            }
+        NovaWorkSupport.faceTarget(nova,plan.root());nova.playWorkAnimation(NovaEntity.WORK_CHOP);
+        nova.getLookControl().setLookAt(plan.root().getX()+.5,plan.root().getY()+.5,plan.root().getZ()+.5);
+        if(++actionTicks%10==0)nova.swing(InteractionHand.MAIN_HAND);
+        if(actionTicks<40 || actionTicks%20!=0)return;
+        // Skipping stale snapshot entries is bounded, and never awards drops or experience.
+        int checked=0;
+        while(logIndex<plan.logs().size() && checked++<8) {
+            var result=NovaTreeHarvest.fell(nova,plan,plan.logs().get(logIndex));
+            if(result==NovaTreeHarvest.Result.STOP){finished=true;nextTry=nova.level().getGameTime()+100;return;}
+            logIndex++;
+            if(result==NovaTreeHarvest.Result.BROKEN)break;
         }
-        return null; 
+        if(logIndex>=plan.logs().size()) {
+            nova.trees().complete();NovaTreeService.forget((ServerLevel)nova.level(),plan);
+            nova.companion().gesture("proud");finished=true;
+        }
     }
-
-    private boolean isLog(Block block) {
-        return block.defaultBlockState().is(BlockTags.LOGS);
-    }
-
-    // HÀM CHUYỂN ĐỔI GỖ -> MẦM CÂY
-    private Item getSaplingForLog(Block logBlock) {
-        if (logBlock == Blocks.OAK_LOG) return Items.OAK_SAPLING;
-        if (logBlock == Blocks.SPRUCE_LOG) return Items.SPRUCE_SAPLING;
-        if (logBlock == Blocks.BIRCH_LOG) return Items.BIRCH_SAPLING;
-        if (logBlock == Blocks.JUNGLE_LOG) return Items.JUNGLE_SAPLING;
-        if (logBlock == Blocks.ACACIA_LOG) return Items.ACACIA_SAPLING;
-        if (logBlock == Blocks.DARK_OAK_LOG) return Items.DARK_OAK_SAPLING;
-        if (logBlock == Blocks.MANGROVE_LOG) return Items.MANGROVE_PROPAGULE;
-        if (logBlock == Blocks.CHERRY_LOG) return Items.CHERRY_SAPLING;
-        return Items.OAK_SAPLING;
+    @Override public void stop() {
+        NovaTreeService.release(nova,plan);plan=null;route=null;
+        nova.clearWorkAnimation();nova.getNavigation().stop();
     }
 }

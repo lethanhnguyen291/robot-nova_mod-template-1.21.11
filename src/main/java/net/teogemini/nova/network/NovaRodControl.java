@@ -40,7 +40,11 @@ public final class NovaRodControl {
             if (player instanceof ServerPlayer owner) {
                 if (nova.isAlive() && nova.isTame() && nova.isOwnedBy(owner)
                         && owner.isWithinEntityInteractionRange(nova, 0) && owner.hasLineOfSight(nova)) {
-                    ServerPlayNetworking.send(owner, new Open(nova.getId(), nova.getUUID()));
+                    if (owner.isShiftKeyDown()) {
+                        NovaWorkSupport.recallTools(nova, owner);
+                    } else {
+                        ServerPlayNetworking.send(owner, new Open(nova.getId(), nova.getUUID()));
+                    }
                 } else {
                     NovaWorkSupport.message(owner, "Đến gần NOVA đã thuần phục của bạn để điều khiển nhé.");
                 }

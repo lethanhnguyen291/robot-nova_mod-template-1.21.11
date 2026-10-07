@@ -79,7 +79,11 @@ public final class NovaWorkSupport {
                 message(player, "Pin đã đầy.");
             }
         } else if (held.is(net.teogemini.nova.registry.ModBlocks.NOVA_CONTROL_ROD_ITEM)) {
-            NovaChestHandler.select(nova, player);
+            if (player.isShiftKeyDown()) {
+                NovaChestHandler.toggleCarry(nova, player);
+            } else {
+                NovaChestHandler.select(nova, player);
+            }
         } else if (held.is(Items.LIGHTNING_ROD)) {
             NovaChestHandler.toggleCarry(nova, player);
         } else if (held.is(Items.EMERALD)) {
@@ -94,9 +98,7 @@ public final class NovaWorkSupport {
             NovaRallyManager.toggle(nova, player);
         } else if (held.is(Items.IRON_NUGGET)) {
             if (player.isShiftKeyDown()) {
-                returnEquipment(nova, player, EquipmentSlot.MAINHAND);
-                returnEquipment(nova, player, EquipmentSlot.OFFHAND);
-                nova.clearWorkAnimation();
+                recallTools(nova, player);
             } else {
                 net.teogemini.nova.screen.NovaMenus.open(player, nova);
             }
@@ -114,6 +116,19 @@ public final class NovaWorkSupport {
             nova.clearWorkAnimation();
         }
         return InteractionResult.SUCCESS;
+    }
+
+    public static void recallTools(NovaEntity nova, Player player) {
+        boolean hadMain = !nova.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty();
+        boolean hadOff = !nova.getItemBySlot(EquipmentSlot.OFFHAND).isEmpty();
+        if (!hadMain && !hadOff) {
+            message(player, "Mình không cầm công cụ nào cả.");
+            return;
+        }
+        returnEquipment(nova, player, EquipmentSlot.MAINHAND);
+        returnEquipment(nova, player, EquipmentSlot.OFFHAND);
+        nova.clearWorkAnimation();
+        message(player, "Đã thu hồi công cụ về túi đồ của bạn.");
     }
 
     private static void returnEquipment(NovaEntity nova, Player player, EquipmentSlot slot) {

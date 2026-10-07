@@ -36,6 +36,7 @@ public class ROBOTNOVA_MOD implements ModInitializer {
 		NovaOwnerSessions.register();
 		NovaControlPayload.register();
         net.teogemini.nova.network.NovaRodControl.register();
+        net.teogemini.nova.entity.ai.tree.NovaTreeService.register();
         net.teogemini.nova.entity.NovaChestHandler.register();
         net.teogemini.nova.entity.NovaRallyManager.register();
         net.teogemini.nova.network.NovaCompanionCommands.register();

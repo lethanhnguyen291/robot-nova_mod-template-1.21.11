@@ -23,6 +23,7 @@ public final class NovaWorkData {
     private int inventoryViewers;
 
     public int energy() { return energy; }
+    public void spendTreeEnergy() { energy = Math.max(0, energy - 1); }
     public boolean inventoryOpen() { return inventoryViewers > 0; }
     public void openInventory() { inventoryViewers++; }
     public void closeInventory() { inventoryViewers = Math.max(0, inventoryViewers - 1); }

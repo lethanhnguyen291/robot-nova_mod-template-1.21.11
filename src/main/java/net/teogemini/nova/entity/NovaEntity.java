@@ -78,6 +78,8 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
         if (hurt && isAlive() && isTame()) companion().hurt(source.getSourcePosition());
         return hurt;
     }
+    private final net.teogemini.nova.entity.ai.tree.NovaTreeMemory treeMemory = new net.teogemini.nova.entity.ai.tree.NovaTreeMemory();
+    public net.teogemini.nova.entity.ai.tree.NovaTreeMemory trees() { return treeMemory; }
     public BlockPos lastChoppedRoot;
     public Item expectedSapling;
     private static final RawAnimation[] WORK_ANIMATIONS = {
@@ -279,6 +281,21 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
         }
     }
 
+    public int cyclePreviewFace(int delta) {
+        if (novaPreviewFace < 0) {
+            novaPreviewFace = (delta >= 0) ? 0 : 39;
+        } else {
+            novaPreviewFace = (novaPreviewFace + delta + 40) % 40;
+        }
+        entityData.set(NOVA_FACE, novaPreviewFace);
+        return novaPreviewFace;
+    }
+
+    public void resetPreviewFace() {
+        novaPreviewFace = -1;
+        novaRequestedTicks = 0;
+    }
+
     private void tickNovaFace() {
         if (level().isClientSide()) {
             return;
@@ -294,6 +311,12 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
             novaRequestedTicks = 0;
             novaIdleTicks = 0;
             entityData.set(NOVA_FACE, 32);
+            return;
+        }
+
+        // Biểu cảm cố định do người chơi chọn.
+        if (novaPreviewFace >= 0) {
+            entityData.set(NOVA_FACE, novaPreviewFace);
             return;
         }
 
@@ -569,6 +592,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         novaWork.save(output.child("NovaWork"));
+        trees().save(output.child("NovaTrees"));
         companion().memories().save(output.child("NovaCompanion"));
         output.storeNullable("NovaLastRoot", BlockPos.CODEC, lastChoppedRoot);
         output.store("NovaSapling", ItemStack.OPTIONAL_CODEC, expectedSapling == null
@@ -578,19 +602,21 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
         output.putBoolean("NovaOwnerWasAway", novaOwnerWasAway);
         output.putBoolean("NovaGreetingPending", novaGreetingPending);
         output.putLong("NovaNextGreetingTime", novaNextGreetingTime);
+        output.putInt("NovaPreviewFace", novaPreviewFace);
     }
 
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         novaWork.load(input.childOrEmpty("NovaWork"));
+        trees().load(input.childOrEmpty("NovaTrees"));
         companion().memories().load(input.childOrEmpty("NovaCompanion"));
         novaWork.restoreRallyName(this);
         setNovaCarrying(!novaWork.carriedChest().isEmpty());
         lastChoppedRoot = input.read("NovaLastRoot", BlockPos.CODEC).orElse(null);
         ItemStack sapling = input.read("NovaSapling", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
         expectedSapling = sapling.isEmpty() ? null : sapling.getItem();
-                int defaultMode = isOrderedToSit() ? MODE_WAIT : MODE_FOLLOW;
+        int defaultMode = isOrderedToSit() ? MODE_WAIT : MODE_FOLLOW;
 
         entityData.set(NOVA_MOVE_MODE,
                 Mth.clamp(input.getIntOr("NovaMoveMode", defaultMode),
@@ -601,9 +627,10 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
         novaOwnerWasAway = input.getBooleanOr("NovaOwnerWasAway", false);
         novaGreetingPending = input.getBooleanOr("NovaGreetingPending", false);
         novaNextGreetingTime = input.getLongOr("NovaNextGreetingTime", 0L);
+        novaPreviewFace = input.getIntOr("NovaPreviewFace", -1);
     }
 
-    private void startNovaAction(int action) {
+    public void startNovaAction(int action) {
         if (level().isClientSide() || isPerformingAction() || isCarryingChest()
                 || companion().panicking() || !onGround() || isInWater()) {
             return;
@@ -627,7 +654,20 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
             novaOwnerWasAway = false;
             novaNextGreetingTime = level().getGameTime() + 600;
         }
+    }
 
+    public void startApologizeAction() {
+        if (level().isClientSide() || isPerformingAction() || isCarryingChest()
+                || companion().panicking() || !onGround() || isInWater()) {
+            return;
+        }
+
+        companion().cancelGesture();
+        setCompanionState(NovaCompanion.NORMAL);
+        clearWorkAnimation();
+        stopRally();
+        showNovaFace(27, 80);
+        companion().gesture("nod");
     }
 
     private void finishNovaAction() {
@@ -657,7 +697,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
         companion().tick();
         tickNovaGreeting();
         super.tick();
-        if (!level().isClientSide() && novaWork.tickEnergy(canNovaWork() && getWorkAction() != WORK_NONE)) {
+        if (!level().isClientSide() && novaWork.tickEnergy(canNovaWork() && getWorkAction() != WORK_NONE && getWorkAction() != WORK_CHOP)) {
             clearWorkAnimation();
             getNavigation().stop();
         }
@@ -675,6 +715,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
         goalSelector.addGoal(2, new NovaRallyGoal(this));
         goalSelector.addGoal(3, new NovaFollowOwnerGoal(this));
         goalSelector.addGoal(4, new NovaStorageGoal(this));
+        goalSelector.addGoal(5, new net.teogemini.nova.entity.ai.tree.NovaTreeReplantGoal(this));
         goalSelector.addGoal(5, new NovaOffhandUtilityGoal(this));
         goalSelector.addGoal(6, new NovaMineOreGoal(this, 1.2));
         goalSelector.addGoal(7, new NovaChopTreeGoal(this, 1.2));
@@ -786,6 +827,11 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
     public AgeableMob getBreedOffspring(
             ServerLevel level, AgeableMob partner) {
         return null;
+    }
+
+    @Override
+    public ItemStack getPickResult() {
+        return ItemStack.EMPTY;
     }
 
     @Override

@@ -64,6 +64,10 @@ public final class NovaEquipmentLayer<R extends GeoRenderState>
     public static float TOOL_ROT_Y = 0.0f;
     public static float TOOL_ROT_Z = 0.0f;
 
+    // --- 3. CẤU HÌNH RƯƠNG KHI BÊ (CARRYING CHEST) ---
+    /** Góc xoay rương khi bê (Độ): 180 độ để mặt trước (có khóa) quay ra phía trước */
+    public static float CARRY_CHEST_ROT_Y = 180.0f;
+
     // =========================================================================
 
     private static final DataTicket<Boolean> CARRYING =
@@ -149,6 +153,9 @@ public final class NovaEquipmentLayer<R extends GeoRenderState>
             var centre = bounds.getCenter();
             pose.pushPose();
             pose.scale(scale, scale, scale);
+            if (CARRY_CHEST_ROT_Y != 0.0f) {
+                pose.mulPose(Axis.YP.rotationDegrees(CARRY_CHEST_ROT_Y));
+            }
             pose.translate(-centre.x, -centre.y, -centre.z);
             item.submit(pose, tasks, light, overlay, 0);
             pose.popPose();

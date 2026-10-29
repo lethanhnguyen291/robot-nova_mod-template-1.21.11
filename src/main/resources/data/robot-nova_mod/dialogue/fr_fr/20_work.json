@@ -1,0 +1,224 @@
+{
+  "version": 2,
+  "group": "work",
+  "questions": [
+    {
+      "id": "JOB_001",
+      "intent": "WORK_ON",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "commence à travailler"
+      ],
+      "answer": "A_JOB_001"
+    },
+    {
+      "id": "JOB_002",
+      "intent": "WORK_OFF",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "arrête de travailler"
+      ],
+      "answer": "A_JOB_002"
+    },
+    {
+      "id": "ACT_001",
+      "intent": "WAVE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "fais-moi signe"
+      ],
+      "answer": "A_ACT_001"
+    },
+    {
+      "id": "ACT_002",
+      "intent": "CELEBRATE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "célèbre"
+      ],
+      "answer": "A_ACT_002"
+    },
+    {
+      "id": "ACT_003",
+      "intent": "APOLOGIZE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "excuse-toi"
+      ],
+      "answer": "A_ACT_003"
+    },
+    {
+      "id": "ACT_004",
+      "intent": "NOD",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "hoche la tête"
+      ],
+      "answer": "A_ACT_004"
+    },
+    {
+      "id": "ACT_005",
+      "intent": "PROUD",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "sois fier"
+      ],
+      "answer": "A_ACT_005"
+    },
+    {
+      "id": "JOB_101",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "comment couper des arbres",
+        "instructions de coupe de bois"
+      ],
+      "answer": "A_JOB_101"
+    },
+    {
+      "id": "JOB_102",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "comment extraire des minerais",
+        "instructions minières"
+      ],
+      "answer": "A_JOB_102"
+    },
+    {
+      "id": "JOB_103",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "comment cultiver",
+        "où mettre les graines"
+      ],
+      "answer": "A_JOB_103"
+    },
+    {
+      "id": "JOB_104",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "comment utiliser les épées",
+        "comment utiliser deux armes"
+      ],
+      "answer": "A_JOB_104"
+    },
+    {
+      "id": "JOB_105",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "comment creuser le sol",
+        "comment utiliser une pelle"
+      ],
+      "answer": "A_JOB_105"
+    },
+    {
+      "id": "JOB_106",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 99,
+      "phrases": [
+        "comment relier les coffres",
+        "comment porter un coffre"
+      ],
+      "answer": "A_JOB_106"
+    }
+  ],
+  "answers": {
+    "A_JOB_001": {
+      "lines": [
+        "Activation de l'affectation et passage à Freedom ! Ma profession actuelle est {profession}. Je vais commencer à travailler maintenant !",
+        "Recevez des commandes ! J'effectuerai la mission {profession} avec mon équipement actuel ({tool})."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "Clair! NOVA Warrior ({profession}) a activé les 3 modes : Protéger {owner}, Patrouille pour tuer des monstres et Chasser autour de la zone du Control Stick !"
+          ]
+        }
+      ]
+    },
+    "A_JOB_002": {
+      "lines": [
+        "J'ai désactivé le mode d'affectation des tâches et mis les opérations en pause.",
+        "D'accord {owner}, je vais arrêter de travailler pour attendre votre nouvelle commande."
+      ]
+    },
+    "A_ACT_001": {
+      "lines": [
+        "Bonjour {owner} ! Je te fais signe !",
+        "NOVA salue sérieusement son propriétaire !"
+      ]
+    },
+    "A_ACT_002": {
+      "lines": [
+        "Acclamer! Dansons pour célébrer la victoire, {owner} !",
+        "Ouais! Célébrons-le !"
+      ]
+    },
+    "A_ACT_003": {
+      "lines": [
+        "Je suis vraiment désolé {owner}... J'essaierai de faire mieux la prochaine fois !",
+        "Veuillez vous excuser auprès de NOVA, ne soyez pas en colère contre moi..."
+      ]
+    },
+    "A_ACT_004": {
+      "lines": [
+        "*Hochement* Je suis entièrement d'accord avec {owner} !",
+        "Il est clair! NOVA hocha la tête en signe de confirmation !"
+      ]
+    },
+    "A_ACT_005": {
+      "lines": [
+        "Héhé, je n'ai pas l'air cool {owner} ? NOVA est toujours prête !",
+        "*Gonfle fièrement sa poitrine* Je suis le puissant assistant de {owner} !"
+      ]
+    },
+    "A_JOB_101": {
+      "lines": [
+        "Travail de bûcheron : placez la hache dans la boîte à outils 1, liez le coffre NOVA et activez Attribuer des tâches. Je vais abattre des arbres naturels dans un rayon de 16 pâtés de maisons, ramasser moi-même des pousses de bois/d'arbre et tirer manuellement les pousses d'arbre vers ma main gauche pour replanter la forêt ! Au niveau 5, si vous coupez une racine, l’arbre entier tombera !"
+      ]
+    },
+    "A_JOB_102": {
+      "lines": [
+        "Profession de mineur : placez le trophée dans la boîte à outils 1, liez le coffre NOVA et activez Attribuer des tâches. J'ai exploré la grotte moi-même, en donnant la priorité à l'extraction de chaque veine de minerai avant de creuser la roche. À partir du niveau 3, placez la torche dans votre sac à dos ou dans votre main gauche et vous pourrez l'allumer vous-même !"
+      ]
+    },
+    "A_JOB_103": {
+      "lines": [
+        "Travail d'agriculteur : placez la houe dans la boîte à outils 1, liez le coffre NOVA et activez Attribuer des travaux. Il vous suffit de mettre des graines, des carottes ou des pommes de terre dans votre sac à dos (ou dans la boîte de gauche), je vais retirer les graines de ma main gauche pour creuser la terre près de l'eau, semer les graines et récolter les plantes mûres !"
+      ]
+    },
+    "A_JOB_104": {
+      "lines": [
+        "Travail de guerrier : placez l'épée dans la boîte à outils 1 ! Je peux tenir des épées doubles à deux mains (augmentant les dégâts de la main secondaire de 50 % et coupant une fois et demie plus vite) si vous mettez une deuxième épée dans votre sac à dos ou dans votre boîte de gauche. Je n'utilise pas de coffres mais je patrouille autour du Control Stick, je vous chasse et vous protège comme un loup fidèle. Quand mon épée sera épuisée, je reviendrai te le dire !"
+      ]
+    },
+    "A_JOB_105": {
+      "lines": [
+        "Travaux de creusement : placez la pelle dans la boîte à outils 1, associez le coffre NOVA et activez Attribuer des travaux. Je vais creuser de la terre, du sable et du gravier dans des moules 5x5 soignés de haut en bas et passer à la boîte 5x5 suivante une fois terminé."
+      ]
+    },
+    "A_JOB_106": {
+      "lines": [
+        "Lier un coffre : maintenez le stick de contrôle et faites un clic droit sur vous-même, puis faites un clic droit sur le coffre NOVA pendant 60 secondes (chaque coffre principal ne peut relier qu'un seul robot). Si vous souhaitez ajouter jusqu'à 9 coffres supplémentaires, sélectionnez-vous puis Maj + clic droit sur le coffre en bois normal. Si vous voulez que je porte le coffre avec vous, Maj + clic droit sur le coffre NOVA !"
+      ]
+    }
+  }
+}

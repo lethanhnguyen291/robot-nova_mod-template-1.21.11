@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " P ",
+    "RIR",
+    " L "
+  ],
+  "key": {
+    "P": [
+      "minecraft:carved_pumpkin",
+      "minecraft:jack_o_lantern"
+    ],
+    "R": "minecraft:redstone_block",
+    "I": "minecraft:iron_block",
+    "L": "minecraft:lapis_block"
+  },
+  "result": {
+    "count": 1,
+    "id": "robot-nova_mod:nova_dormant"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "version": 2,
+  "group": "movement",
+  "questions": [
+    {
+      "id": "MOV_001",
+      "intent": "FOLLOW",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "siga-me",
+        "venha comigo"
+      ],
+      "answer": "A_MOV_001"
+    },
+    {
+      "id": "MOV_002",
+      "intent": "FREE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "ande livremente"
+      ],
+      "answer": "A_MOV_002"
+    },
+    {
+      "id": "MOV_003",
+      "intent": "WAIT",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "espere aqui"
+      ],
+      "answer": "A_MOV_003"
+    },
+    {
+      "id": "MOV_004",
+      "intent": "SIT",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "sente-se"
+      ],
+      "answer": "A_MOV_004"
+    },
+    {
+      "id": "MOV_005",
+      "intent": "STAND",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "levante-se"
+      ],
+      "answer": "A_MOV_005"
+    }
+  ],
+  "answers": {
+    "A_MOV_001": {
+      "lines": [
+        "Claro! Mudei para o modo Follow {owner}. Onde quer que você vá, acompanharei de perto!",
+        "Eu sigo você! Se você estiver a mais de 7 quarteirões de distância, você acelerará e seguirá automaticamente."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "Está claro! O guerreiro NOVA segue o guarda {owner}. Quem quer que ataque você, eu cuidarei disso imediatamente!"
+          ]
+        }
+      ]
+    },
+    "A_MOV_002": {
+      "lines": [
+        "Mudei para o modo Livre ({profession}). Se você ativar Atribuir tarefas, trabalharei proativamente na área.",
+        "Ok, vou me movimentar por aqui livremente."
+      ]
+    },
+    "A_MOV_003": {
+      "lines": [
+        "Esperarei neste local até que {owner} ligue.",
+        "Está claro, ficarei parado e guardarei aqui."
+      ]
+    },
+    "A_MOV_004": {
+      "lines": [
+        "Vamos sentar e descansar onde estamos. Quando você continuar, {owner} basta dizer \"levante-se\"!",
+        "Ok, vamos sentar e descansar e economizar energia."
+      ]
+    },
+    "A_MOV_005": {
+      "lines": [
+        "Levantei-me e estava pronto para continuar meu regime anterior!",
+        "A NOVA se levantou! Vamos continuar nosso trabalho, {owner}."
+      ]
+    }
+  }
+}

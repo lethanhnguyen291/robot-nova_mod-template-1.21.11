@@ -1,0 +1,119 @@
+{
+  "version": 2,
+  "group": "system",
+  "questions": [
+    {
+      "id": "SYS_001",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 95,
+      "phrases": [
+        "help",
+        "what can you do",
+        "instructions"
+      ],
+      "answer": "A_SYS_001"
+    },
+    {
+      "id": "SYS_002",
+      "intent": "UNKNOWN",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "unknown sentence"
+      ],
+      "answer": "A_SYS_002"
+    },
+    {
+      "id": "SYS_003",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 98,
+      "phrases": [
+        "how to summon nova",
+        "how to build nova"
+      ],
+      "answer": "A_SYS_003"
+    },
+    {
+      "id": "SYS_004",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 98,
+      "phrases": [
+        "how to rally",
+        "rally formation"
+      ],
+      "answer": "A_SYS_004"
+    }
+  ],
+  "answers": {
+    "A_SYS_001": {
+      "lines": [
+        "I have 5 professions based on tools in Box 1: Dual Sword Warrior, Miner (Cup), Woodcutter (Axe), Farmer (Hoe), Digger (Shovel). You can ask: \"what are you doing\", \"current equipment\", \"where is the chest\", \"how much battery left\", \"why don't you do it\", or give orders: \"follow me\", \"free\", \"wait\", \"sit\", \"turn on work\", \"turn off work\", \"wave\", \"celebrate\", \"nod\", \"sorry\"."
+      ]
+    },
+    "A_SYS_002": {
+      "lines": [
+        "I don't quite understand the meaning of this sentence, {owner}. Currently my profession is {profession}. You can ask about “battery”, “equipment”, “chest”, “job” or type “instructions”!",
+        "This sentence is a bit strange to my memory. Do you want to ask the status ({profession}, Battery {battery}%) or want to order it yourself? Type “instructions” to see the commands."
+      ]
+    },
+    "A_SYS_003": {
+      "lines": [
+        "To summon NOVA: place 1 Iron Block in the middle, 2 Redstone Blocks on both sides as hands, 1 Glazed Block on the back as a backpack and place the Carved Pumpkin on top. Control stick made from Luu Ly + Redstone + Lightning Rod. NOVA Chest is made from 4 Iron Embryos, 2 Copper Embryos, 2 Redstone around 1 Wooden Chest."
+      ]
+    },
+    "A_SYS_004": {
+      "lines": [
+        "When you place the NOVA Control Stick on the ground (or right-click on the placed stick), all NOVA within a 64-block radius will gather in a neat formation in front of the stick. Right click again or recall the stick to disperse the squad!"
+      ]
+    },
+    "SYS_AMBIGUOUS": {
+      "lines": [
+        "I see this sentence has more than one different command. {owner}, please clarify a command for me; I will keep the current mode."
+      ]
+    },
+    "SYS_NO_AI": {
+      "lines": [
+        "My AI is locked by the NoAI attribute so it cannot move according to this command."
+      ]
+    },
+    "SYS_PANIC": {
+      "lines": [
+        "I'm temporarily running away from danger! Wait until I'm safe and then {owner} give me the order again."
+      ]
+    },
+    "SYS_ACTION_BLOCKED": {
+      "lines": [
+        "Right now I can't do that movement (maybe I'm carrying a chest or not standing firmly on the ground)."
+      ]
+    },
+    "SYS_NOT_STARTED": {
+      "lines": [
+        "I haven't started performing movements yet."
+      ]
+    },
+    "SYS_WORK_PENDING": {
+      "lines": [
+        "I have turned on Assignment and switched to Free, but need to check more: {detail}"
+      ]
+    }
+  },
+  "followups": {
+    "why": [
+      "why",
+      "why is that"
+    ],
+    "need": [
+      "what else do you need"
+    ],
+    "memory": [
+      "tell me more memories"
+    ],
+    "more": [
+      "what else",
+      "tell me more"
+    ]
+  }
+}

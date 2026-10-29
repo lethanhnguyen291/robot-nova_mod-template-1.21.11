@@ -1,0 +1,97 @@
+{
+  "version": 2,
+  "group": "movement",
+  "questions": [
+    {
+      "id": "MOV_001",
+      "intent": "FOLLOW",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "sígueme",
+        "ven conmigo"
+      ],
+      "answer": "A_MOV_001"
+    },
+    {
+      "id": "MOV_002",
+      "intent": "FREE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "pasea libremente"
+      ],
+      "answer": "A_MOV_002"
+    },
+    {
+      "id": "MOV_003",
+      "intent": "WAIT",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "espera aquí"
+      ],
+      "answer": "A_MOV_003"
+    },
+    {
+      "id": "MOV_004",
+      "intent": "SIT",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "siéntate"
+      ],
+      "answer": "A_MOV_004"
+    },
+    {
+      "id": "MOV_005",
+      "intent": "STAND",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "levántate"
+      ],
+      "answer": "A_MOV_005"
+    }
+  ],
+  "answers": {
+    "A_MOV_001": {
+      "lines": [
+        "¡Claro! Cambié al modo Seguir {owner}. ¡Dondequiera que vayas, te seguiré de cerca!",
+        "¡Yo te sigo! Si estás a más de 7 cuadras, automáticamente acelerarás y seguirás."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "¡Está vacío! El guerrero NOVA sigue al guardia {owner}. ¡Quien te ataque, me ocuparé de ello inmediatamente!"
+          ]
+        }
+      ]
+    },
+    "A_MOV_002": {
+      "lines": [
+        "Cambié al modo Libre ({profession}). Si activa Asignar tareas, trabajaré de forma proactiva en el área.",
+        "Está bien, me moveré por aquí libremente."
+      ]
+    },
+    "A_MOV_003": {
+      "lines": [
+        "Esperaré en este lugar hasta que llame {owner}.",
+        "Está claro, me quedaré quieto y vigilaré aquí."
+      ]
+    },
+    "A_MOV_004": {
+      "lines": [
+        "Sentémonos y descansemos donde estamos. Cuando sigas adelante, {owner} solo di \"levántate\".",
+        "Bien, sentémonos, descansemos y ahorremos energía."
+      ]
+    },
+    "A_MOV_005": {
+      "lines": [
+        "¡Me levanté y estaba lista para continuar con mi régimen anterior!",
+        "¡NOVA se ha puesto de pie! Sigamos nuestro trabajo, {owner}."
+      ]
+    }
+  }
+}

@@ -1,0 +1,240 @@
+{
+  "version": 2,
+  "group": "status",
+  "questions": [
+    {
+      "id": "STA_001",
+      "intent": "STATUS",
+      "match": "contains",
+      "priority": 55,
+      "phrases": [
+        "你在做什么",
+        "目前状态"
+      ],
+      "answer": "A_STA_001"
+    },
+    {
+      "id": "STA_002",
+      "intent": "WHY",
+      "match": "contains",
+      "priority": 90,
+      "phrases": [
+        "你为什么不工作",
+        "你为什么被困住了"
+      ],
+      "answer": "A_STA_002"
+    },
+    {
+      "id": "STA_003",
+      "intent": "BATTERY",
+      "match": "contains",
+      "priority": 80,
+      "phrases": [
+        "电量",
+        "电池",
+        "还剩多少能量"
+      ],
+      "answer": "A_STA_003"
+    },
+    {
+      "id": "STA_004",
+      "intent": "HEALTH",
+      "match": "contains",
+      "priority": 75,
+      "phrases": [
+        "生命值",
+        "血量",
+        "健康",
+        "你受伤了吗"
+      ],
+      "answer": "A_STA_004"
+    },
+    {
+      "id": "STA_005",
+      "intent": "INVENTORY",
+      "match": "contains",
+      "priority": 70,
+      "phrases": [
+        "库存",
+        "背包空间"
+      ],
+      "answer": "A_STA_005"
+    },
+    {
+      "id": "STA_006",
+      "intent": "EXPERIENCE",
+      "match": "contains",
+      "priority": 68,
+      "phrases": [
+        "经验",
+        "你的水平"
+      ],
+      "answer": "A_STA_006"
+    },
+    {
+      "id": "STA_007",
+      "intent": "NEED",
+      "match": "contains",
+      "priority": 60,
+      "phrases": [
+        "你需要什么",
+        "缺少什么"
+      ],
+      "answer": "A_STA_007"
+    },
+    {
+      "id": "STA_008",
+      "intent": "BATTERY",
+      "match": "contains",
+      "priority": 85,
+      "phrases": [
+        "如何充电",
+        "如何给电池充电"
+      ],
+      "answer": "A_STA_008"
+    },
+    {
+      "id": "STA_009",
+      "intent": "HEALTH",
+      "match": "contains",
+      "priority": 85,
+      "phrases": [
+        "如何治愈",
+        "自我修复如何进行"
+      ],
+      "answer": "A_STA_009"
+    },
+    {
+      "id": "STA_010",
+      "intent": "EQUIPMENT",
+      "match": "contains",
+      "priority": 78,
+      "phrases": [
+        "装备",
+        "当前设备",
+        "你有什么工具"
+      ],
+      "answer": "A_STA_010"
+    },
+    {
+      "id": "STA_011",
+      "intent": "CHEST",
+      "match": "contains",
+      "priority": 76,
+      "phrases": [
+        "链接宝箱位置",
+        "你的胸部在哪里"
+      ],
+      "answer": "A_STA_011"
+    },
+    {
+      "id": "STA_012",
+      "intent": "ENVIRONMENT",
+      "match": "contains",
+      "priority": 64,
+      "phrases": [
+        "天气",
+        "一天中的时间"
+      ],
+      "answer": "A_STA_012"
+    }
+  ],
+  "answers": {
+    "A_STA_001": {
+      "lines": [
+        "{status} • 设备:{tool} • 电池:{battery}%,生命值:{health}。",
+        "报告 {owner}:{status}(电池 {battery}%,背包 {occupied_slots}/27 节电池)。"
+      ]
+    },
+    "A_STA_002": {
+      "lines": [
+        "目前,我没有被任何条件卡住或阻碍。 {status} 如果您没有看到自己这样做,则可能工作半径周围没有合适的目标。",
+        "我的一切都很好({profession})。 {status}"
+      ],
+      "variants": [
+        {
+          "when": "has_blocker",
+          "lines": [
+            "原因如下,{owner}:{blocker}"
+          ]
+        }
+      ]
+    },
+    "A_STA_003": {
+      "lines": [
+        "我的电池目前电量为 {battery}%。您右键单击的每个红石粉都会为您的电池充电 +20%!",
+        "能量为 {battery}%。我只在工作或自我修理时浪费电池。"
+      ],
+      "variants": [
+        {
+          "when": "battery_low",
+          "lines": [
+            "警告:我的电池只剩 {battery}%! {owner} 握住红石并右键单击为其充电,以便我可以继续工作。"
+          ]
+        }
+      ]
+    },
+    "A_STA_004": {
+      "lines": [
+        "我当前的血液是{health}(Pin:{battery}%)。我还是很健康的!",
+        "身体状况:{health} HP。如果我受了轻伤,我会自己用电池来修复。"
+      ],
+      "variants": [
+        {
+          "when": "injured",
+          "lines": [
+            "我受伤了({health} HP)! 10秒后没有被击中且剩余电量超过11%时,我会自动恢复。"
+          ]
+        }
+      ]
+    },
+    "A_STA_005": {
+      "lines": [
+        "我的背包使用的是 {occupied_slots}/27 电池。身上装备:{tool}"
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "背包使用{occupied_slots}/27电池。因为我是{profession},所以你的背包里可以多放几把备用剑,这样战斗时就能自动抽出来!"
+          ]
+        }
+      ]
+    },
+    "A_STA_006": {
+      "lines": [
+        "{experience} 累计成就:{totals}。你的等级越高,挖掘/砍伐的速度就越快,击打的力度也越大!"
+      ]
+    },
+    "A_STA_007": {
+      "lines": [
+        "{need}"
+      ]
+    },
+    "A_STA_008": {
+      "lines": [
+        "你手里拿着红石粉,然后直接右键单击自己(不按住Shift键)即可为每个药丸充电+20%电量。当前电量:{battery}%。"
+      ]
+    },
+    "A_STA_009": {
+      "lines": [
+        "10秒未受到伤害后,我自动启动自我修复电路:每5秒消耗1%电量恢复1.0 HP(保留至少10%电量)。当前健康状况:{health}。"
+      ]
+    },
+    "A_STA_010": {
+      "lines": [
+        "我目前的职业是:{profession}。设备详情:{tool}"
+      ]
+    },
+    "A_STA_011": {
+      "lines": [
+        "宝箱信息:{chest}"
+      ]
+    },
+    "A_STA_012": {
+      "lines": [
+        "当前室外是{environment}。我的状态:{status}"
+      ]
+    }
+  }
+}

@@ -56,15 +56,14 @@ public final class NovaTreeService {
         return area(nova,pos) && nova.level().hasChunkAt(pos) && nova.level().getWorldBorder().isWithinBounds(pos);
     }
     public static boolean area(NovaEntity nova,BlockPos pos) {
-        BlockPos home=nova.getLinkedChest();
-        if (home==null) return false;
-        long dx=(long)pos.getX()-home.getX(),dz=(long)pos.getZ()-home.getZ();
-        return dx*dx+dz*dz<=RADIUS*RADIUS && pos.getY()>=home.getY()-16 && pos.getY()<=home.getY()+40;
+        return nova.level().hasChunkAt(pos) && nova.level().getWorldBorder().isWithinBounds(pos);
     }
     private static Manager manager(ServerLevel level) { return SERVERS.computeIfAbsent(level.getServer(),s->new Manager()); }
     public static void request(NovaEntity nova) {
-        if (!(nova.level() instanceof ServerLevel level) || nova.getLinkedChest()==null) return;
-        var m=manager(level);var key=GlobalPos.of(level.dimension(),nova.getLinkedChest());
+        if (!(nova.level() instanceof ServerLevel level)) return;
+        var m=manager(level);
+        BlockPos center = nova.blockPosition();
+        var key=GlobalPos.of(level.dimension(), center);
         Scan present=m.scans.get(key);
         if (present!=null) { present.expires=level.getGameTime()+200;return; }
         if (m.scans.size()>=32 || level.getGameTime()<m.nextScan.getOrDefault(key,0L)) return;
@@ -105,10 +104,60 @@ public final class NovaTreeService {
         return new Route(true,path);
     }
     public static List<BlockPos> stands(NovaEntity nova,BlockPos root) {
-        List<BlockPos> options=new ArrayList<>();
-        for (var direction:net.minecraft.core.Direction.Plane.HORIZONTAL)
-            for (int y=0;y>=-1;y--) options.add(root.relative(direction,2).above(y));
-        options.sort(Comparator.comparingDouble(p->p.distSqr(nova.blockPosition())));
+        List<BlockPos> dist1 = new ArrayList<>();
+        List<BlockPos> diag = new ArrayList<>();
+        List<BlockPos> dist2 = new ArrayList<>();
+        Set<BlockPos> seen = new HashSet<>();
+
+        for (int y = 0; y >= -1; y--) {
+            for (var direction : net.minecraft.core.Direction.Plane.HORIZONTAL) {
+                var p = root.relative(direction, 1).above(y);
+                if (seen.add(p) && NovaCompanionPaths.safe(nova, p)) dist1.add(p);
+            }
+            for (int dx = -1; dx <= 1; dx += 2) {
+                for (int dz = -1; dz <= 1; dz += 2) {
+                    var p = root.offset(dx, y, dz);
+                    if (seen.add(p) && NovaCompanionPaths.safe(nova, p)) diag.add(p);
+                }
+            }
+            for (var direction : net.minecraft.core.Direction.Plane.HORIZONTAL) {
+                var p = root.relative(direction, 2).above(y);
+                if (seen.add(p) && NovaCompanionPaths.safe(nova, p)) dist2.add(p);
+            }
+        }
+        for (var direction : net.minecraft.core.Direction.Plane.HORIZONTAL) {
+            var p = root.relative(direction, 1).above(1);
+            if (seen.add(p) && NovaCompanionPaths.safe(nova, p)) dist1.add(p);
+        }
+        for (int dx = -1; dx <= 1; dx += 2) {
+            for (int dz = -1; dz <= 1; dz += 2) {
+                var p = root.offset(dx, 1, dz);
+                if (seen.add(p) && NovaCompanionPaths.safe(nova, p)) diag.add(p);
+            }
+        }
+        for (var direction : net.minecraft.core.Direction.Plane.HORIZONTAL) {
+            var p = root.relative(direction, 2).above(1);
+            if (seen.add(p) && NovaCompanionPaths.safe(nova, p)) dist2.add(p);
+        }
+
+        dist1.sort(Comparator.comparingDouble(p -> p.distSqr(nova.blockPosition())));
+        diag.sort(Comparator.comparingDouble(p -> p.distSqr(nova.blockPosition())));
+        dist2.sort(Comparator.comparingDouble(p -> p.distSqr(nova.blockPosition())));
+
+        List<BlockPos> options = new ArrayList<>();
+        options.addAll(dist1);
+        options.addAll(diag);
+        options.addAll(dist2);
+
+        if (options.isEmpty()) {
+            for (var direction : net.minecraft.core.Direction.Plane.HORIZONTAL) {
+                for (int y = 0; y >= -1; y--) {
+                    options.add(root.relative(direction, 1).above(y));
+                    options.add(root.relative(direction, 2).above(y));
+                }
+            }
+            options.sort(Comparator.comparingDouble(p -> p.distSqr(nova.blockPosition())));
+        }
         return options;
     }
     public static final class TickBudget {

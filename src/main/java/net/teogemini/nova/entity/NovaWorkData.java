@@ -23,13 +23,22 @@ public final class NovaWorkData {
     private int inventoryViewers;
 
     public int energy() { return energy; }
+    public void setEnergy(int energy) { this.energy = Math.max(0, Math.min(MAX_ENERGY, energy)); }
+    public boolean trySpendEnergy(int amount, int minimumRemaining) {
+        if (amount <= 0 || minimumRemaining < 0 || energy - (long) amount < minimumRemaining) return false;
+        energy -= amount;
+        return true;
+    }
     public void spendTreeEnergy() { energy = Math.max(0, energy - 1); }
     public boolean inventoryOpen() { return inventoryViewers > 0; }
     public void openInventory() { inventoryViewers++; }
     public void closeInventory() { inventoryViewers = Math.max(0, inventoryViewers - 1); }
     public boolean recharge() {
+        return recharge(REDSTONE_CHARGE);
+    }
+    public boolean recharge(int amount) {
         if (energy >= MAX_ENERGY) return false;
-        energy = Math.min(MAX_ENERGY, energy + REDSTONE_CHARGE);
+        energy = Math.min(MAX_ENERGY, energy + amount);
         return true;
     }
     // One energy unit per second of work animation, not while idle or following.

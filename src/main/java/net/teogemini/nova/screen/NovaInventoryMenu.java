@@ -1,5 +1,6 @@
 package net.teogemini.nova.screen;
 
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -15,7 +16,9 @@ import net.teogemini.nova.entity.NovaWorkData;
 import net.teogemini.nova.entity.NovaWorkSupport;
 
 public final class NovaInventoryMenu extends AbstractContainerMenu {
-    public static final int CARGO_END = 27, TOOLS_END = 32, PLAYER_END = 68;
+    public static final int RIGHT_TOOL_COUNT = 5, OFFHAND_INDEX = 5, EQUIPMENT_COUNT = 6;
+    public static final int VISIBLE_ROWS = 4, MAX_TOOL_SCROLL = EQUIPMENT_COUNT - VISIBLE_ROWS;
+    public static final int CARGO_END = 27, TOOLS_END = 32, EQUIPMENT_END = 33, PLAYER_END = 69;
     private final NovaEntity nova;
     private final int entityId;
     private final Container tools;
@@ -27,12 +30,14 @@ public final class NovaInventoryMenu extends AbstractContainerMenu {
     // Client uses independent containers populated by vanilla slot-sync packets.
     public NovaInventoryMenu(int id, Inventory playerInventory, Integer entityId) {
         this(id, playerInventory, null, entityId, new SimpleContainer(27),
-                new SimpleContainer(5), new SimpleContainerData(6));
+                new SimpleContainer(EQUIPMENT_COUNT), new SimpleContainerData(6));
     }
     public NovaInventoryMenu(int id, Inventory playerInventory, NovaEntity nova) {
         this(id, playerInventory, nova, nova.getId(), nova.getInventory(),
-                new NovaToolContainer(nova), serverData(nova));
+                new NovaToolContainer(nova, true), serverData(nova));
+        nova.pathClearing().cancel();
         nova.work().openInventory();
+        nova.sounds().play(net.teogemini.nova.sound.NovaSounds.Cue.BAG_OPEN);
         nova.getNavigation().stop();
         nova.clearWorkAnimation();
     }
@@ -47,7 +52,7 @@ public final class NovaInventoryMenu extends AbstractContainerMenu {
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 9; col++)
                 addSlot(new Slot(cargo, row * 9 + col, 13 + col * 18, 109 + row * 18));
-        for (int i = 0; i < 5; i++) addSlot(toolSlot(i));
+        for (int i = 0; i < EQUIPMENT_COUNT; i++) addSlot(toolSlot(i));
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 9; col++)
                 addSlot(new Slot(playerInventory, 9 + row * 9 + col, 13 + col * 18, 177 + row * 18));
@@ -73,24 +78,34 @@ public final class NovaInventoryMenu extends AbstractContainerMenu {
     }
     private Slot toolSlot(int toolIndex) {
         int row = toolIndex - toolScroll;
-        return new Slot(tools, toolIndex, 206, row >= 0 && row < 4 ? 55 + row * 44 : -10000) {
+        boolean offhand = toolIndex == OFFHAND_INDEX;
+        return new Slot(tools, toolIndex, 206, row >= 0 && row < VISIBLE_ROWS ? 55 + row * 44 : -10000) {
             @Override public boolean mayPlace(ItemStack stack) {
-                return NovaWorkSupport.isTool(stack) && (nova == null || !nova.isCarryingChest());
+                return (offhand ? (NovaWorkSupport.isSupply(stack) || stack.is(ItemTags.SWORDS)) : NovaWorkSupport.isTool(stack))
+                        && (nova == null || !nova.isCarryingChest());
             }
             @Override public boolean mayPickup(Player player) {
                 return nova == null || !nova.isCarryingChest();
             }
-            @Override public int getMaxStackSize() { return 1; }
+            @Override public void set(ItemStack stack) {
+                boolean changed = !ItemStack.matches(getItem(), stack);
+                super.set(stack);
+                if (changed && nova != null) nova.sounds().play(net.teogemini.nova.sound.NovaSounds.Cue.EQUIP);
+            }
+            @Override public int getMaxStackSize() { return offhand ? 64 : 1; }
+            @Override public int getMaxStackSize(ItemStack stack) {
+                return Math.min(getMaxStackSize(), stack.getMaxStackSize());
+            }
             @Override public boolean isActive() {
-                return serverMenu || toolIndex >= toolScroll && toolIndex < toolScroll + 4;
+                return serverMenu || toolIndex >= toolScroll && toolIndex < toolScroll + VISIBLE_ROWS;
             }
         };
     }
     // Layout changes only: packet slot IDs and backing container indices never change.
     public void setToolScroll(int offset) {
         if (serverMenu) return;
-        toolScroll = Math.max(0, Math.min(1, offset));
-        for (int i = 0; i < 5; i++) {
+        toolScroll = Math.max(0, Math.min(MAX_TOOL_SCROLL, offset));
+        for (int i = 0; i < EQUIPMENT_COUNT; i++) {
             Slot replacement = toolSlot(i);
             replacement.index = CARGO_END + i;
             slots.set(CARGO_END + i, replacement);
@@ -117,7 +132,7 @@ public final class NovaInventoryMenu extends AbstractContainerMenu {
     }
     @Override public boolean clickMenuButton(Player player, int button) {
         if (!serverMenu || !stillValid(player) || nova.isCarryingChest()
-                || button < 1 || button > 4 || !getCarried().isEmpty()) return false;
+                || button < 1 || button >= RIGHT_TOOL_COUNT || !getCarried().isEmpty()) return false;
         ItemStack next = tools.getItem(button);
         ItemStack previous = tools.getItem(0);
         if (next.isEmpty() || !NovaWorkSupport.isTool(next)
@@ -135,10 +150,14 @@ public final class NovaInventoryMenu extends AbstractContainerMenu {
         if (!slot.hasItem() || !slot.mayPickup(player)) return ItemStack.EMPTY;
         ItemStack original = slot.getItem();
         ItemStack result = original.copy();
-        if (index < TOOLS_END) {
-            if (!moveItemStackTo(original, TOOLS_END, PLAYER_END, true)) return ItemStack.EMPTY;
+        if (index < EQUIPMENT_END) {
+            if (!moveItemStackTo(original, EQUIPMENT_END, PLAYER_END, true)) return ItemStack.EMPTY;
         } else {
-            if (NovaWorkSupport.isTool(original)) moveItemStackTo(original, CARGO_END, TOOLS_END, false);
+            if (original.is(ItemTags.SWORDS) && !tools.getItem(0).isEmpty() && tools.getItem(OFFHAND_INDEX).isEmpty()) {
+                moveItemStackTo(original, TOOLS_END, EQUIPMENT_END, false);
+            }
+            if (!original.isEmpty() && NovaWorkSupport.isTool(original)) moveItemStackTo(original, CARGO_END, TOOLS_END, false);
+            else if (NovaWorkSupport.isSupply(original)) moveItemStackTo(original, TOOLS_END, EQUIPMENT_END, false);
             if (!original.isEmpty()) moveItemStackTo(original, 0, CARGO_END, false);
             if (original.getCount() == result.getCount()) return ItemStack.EMPTY;
         }
@@ -151,6 +170,10 @@ public final class NovaInventoryMenu extends AbstractContainerMenu {
         super.removed(player);
         if (serverMenu && !released) {
             nova.work().closeInventory();
+            nova.sounds().play(net.teogemini.nova.sound.NovaSounds.Cue.BAG_CLOSE);
+            if (nova != null && nova.isSwordNova()) {
+                NovaWorkSupport.ensureOffhandSword(nova);
+            }
             released = true;
         }
     }

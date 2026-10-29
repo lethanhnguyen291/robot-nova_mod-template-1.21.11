@@ -1,0 +1,224 @@
+{
+  "version": 2,
+  "group": "work",
+  "questions": [
+    {
+      "id": "JOB_001",
+      "intent": "WORK_ON",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "fang an zu arbeiten"
+      ],
+      "answer": "A_JOB_001"
+    },
+    {
+      "id": "JOB_002",
+      "intent": "WORK_OFF",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "hör auf zu arbeiten"
+      ],
+      "answer": "A_JOB_002"
+    },
+    {
+      "id": "ACT_001",
+      "intent": "WAVE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "wink mir zu"
+      ],
+      "answer": "A_ACT_001"
+    },
+    {
+      "id": "ACT_002",
+      "intent": "CELEBRATE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "feiere"
+      ],
+      "answer": "A_ACT_002"
+    },
+    {
+      "id": "ACT_003",
+      "intent": "APOLOGIZE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "entschuldige dich"
+      ],
+      "answer": "A_ACT_003"
+    },
+    {
+      "id": "ACT_004",
+      "intent": "NOD",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "nicke"
+      ],
+      "answer": "A_ACT_004"
+    },
+    {
+      "id": "ACT_005",
+      "intent": "PROUD",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "sei stolz"
+      ],
+      "answer": "A_ACT_005"
+    },
+    {
+      "id": "JOB_101",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "wie man Bäume fällt",
+        "Anleitung zum Holzfällen"
+      ],
+      "answer": "A_JOB_101"
+    },
+    {
+      "id": "JOB_102",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "wie man Erze abbaut",
+        "Bergbauanweisungen"
+      ],
+      "answer": "A_JOB_102"
+    },
+    {
+      "id": "JOB_103",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "wie man Landwirtschaft betreibt",
+        "wo man Samen hinlegt"
+      ],
+      "answer": "A_JOB_103"
+    },
+    {
+      "id": "JOB_104",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "wie man Schwerter benutzt",
+        "wie man mit zwei Waffen umgeht"
+      ],
+      "answer": "A_JOB_104"
+    },
+    {
+      "id": "JOB_105",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "wie man Erde gräbt",
+        "wie man eine Schaufel benutzt"
+      ],
+      "answer": "A_JOB_105"
+    },
+    {
+      "id": "JOB_106",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 99,
+      "phrases": [
+        "wie man Truhen verbindet",
+        "wie man eine Truhe trägt"
+      ],
+      "answer": "A_JOB_106"
+    }
+  ],
+  "answers": {
+    "A_JOB_001": {
+      "lines": [
+        "Zuweisung aktiviert und auf Freiheit umgestellt! Mein aktueller Beruf ist {profession}. Ich fange jetzt an zu arbeiten!",
+        "Erhalten Sie Bestellungen! Ich werde die Mission {profession} mit meiner aktuellen Ausrüstung ({tool}) durchführen."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "Klar! NOVA Warrior ({profession}) hat alle drei Modi aktiviert: Beschütze {owner}, Patrouille, um Monster zu töten und Jagd im Bereich des Steuerknüppels!"
+          ]
+        }
+      ]
+    },
+    "A_JOB_002": {
+      "lines": [
+        "Ich habe den Aufgabenzuweisungsmodus deaktiviert und den Betrieb angehalten.",
+        "Okay {owner}, ich höre auf zu arbeiten und warte auf Ihren neuen Befehl."
+      ]
+    },
+    "A_ACT_001": {
+      "lines": [
+        "Hallo {owner}! Ich winke dir!",
+        "NOVA winkt seinem Besitzer ernsthaft zu!"
+      ]
+    },
+    "A_ACT_002": {
+      "lines": [
+        "Anerkennung! Lasst uns tanzen, um den Sieg zu feiern, {owner}!",
+        "Ja! Lasst uns feiern!"
+      ]
+    },
+    "A_ACT_003": {
+      "lines": [
+        "Es tut mir so leid {owner}... Ich werde versuchen, es beim nächsten Mal besser zu machen!",
+        "Bitte entschuldigen Sie sich bei NOVA, seien Sie bitte nicht böse auf mich ..."
+      ]
+    },
+    "A_ACT_004": {
+      "lines": [
+        "*Nicken* Ich stimme {owner} voll und ganz zu!",
+        "Es ist klar! NOVA nickte bestätigend!"
+      ]
+    },
+    "A_ACT_005": {
+      "lines": [
+        "Hehe, sehe ich nicht cool aus {owner}? NOVA ist immer bereit!",
+        "*bläht stolz seine Brust heraus* Ich bin der mächtige Assistent von {owner}!"
+      ]
+    },
+    "A_JOB_101": {
+      "lines": [
+        "Holzfäller-Job: Platzieren Sie die Axt in Toolbox 1, verknüpfen Sie die NOVA-Truhe und aktivieren Sie „Jobs zuweisen“. Ich werde natürliche Bäume in einem Umkreis von 16 Blöcken fällen, selbst Holz/Baumsprossen aufsammeln und die Baumsprossen manuell zu meiner linken Hand ziehen, um den Wald neu zu bepflanzen! Wenn Sie auf Level 5 eine Wurzel fällen, fällt der ganze Baum!"
+      ]
+    },
+    "A_JOB_102": {
+      "lines": [
+        "Bergmannsberuf: Platzieren Sie die Trophäe in Toolbox 1, verknüpfen Sie die NOVA-Truhe und aktivieren Sie „Jobs zuweisen“. Ich habe die Höhle selbst erkundet und mir vorrangig das Ausgraben der einzelnen Erzadern vorgenommen, bevor ich nach Gestein gegraben habe. Stecken Sie die Taschenlampe ab Level 3 in Ihren Rucksack oder in Ihre linke Hand und Sie können sie selbst anzünden!"
+      ]
+    },
+    "A_JOB_103": {
+      "lines": [
+        "Landwirt-Job: Platzieren Sie die Hacke in Toolbox 1, verknüpfen Sie die NOVA-Truhe und aktivieren Sie „Jobs zuweisen“. Sie müssen nur Samen, Karotten oder Kartoffeln in Ihren Rucksack (oder in die linke Kiste) stecken. Ich ziehe die Samen mit meiner linken Hand heraus, um den Boden in der Nähe des Wassers auszugraben, die Samen zu säen und die reifen Pflanzen zu ernten!"
+      ]
+    },
+    "A_JOB_104": {
+      "lines": [
+        "Kriegerjob: Platziere das Schwert in Werkzeugkiste 1! Ich kann Doppelschwerter in beiden Händen halten (was den Sekundärhandschaden um 50 % erhöht und eineinhalb Mal schneller schneidet), wenn man ein zweites Schwert in den Rucksack oder in die Box für die linke Hand steckt. Ich benutze keine Truhen, sondern patrouilliere um den Steuerknüppel herum, jage und beschütze dich wie ein treuer Wolf. Wenn mir das Schwert ausgeht, renne ich zurück, um es dir zu sagen!"
+      ]
+    },
+    "A_JOB_105": {
+      "lines": [
+        "Grabauftrag: Platzieren Sie die Schaufel in Werkzeugkasten 1, verknüpfen Sie die NOVA-Truhe und aktivieren Sie „Aufträge zuweisen“. Ich werde Erde, Sand und Kies in ordentlichen 5x5-Formen von oben nach unten ausgraben und zum nächsten 5x5-Kasten übergehen, wenn ich fertig bin."
+      ]
+    },
+    "A_JOB_106": {
+      "lines": [
+        "Verknüpfen Sie eine Truhe: Halten Sie den Steuerknüppel gedrückt und klicken Sie mit der rechten Maustaste auf sich selbst. Klicken Sie dann 60 Sekunden lang mit der rechten Maustaste auf die NOVA-Truhe (jede Haupttruhe kann nur 1 Roboter verknüpfen). Wenn Sie bis zu 9 zusätzliche Truhen hinzufügen möchten, wählen Sie sich selbst aus und klicken Sie dann bei gedrückter Umschalttaste mit der rechten Maustaste auf die normale Holztruhe. Wenn du möchtest, dass ich die Truhe bei dir trage, halte die Umschalttaste gedrückt und klicke mit der rechten Maustaste auf die NOVA-Truhe!"
+      ]
+    }
+  }
+}

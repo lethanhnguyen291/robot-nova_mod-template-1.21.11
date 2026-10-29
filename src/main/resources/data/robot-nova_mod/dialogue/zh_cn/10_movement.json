@@ -1,0 +1,99 @@
+{
+  "version": 2,
+  "group": "movement",
+  "questions": [
+    {
+      "id": "MOV_001",
+      "intent": "FOLLOW",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "跟着我",
+        "跟我来"
+      ],
+      "answer": "A_MOV_001"
+    },
+    {
+      "id": "MOV_002",
+      "intent": "FREE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "自由活动",
+        "自由模式"
+      ],
+      "answer": "A_MOV_002"
+    },
+    {
+      "id": "MOV_003",
+      "intent": "WAIT",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "在这里等",
+        "站着等"
+      ],
+      "answer": "A_MOV_003"
+    },
+    {
+      "id": "MOV_004",
+      "intent": "SIT",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "坐下"
+      ],
+      "answer": "A_MOV_004"
+    },
+    {
+      "id": "MOV_005",
+      "intent": "STAND",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "站起来"
+      ],
+      "answer": "A_MOV_005"
+    }
+  ],
+  "answers": {
+    "A_MOV_001": {
+      "lines": [
+        "清楚!我切换到跟随 {owner} 模式。无论你走到哪里,我都会紧紧跟随!",
+        "我跟着你!如果您距离超过 7 个街区,您将自动加速并跟随。"
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "天气晴朗! NOVA 战士跟随守卫 {owner}。谁攻击你,我就立刻处理!"
+          ]
+        }
+      ]
+    },
+    "A_MOV_002": {
+      "lines": [
+        "我切换到自由模式({profession})。如果您打开“分配任务”,我将主动围绕该区域开展工作。",
+        "好吧,我就在这里自由活动。"
+      ]
+    },
+    "A_MOV_003": {
+      "lines": [
+        "我将在此位置等待,直到 {owner} 打来电话。",
+        "明白了,我就站在那里守护着。"
+      ]
+    },
+    "A_MOV_004": {
+      "lines": [
+        "我们就坐在原地休息吧。当你继续前进时,{owner} 只要说“站起来”!",
+        "好吧,我们坐下来休息一下,节省体力。"
+      ]
+    },
+    "A_MOV_005": {
+      "lines": [
+        "我站了起来,准备继续我之前的治疗!",
+        "NOVA站起来了!让我们继续我们的工作,{owner}。"
+      ]
+    }
+  }
+}

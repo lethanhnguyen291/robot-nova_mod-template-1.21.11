@@ -1,0 +1,119 @@
+{
+  "version": 2,
+  "group": "system",
+  "questions": [
+    {
+      "id": "SYS_001",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 95,
+      "phrases": [
+        "ayuda",
+        "¿Qué puedes hacer?",
+        "instrucciones"
+      ],
+      "answer": "A_SYS_001"
+    },
+    {
+      "id": "SYS_002",
+      "intent": "UNKNOWN",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "frase desconocida"
+      ],
+      "answer": "A_SYS_002"
+    },
+    {
+      "id": "SYS_003",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 98,
+      "phrases": [
+        "cómo convocar nova",
+        "cómo construir nova"
+      ],
+      "answer": "A_SYS_003"
+    },
+    {
+      "id": "SYS_004",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 98,
+      "phrases": [
+        "cómo reunirse",
+        "formación de rally"
+      ],
+      "answer": "A_SYS_004"
+    }
+  ],
+  "answers": {
+    "A_SYS_001": {
+      "lines": [
+        "Tengo 5 profesiones basadas en las herramientas del Cuadro 1: Guerrero con espada doble, Minero (Copa), Leñador (Hacha), Granjero (Azada), Excavador (Pala). Puedes preguntar: \"qué estás haciendo\", \"equipo actual\", \"dónde está el cofre\", \"cuánta batería queda\", \"por qué no lo haces\", o dar órdenes: \"sígueme\", \"libre\", \"espera\", \"siéntate\", \"encender el trabajo\", \"apaga el trabajo\", \"saluda\", \"celebra\", \"asiente\", \"lo siento\"."
+      ]
+    },
+    "A_SYS_002": {
+      "lines": [
+        "No entiendo muy bien el significado de esta frase, {owner}. Actualmente mi profesión es {profession}. ¡Puedes preguntar sobre “batería”, “equipo”, “cofre”, “trabajo” o escribir “instrucciones”!",
+        "Esta frase es un poco extraña en mi memoria. ¿Quieres preguntar el estado ({profession}, Batería {battery}%) o quieres pedirlo tú mismo? Escriba \"instrucciones\" para ver los comandos."
+      ]
+    },
+    "A_SYS_003": {
+      "lines": [
+        "Para invocar a NOVA: coloca 1 Bloque de Hierro en el medio, 2 Bloques de Redstone en ambos lados como manos, 1 Bloque Vidriado en la espalda como mochila y coloca la Calabaza Tallada encima. Palanca de control hecha de Luu Ly + Redstone + Pararrayos. El cofre NOVA está hecho de 4 embriones de hierro, 2 embriones de cobre, 2 piedras rojas alrededor de 1 cofre de madera."
+      ]
+    },
+    "A_SYS_004": {
+      "lines": [
+        "Cuando colocas la palanca de control de NOVA en el suelo (o haces clic derecho en la palanca colocada), todos los NOVA dentro de un radio de 64 bloques se reunirán en una formación ordenada frente a la palanca. ¡Haz clic derecho nuevamente o retira el joystick para dispersar al escuadrón!"
+      ]
+    },
+    "SYS_AMBIGUOUS": {
+      "lines": [
+        "Veo que esta oración tiene más de un comando diferente. {owner}, por favor aclárame un comando; Mantendré el modo actual."
+      ]
+    },
+    "SYS_NO_AI": {
+      "lines": [
+        "Mi IA está bloqueada por el atributo NoAI, por lo que no puede moverse según este comando."
+      ]
+    },
+    "SYS_PANIC": {
+      "lines": [
+        "¡Estoy huyendo temporalmente del peligro! Espera hasta que esté a salvo y luego {owner} dame la orden nuevamente."
+      ]
+    },
+    "SYS_ACTION_BLOCKED": {
+      "lines": [
+        "Ahora mismo no puedo hacer ese movimiento (tal vez estoy cargando un cofre o no estoy parado firmemente en el suelo)."
+      ]
+    },
+    "SYS_NOT_STARTED": {
+      "lines": [
+        "Aún no he empezado a realizar movimientos."
+      ]
+    },
+    "SYS_WORK_PENDING": {
+      "lines": [
+        "Activé Tarea y cambié a Gratis, pero necesito verificar más: {detail}"
+      ]
+    }
+  },
+  "followups": {
+    "why": [
+      "por qué",
+      "¿Por qué es eso?"
+    ],
+    "need": [
+      "¿Qué más necesitas?"
+    ],
+    "memory": [
+      "cuéntame más recuerdos"
+    ],
+    "more": [
+      "que mas",
+      "cuéntame más"
+    ]
+  }
+}

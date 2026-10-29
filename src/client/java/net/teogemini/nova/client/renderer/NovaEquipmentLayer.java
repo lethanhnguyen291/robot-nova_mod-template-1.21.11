@@ -84,6 +84,7 @@ public final class NovaEquipmentLayer<R extends GeoRenderState>
     @Override
     public void addRenderData(NovaEntity nova, Void related, R state, float partialTick) {
         super.addRenderData(nova, related, state, partialTick);
+        state.addGeckolibData(DataTickets.IS_LEFT_HANDED, false);
         state.addGeckolibData(CARRYING, nova.isCarryingChest());
         state.addGeckolibData(HOLDING_MAINHAND, !nova.getMainHandItem().isEmpty());
         state.addGeckolibData(HOLDING_OFFHAND, !nova.getOffhandItem().isEmpty());

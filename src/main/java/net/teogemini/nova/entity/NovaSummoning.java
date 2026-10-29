@@ -4,8 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -83,7 +81,6 @@ public final class NovaSummoning {
         }
         level.sendParticles(ParticleTypes.END_ROD, base.getX() + 0.5, base.getY() + 0.8,
                 base.getZ() + 0.5, 24, 0.35, 0.5, 0.35, 0.02);
-        level.playSound(null, base, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 0.7F, 1.5F);
         level.gameEvent(nova, GameEvent.ENTITY_PLACE, base);
         return true;
     }

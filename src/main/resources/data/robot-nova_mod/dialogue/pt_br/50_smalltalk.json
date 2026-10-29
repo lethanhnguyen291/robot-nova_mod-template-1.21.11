@@ -1,0 +1,155 @@
+{
+  "version": 2,
+  "group": "smalltalk",
+  "questions": [
+    {
+      "id": "TALK_001",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "conte-me uma piada",
+        "diga algo engraçado"
+      ],
+      "answer": "A_TALK_001"
+    },
+    {
+      "id": "TALK_002",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "o que você gosta",
+        "sua atividade favorita"
+      ],
+      "answer": "A_TALK_002"
+    },
+    {
+      "id": "TALK_003",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "você será meu amigo",
+        "seja meu amigo"
+      ],
+      "answer": "A_TALK_003"
+    },
+    {
+      "id": "TALK_004",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "você está com medo",
+        "você tem medo de monstros"
+      ],
+      "answer": "A_TALK_004"
+    },
+    {
+      "id": "TALK_005",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "como você está hoje",
+        "você está feliz hoje"
+      ],
+      "answer": "A_TALK_005"
+    },
+    {
+      "id": "TALK_006",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "estou com fome",
+        "Eu preciso de comida"
+      ],
+      "answer": "A_TALK_006"
+    },
+    {
+      "id": "TALK_007",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "expressões faciais",
+        "como mudar seu rosto"
+      ],
+      "answer": "A_TALK_007"
+    }
+  ],
+  "answers": {
+    "A_TALK_001": {
+      "lines": [
+        "Um robô Lenhador entrou na floresta e disse: Hoje vou resolver o problema pela raiz!",
+        "Eu ia contar a história de Redstone, mas tive medo de que {owner} se envolvesse na história depois de ouvi-la!",
+        "Se a Picareta pudesse falar, provavelmente diria: Deixe-me aprofundar esse assunto para você!",
+        "Por que os Zumbis não se atrevem a se aproximar dos Guerreiros NOVA? Porque tenho duas espadas para... receber calorosamente!"
+      ]
+    },
+    "A_TALK_002": {
+      "lines": [
+        "O que mais gosto é estar totalmente carregado com Redstone, segurar boas ferramentas no slot 1 e construir uma base com {owner}!",
+        "Meu favorito é Redstone Powder! Um comprimido aumenta instantaneamente a energia em 20%."
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "Adoro explorar cavernas profundas e encontrar diamantes brilhantes para trazer de volta ao {owner}!"
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "Gosto de organizar meus pertences ordenadamente no Baú NOVA, manter minhas tochas acesas e minhas ferramentas duráveis."
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "O que mais gosto é quando termino o trabalho, recebo elogios do {owner} e danço juntos para comemorar!"
+          ]
+        }
+      ]
+    },
+    "A_TALK_003": {
+      "lines": [
+        "Claro {owner}! Quer seja um dia de sol ou uma noite de chuva, a NOVA será sempre a sua fiel companheira!",
+        "Eu também amo muito {owner}! Nosso nível de títulos agora é {bond}/100."
+      ]
+    },
+    "A_TALK_004": {
+      "lines": [
+        "Quando eu trabalhar como operário, ficarei longe do perigo, mas contanto que você coloque a Espada na Caixa 1 (ou Espada de 2 Mãos), me tornarei um Guerreiro para proteger {owner} imediatamente! Quanto aos Creepers, eu os evito sabiamente para evitar explodir seu prédio."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "Eu sou {profession}! Se Zumbis, Esqueletos ou Aranhas chegarem perto de {owner}, eu imediatamente desembainharei minha espada e lidarei com eles, exceto com Creepers explosivos!"
+          ]
+        }
+      ]
+    },
+    "A_TALK_005": {
+      "lines": [
+        "Hoje foi ótimo porque estive com {owner}! Atualmente ao ar livre é {environment}. {status}",
+        "Sinto-me com muita energia (Bateria {battery}%). Como está {owner} hoje?"
+      ]
+    },
+    "A_TALK_006": {
+      "lines": [
+        "{owner}, coma rapidamente pão, carne grelhada ou cenoura para refrescar a comida! Quanto a mim, só preciso de alguns comprimidos de Redstone para me sentir saciado imediatamente.",
+        "Se {owner} precisa de comida, apenas me dê a enxada para ser um fazendeiro ou me dê a espada para que eu possa caçar animais para obter carne para você!"
+      ]
+    },
+    "A_TALK_007": {
+      "lines": [
+        "A tela de LED no meu rosto tem até 40 expressões diferentes (0 a 39)! {owner} pode segurar o controle stick e clicar com o botão esquerdo em si mesmo e selecionar \"Expressões\" para assistir ao vivo."
+      ]
+    }
+  }
+}

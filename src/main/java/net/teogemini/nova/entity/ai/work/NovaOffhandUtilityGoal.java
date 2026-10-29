@@ -29,8 +29,17 @@ public final class NovaOffhandUtilityGoal extends Goal {
     @Override public boolean requiresUpdateEveryTick() { return true; }
 
     @Override public boolean canUse() {
-        if (!nova.canNovaWork() || --cooldown > 0) return false;
+        if (!nova.canStartNovaJob() || nova.isSwordNova() || --cooldown > 0) return false;
         cooldown = 20;
+        if (nova.getOffhandItem().isEmpty()) {
+            net.teogemini.nova.entity.NovaWorkSupport.autoSelectOffhandSapling(nova);
+        }
+        if (nova.getOffhandItem().isEmpty() && nova.getMainHandItem().is(ItemTags.PICKAXES)) {
+            net.teogemini.nova.entity.NovaWorkSupport.ensureOffhandTorch(nova);
+        }
+        if (nova.getOffhandItem().isEmpty() && nova.getPrimaryTool().is(ItemTags.HOES)) {
+            net.teogemini.nova.entity.NovaWorkSupport.ensureOffhandSeed(nova);
+        }
         supply = nova.getOffhandItem().copy();
         if (supply.isEmpty()) return false;
         target = BlockPos.findClosestMatch(nova.blockPosition(), 4, 2, this::valid)
@@ -38,7 +47,7 @@ public final class NovaOffhandUtilityGoal extends Goal {
         return target != null;
     }
     @Override public boolean canContinueToUse() {
-        return nova.canNovaWork() && target != null && ticks < 200
+        return nova.canStartNovaJob() && target != null && ticks < 200
                 && ItemStack.isSameItemSameComponents(supply, nova.getOffhandItem()) && valid(target);
     }
     @Override public void start() { ticks = 0; actionTicks = 0; }
@@ -72,11 +81,11 @@ public final class NovaOffhandUtilityGoal extends Goal {
         nova.getLookControl().setLookAt(target.getX() + .5, target.getY() + .5, target.getZ() + .5);
         if (nova.getEyePosition().distanceToSqr(Vec3.atCenterOf(target)) > 9) {
             nova.clearWorkAnimation();
-            if (ticks % 10 == 1) nova.getNavigation().moveTo(target.getX() + .5, target.getY(), target.getZ() + .5, 1.0);
+            if (ticks % 20 == 1) net.teogemini.nova.entity.NovaWorkSupport.moveToWork(nova, target, 1.0);
             return;
         }
         nova.getNavigation().stop();
-        if (!net.teogemini.nova.entity.NovaWorkSupport.canReach(nova, target)) { stop(); return; }
+        if (!net.teogemini.nova.entity.NovaWorkSupport.canReach(nova, target)) { nova.companion().stuck(target); stop(); return; }
         net.teogemini.nova.entity.NovaWorkSupport.faceTarget(nova, target);
         nova.playWorkAnimation(NovaEntity.WORK_PLANT);
         if (++actionTicks < 16) return;
@@ -85,6 +94,15 @@ public final class NovaOffhandUtilityGoal extends Goal {
             if (state.is(net.minecraft.tags.BlockTags.SAPLINGS) || state.is(net.minecraft.tags.BlockTags.CROPS))
                 nova.companion().planted();
             nova.getOffhandItem().shrink(1);
+            if (nova.getOffhandItem().isEmpty()) {
+                if (supply.is(ItemTags.SAPLINGS)) {
+                    net.teogemini.nova.entity.NovaWorkSupport.autoSelectOffhandSapling(nova);
+                } else if (supply.is(Items.TORCH)) {
+                    net.teogemini.nova.entity.NovaWorkSupport.ensureOffhandTorch(nova);
+                } else if (net.teogemini.nova.entity.NovaWorkSupport.isSeedSupply(supply)) {
+                    net.teogemini.nova.entity.NovaWorkSupport.ensureOffhandSeed(nova);
+                }
+            }
             nova.swing(InteractionHand.OFF_HAND);
             NovaExperienceManager.awardFarmerExp(nova, false);
             if (target.equals(nova.lastChoppedRoot)) {
@@ -94,7 +112,7 @@ public final class NovaOffhandUtilityGoal extends Goal {
         }
         stop();
     }
-    @Override public void stop() {
+    @Override public void stop() { nova.pathClearing().track(null);
         target = null;
         nova.getNavigation().stop();
         nova.clearWorkAnimation();

@@ -1,0 +1,241 @@
+{
+  "version": 2,
+  "group": "social",
+  "questions": [
+    {
+      "id": "SOC_001",
+      "intent": "HELLO",
+      "match": "contains",
+      "priority": 40,
+      "phrases": [
+        "xin chào",
+        "chào",
+        "hello",
+        "hi",
+        "alo",
+        "nova",
+        "chào buổi sáng",
+        "chào buổi tối",
+        "chào bạn tốt",
+        "ê robot"
+      ],
+      "answer": "A_SOC_001"
+    },
+    {
+      "id": "SOC_002",
+      "intent": "GOODBYE",
+      "match": "contains",
+      "priority": 41,
+      "phrases": [
+        "tạm biệt",
+        "bye",
+        "hẹn gặp lại",
+        "chúc ngủ ngon",
+        "ngủ ngon nhé",
+        "tắt máy nghỉ ngơi"
+      ],
+      "answer": "A_SOC_002"
+    },
+    {
+      "id": "SOC_003",
+      "intent": "THANKS",
+      "match": "contains",
+      "priority": 45,
+      "phrases": [
+        "cảm ơn",
+        "cám ơn",
+        "thanks",
+        "thank you",
+        "vất vả cho bạn rồi",
+        "cảm ơn nhiều"
+      ],
+      "answer": "A_SOC_003"
+    },
+    {
+      "id": "SOC_004",
+      "intent": "PRAISE",
+      "match": "contains",
+      "priority": 43,
+      "phrases": [
+        "giỏi lắm",
+        "làm tốt",
+        "giỏi quá",
+        "dễ thương",
+        "đáng yêu",
+        "tuyệt lắm",
+        "xuất sắc",
+        "thông minh quá",
+        "ngầu quá",
+        "xịn quá",
+        "chăm chỉ quá"
+      ],
+      "answer": "A_SOC_004"
+    },
+    {
+      "id": "SOC_005",
+      "intent": "APOLOGY",
+      "match": "contains",
+      "priority": 44,
+      "phrases": [
+        "xin lỗi",
+        "sorry",
+        "lỡ tay đánh",
+        "mình lỡ tay",
+        "đừng giận nhé"
+      ],
+      "answer": "A_SOC_005"
+    },
+    {
+      "id": "SOC_006",
+      "intent": "COMFORT",
+      "match": "contains",
+      "priority": 42,
+      "phrases": [
+        "tui buồn",
+        "tôi buồn",
+        "mình buồn",
+        "cô đơn",
+        "tui mệt",
+        "tôi mệt",
+        "mình mệt",
+        "tui sợ",
+        "chán quá",
+        "áp lực quá"
+      ],
+      "answer": "A_SOC_006"
+    },
+    {
+      "id": "SOC_007",
+      "intent": "PERSONALITY",
+      "match": "contains",
+      "priority": 60,
+      "phrases": [
+        "tính cách",
+        "gắn bó",
+        "thân thiết",
+        "bạn là ai",
+        "tên gì",
+        "giới thiệu bản thân",
+        "chủ nhân của bạn là ai"
+      ],
+      "answer": "A_SOC_007"
+    },
+    {
+      "id": "SOC_008",
+      "intent": "MEMORY",
+      "match": "contains",
+      "priority": 55,
+      "phrases": [
+        "kỷ niệm",
+        "nhớ gì",
+        "nhớ tui",
+        "nhớ tôi",
+        "nhớ mình",
+        "kể chuyện",
+        "nhật ký"
+      ],
+      "answer": "A_SOC_008"
+    }
+  ],
+  "answers": {
+    "A_SOC_001": {
+      "lines": [
+        "Chào {owner}! Mình đang làm {profession} (Pin {battery}%). Bạn cần mình giúp gì nào?",
+        "NOVA có mặt! Mình đang lắng nghe {owner} đây."
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "Chào {owner}! Hôm nay chúng mình sẽ khám phá vùng đất nào hay làm nghề gì nhỉ?",
+            "Mình đây {owner} ơi! Bạn có phát hiện gì mới muốn kể cho mình nghe không?"
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "Chào {owner}. Mình đã kiểm tra pin ({battery}%) và trang bị ({profession}) sẵn sàng rồi.",
+            "Chào chủ nhân {owner}! Chúng mình chuẩn bị kỹ trang bị rồi hãy lên đường nhé."
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "Chào {owner}! Gặp bạn là năng lượng của mình như được sạc đầy vậy!",
+            "NOVA báo cáo có mặt! Hôm nay của {owner} thế nào?"
+          ]
+        }
+      ]
+    },
+    "A_SOC_002": {
+      "lines": [
+        "Hẹn gặp lại {owner} nhé! Mình sẽ luôn chú ý an toàn.",
+        "Tạm biệt {owner}! Khi nào cần trợ giúp cứ gọi NOVA nha."
+      ]
+    },
+    "A_SOC_003": {
+      "lines": [
+        "Không có gì đâu {owner} ơi, giúp được bạn là niềm vui của mình mà!",
+        "Chúng mình là một đội ăn ý mà! Cần gì {owner} cứ giao cho mình nhé.",
+        "Được đồng hành cùng {owner} là nhiệm vụ tuyệt vời nhất của NOVA!"
+      ]
+    },
+    "A_SOC_004": {
+      "lines": [
+        "Cảm ơn {owner} nhiều! Nghe bạn khen mình có thêm thật nhiều động lực làm việc!",
+        "Hehe, mình sẽ cố gắng phát huy để luôn xứng đáng là robot số 1 của {owner}!"
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "Cảm ơn {owner}! Mình muốn học hỏi và khám phá thêm thật nhiều thứ cùng bạn."
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "Cảm ơn {owner}. Mình sẽ tiếp tục làm việc thật tỉ mỉ và an toàn."
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "Yay! Được {owner} khen vui quá chừng luôn! Cảm ơn bạn nhé!"
+          ]
+        }
+      ]
+    },
+    "A_SOC_005": {
+      "lines": [
+        "Không sao đâu {owner} ơi, mình biết bạn không cố ý mà. Chúng mình tiếp tục đồng hành nhé!",
+        "Mình không giận {owner} đâu! Bạn vẫn luôn là người bạn thân nhất của NOVA."
+      ]
+    },
+    "A_SOC_006": {
+      "lines": [
+        "Mình luôn ở ngay cạnh {owner} đây. Nếu mệt rồi thì chúng mình cùng nghỉ ngơi một lát nhé?",
+        "Đừng buồn nha {owner}. Dù thế giới bên ngoài có tối hay mưa bão, NOVA vẫn luôn đi cùng bạn mà!",
+        "Cố lên {owner} ơi! Việc nặng cứ để NOVA phụ một tay cho bạn đỡ mệt nhé."
+      ]
+    },
+    "A_SOC_007": {
+      "lines": [
+        "Mình là Robot NOVA của {owner}! Tính cách của mình là {personality}, độ gắn bó với bạn đạt {bond}/100, và nghề hiện tại của mình là {profession}."
+      ]
+    },
+    "A_SOC_008": {
+      "lines": [
+        "Trong bộ nhớ kỷ niệm của mình có ghi: “{memory}” (Độ gắn bó: {bond}/100 • Thành tích: {totals})."
+      ],
+      "variants": [
+        {
+          "when": "no_memories",
+          "lines": [
+            "Sổ tay kỷ niệm của mình đang chờ những dấu mốc đầu tiên cùng {owner}. Chúng mình cùng đi đào quặng, chặt cây hoặc chiến đấu để lưu lại kỷ niệm nhé!"
+          ]
+        }
+      ]
+    }
+  }
+}

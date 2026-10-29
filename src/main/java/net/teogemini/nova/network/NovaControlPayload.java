@@ -54,6 +54,11 @@ public record NovaControlPayload(int entityId, UUID entityUuid, int action)
             }
 
             int action = payload.action();
+            String name = nova.getNovaDisplayName();
+            if ((action >= NovaEntity.MODE_FOLLOW && action <= NovaEntity.MODE_WAIT)
+                    || action == SIT || action == STAND || action == TOGGLE_WORK) {
+                nova.sounds().play(net.teogemini.nova.sound.NovaSounds.Cue.ACK);
+            }
             if (action >= NovaEntity.MODE_FOLLOW && action <= NovaEntity.MODE_WAIT) {
                 nova.setNovaMoveMode(action);
                 String message = switch (action) {
@@ -61,52 +66,56 @@ public record NovaControlPayload(int entityId, UUID entityUuid, int action)
                     case NovaEntity.MODE_FREE -> "Mình sẽ tự đi lại quanh đây.";
                     default -> "Mình sẽ đứng chờ ở đây.";
                 };
-                player.displayClientMessage(Component.literal("NOVA: " + message), true);
+                player.displayClientMessage(Component.literal(name + ": " + message), true);
             } else if (action == SIT || action == STAND) {
                 nova.setNovaSitRequested(action == SIT);
                 String message = action == SIT ? "Mình ngồi nghỉ nhé." : "Mình đứng dậy rồi, tiếp tục chế độ trước đó.";
-                player.displayClientMessage(Component.literal("NOVA: " + message), true);
+                player.displayClientMessage(Component.literal(name + ": " + message), true);
             } else if (action == TOGGLE_WORK) {
                 nova.companion().ownerCommand();
-                nova.work().setEnabled(!nova.work().enabled());
+                boolean newState = !nova.isNovaWorkEnabled();
+                nova.setNovaWorkEnabled(newState);
                 nova.clearWorkAnimation();
                 nova.getNavigation().stop();
-                if (nova.work().enabled()) nova.setNovaMoveMode(NovaEntity.MODE_FREE);
-                player.displayClientMessage(Component.literal("NOVA: " + (nova.work().enabled()
-                        ? "Bật làm việc trong vùng rương đã liên kết." : "Đã tắt làm việc.")), true);
+                if (newState) {
+                    nova.setNovaMoveMode(NovaEntity.MODE_FREE);
+                    net.teogemini.nova.entity.NovaWorkSupport.checkWorkConditionsAndNotify(nova, player);
+                } else {
+                    player.displayClientMessage(Component.literal(name + ": Đã tắt làm việc."), true);
+                }
             } else if (action == FACE_NEXT) {
                 int face = nova.cyclePreviewFace(1);
-                player.displayClientMessage(Component.literal("NOVA: Biểu cảm " + face + "/39"), true);
+                player.displayClientMessage(Component.literal(name + ": Biểu cảm " + face + "/39"), true);
             } else if (action == FACE_PREV) {
                 int face = nova.cyclePreviewFace(-1);
-                player.displayClientMessage(Component.literal("NOVA: Biểu cảm " + face + "/39"), true);
+                player.displayClientMessage(Component.literal(name + ": Biểu cảm " + face + "/39"), true);
             } else if (action == FACE_RESET) {
                 nova.resetPreviewFace();
-                player.displayClientMessage(Component.literal("NOVA: Đã trở về biểu cảm tự động."), true);
+                player.displayClientMessage(Component.literal(name + ": Đã trở về biểu cảm tự động."), true);
             } else if (action == ACTION_WAVE) {
                 if (nova.isPerformingAction()) {
-                    player.displayClientMessage(Component.literal("NOVA: Mình đang làm động tác rồi."), true);
+                    player.displayClientMessage(Component.literal(name + ": Mình đang làm động tác rồi."), true);
                 } else {
                     nova.startNovaAction(NovaEntity.ACTION_WAVE);
-                    player.displayClientMessage(Component.literal("NOVA: Chào chủ nhân!"), true);
+                    player.displayClientMessage(Component.literal(name + ": Chào chủ nhân!"), true);
                 }
             } else if (action == ACTION_CELEBRATE) {
                 if (nova.isPerformingAction()) {
-                    player.displayClientMessage(Component.literal("NOVA: Mình đang làm động tác rồi."), true);
+                    player.displayClientMessage(Component.literal(name + ": Mình đang làm động tác rồi."), true);
                 } else {
                     nova.startNovaAction(NovaEntity.ACTION_CELEBRATE);
-                    player.displayClientMessage(Component.literal("NOVA: Ăn mừng nào!"), true);
+                    player.displayClientMessage(Component.literal(name + ": Ăn mừng nào!"), true);
                 }
             } else if (action == ACTION_APOLOGIZE) {
                 nova.startApologizeAction();
-                player.displayClientMessage(Component.literal("NOVA: Mình xin lỗi ạ..."), true);
+                player.displayClientMessage(Component.literal(name + ": Mình xin lỗi ạ..."), true);
             } else if (action == ACTION_NOD) {
                 nova.companion().gesture("nod");
                 nova.showNovaFace(0, 40);
-                player.displayClientMessage(Component.literal("NOVA: *Gật đầu đồng ý*"), true);
+                player.displayClientMessage(Component.literal(name + ": *Gật đầu đồng ý*"), true);
             } else if (action == ACTION_PROUD) {
                 nova.companion().gesture("proud");
-                player.displayClientMessage(Component.literal("NOVA: *Tự hào*"), true);
+                player.displayClientMessage(Component.literal(name + ": *Tự hào*"), true);
             } else if (action == CHAT) {
                 NovaChatHandler.handleChat(nova, player);
             }

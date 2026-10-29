@@ -1,0 +1,196 @@
+{
+  "version": 2,
+  "group": "social",
+  "questions": [
+    {
+      "id": "SOC_001",
+      "intent": "HELLO",
+      "match": "contains",
+      "priority": 40,
+      "phrases": [
+        "你好",
+        "早上好"
+      ],
+      "answer": "A_SOC_001"
+    },
+    {
+      "id": "SOC_002",
+      "intent": "GOODBYE",
+      "match": "contains",
+      "priority": 41,
+      "phrases": [
+        "再见",
+        "晚安"
+      ],
+      "answer": "A_SOC_002"
+    },
+    {
+      "id": "SOC_003",
+      "intent": "THANKS",
+      "match": "contains",
+      "priority": 45,
+      "phrases": [
+        "谢谢你",
+        "谢谢"
+      ],
+      "answer": "A_SOC_003"
+    },
+    {
+      "id": "SOC_004",
+      "intent": "PRAISE",
+      "match": "contains",
+      "priority": 43,
+      "phrases": [
+        "干得好",
+        "你很可爱"
+      ],
+      "answer": "A_SOC_004"
+    },
+    {
+      "id": "SOC_005",
+      "intent": "APOLOGY",
+      "match": "contains",
+      "priority": 44,
+      "phrases": [
+        "对不起",
+        "对此感到抱歉"
+      ],
+      "answer": "A_SOC_005"
+    },
+    {
+      "id": "SOC_006",
+      "intent": "COMFORT",
+      "match": "contains",
+      "priority": 42,
+      "phrases": [
+        "我感到难过",
+        "我感到孤独"
+      ],
+      "answer": "A_SOC_006"
+    },
+    {
+      "id": "SOC_007",
+      "intent": "PERSONALITY",
+      "match": "contains",
+      "priority": 60,
+      "phrases": [
+        "你的个性",
+        "你是谁"
+      ],
+      "answer": "A_SOC_007"
+    },
+    {
+      "id": "SOC_008",
+      "intent": "MEMORY",
+      "match": "contains",
+      "priority": 55,
+      "phrases": [
+        "回忆",
+        "你的回忆",
+        "你记得什么"
+      ],
+      "answer": "A_SOC_008"
+    }
+  ],
+  "answers": {
+    "A_SOC_001": {
+      "lines": [
+        "你好，{owner}！我的工作是{profession}，电量还有{battery}%。需要我帮什么忙？",
+        "新星来了!我正在听{owner}。"
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "你好{owner}!今天我们将探索什么土地或者我们将从事什么职业?",
+            "是我{owner}!你有什么新发现想告诉我吗?"
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "你好{owner}。我已检查电池({battery}%)并且设备({profession})已准备就绪。",
+            "楼主您好{owner}!我们仔细准备好装备然后出发吧。"
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "你好{owner}!遇见你,让我的能量充满了!",
+            "NOVA 报告存在! {owner} 今天怎么样?"
+          ]
+        }
+      ]
+    },
+    "A_SOC_002": {
+      "lines": [
+        "又见{owner}!我会时刻注意安全。",
+        "再见{owner}!每当您需要帮助时,只需致电 NOVA。"
+      ]
+    },
+    "A_SOC_003": {
+      "lines": [
+        "没关系{owner},很高兴为您提供帮助!",
+        "我们是一个很好的团队!如果你需要什么,{owner},就给我吧。",
+        "陪伴{owner}是NOVA最大的使命!"
+      ]
+    },
+    "A_SOC_004": {
+      "lines": [
+        "非常感谢{owner}!听到您的夸奖,我工作更有动力了!",
+        "呵呵,我会努力的,永远不愧为{owner}的第一机器人!"
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "谢谢{owner}!我想和你一起学习和发现更多的东西。"
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "谢谢{owner}。我将继续认真、安全地工作。"
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "耶!被{owner}夸奖真是太有趣了!谢谢你!"
+          ]
+        }
+      ]
+    },
+    "A_SOC_005": {
+      "lines": [
+        "没关系{owner},我知道你不是故意的。我们将继续陪伴您!",
+        "我没有生{owner}的气!你永远是 NOVA 最好的朋友。"
+      ]
+    },
+    "A_SOC_006": {
+      "lines": [
+        "我总是在 {owner} 旁边。如果你累了,我们就休息一会儿,好吗?",
+        "别伤心,{owner}。即使外面的世界黑暗或风雨交加,NOVA始终与你同在!",
+        "加油{owner}!让 NOVA 帮助您完成繁重的任务,这样您就不会感到疲倦。"
+      ]
+    },
+    "A_SOC_007": {
+      "lines": [
+        "我是{owner}的NOVA机器人!我的性格是{personality},我和你的关系是{bond}/100,我现在的职业是{profession}。"
+      ]
+    },
+    "A_SOC_008": {
+      "lines": [
+        "在我的记忆中,它写着:“{memory}”(附件级别:{bond}/100 • 成就:{totals})。"
+      ],
+      "variants": [
+        {
+          "when": "no_memories",
+          "lines": [
+            "我的周年纪念笔记本正在等待 {owner} 的第一个里程碑。让我们去挖掘矿石、砍伐树木或者为拯救记忆而战吧!"
+          ]
+        }
+      ]
+    }
+  }
+}

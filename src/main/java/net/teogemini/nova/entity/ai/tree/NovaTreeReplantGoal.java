@@ -43,7 +43,7 @@ public final class NovaTreeReplantGoal extends Goal {
     }
     @Override public boolean requiresUpdateEveryTick(){return true;}
     @Override public boolean canUse() {
-        if(!nova.canNovaWork() || nova.level().getGameTime()<nextTry)return false;
+        if(!nova.canStartNovaJob() || nova.level().getGameTime()<nextTry)return false;
         nextTry=nova.level().getGameTime()+40+Math.floorMod(nova.getId(),17);
         for(var pending:nova.trees().planting()) {
             if(!pending.root().dimension().equals(nova.level().dimension())
@@ -62,24 +62,36 @@ public final class NovaTreeReplantGoal extends Goal {
             BlockPos target=options.get(standIndex%options.size());
             var result=NovaTreeService.route(nova,target);
             if(!result.attempted())return false;
-            if(result.path()==null){standIndex++;if(standIndex%options.size()==0)nova.companion().retry.fail(pending.root().pos(),nova.level().getGameTime());return false;}
+            if(result.path()==null){standIndex++;if(standIndex%options.size()==0)nova.companion().stuck(pending.root().pos());return false;}
             job=pending;path=result.path();stand=target;return true;
         }
         return false;
     }
-    @Override public void start(){ticks=action=0;done=false;nova.clearWorkAnimation();nova.getNavigation().moveTo(path,1);}
-    @Override public boolean canContinueToUse(){return !done && job!=null && nova.canNovaWork() && ticks<400 && missing(job)>=0;}
+    @Override public void start(){
+        NovaWorkSupport.ensureOffhandSapling(nova, job.species().sapling);
+        nova.pathClearing().track(job.root().pos());ticks=action=0;done=false;nova.clearWorkAnimation();nova.getNavigation().moveTo(path,1);
+    }
+    @Override public boolean canContinueToUse(){return !done && job!=null && nova.canStartNovaJob() && ticks<400 && missing(job)>=0;}
     private void consume() {
-        if(nova.getOffhandItem().is(job.species().sapling)){nova.getOffhandItem().shrink(1);return;}
+        if(nova.getOffhandItem().is(job.species().sapling)){
+            nova.getOffhandItem().shrink(1);
+            if(nova.getOffhandItem().isEmpty()){
+                NovaWorkSupport.ensureOffhandSapling(nova, job.species().sapling);
+            }
+            return;
+        }
         for(int i=0;i<nova.getInventory().getContainerSize();i++) if(nova.getInventory().getItem(i).is(job.species().sapling)) {
-            nova.getInventory().removeItem(i,1);return;
+            nova.getInventory().removeItem(i,1);
+            NovaWorkSupport.ensureOffhandSapling(nova, job.species().sapling);
+            return;
         }
     }
     @Override public void tick() {
         ticks++;
-        if(!canContinueToUse()){done=true;return;}
-        if(nova.distanceToSqr(Vec3.atBottomCenterOf(stand))>1.5) {
-            if(nova.getNavigation().isDone() || ticks>=380){nova.companion().retry.fail(job.root().pos(),nova.level().getGameTime());done=true;}
+        double distance = nova.distanceToSqr(Vec3.atBottomCenterOf(stand));
+        boolean arrived = distance <= 0.6 || (nova.getNavigation().isDone() && distance <= 1.2);
+        if(!arrived) {
+            if(nova.getNavigation().isDone() || ticks>=380){nova.companion().stuck(job.root().pos());done=true;}
             return;
         }
         nova.getNavigation().stop();
@@ -87,8 +99,9 @@ public final class NovaTreeReplantGoal extends Goal {
         if(needed==0){nova.trees().planted(job);done=true;return;}
         if(needed<0 || supply(job)<needed){done=true;return;}
         for(var pos:job.positions()) if(nova.getEyePosition().distanceToSqr(Vec3.atCenterOf(pos))>12.25
-                || !NovaWorkSupport.canReach(nova,pos)){done=true;standIndex++;return;}
+                || !NovaWorkSupport.canReach(nova,pos)){nova.companion().stuck(pos);done=true;standIndex++;return;}
         NovaWorkSupport.faceTarget(nova,job.root().pos());nova.playWorkAnimation(NovaEntity.WORK_PLANT);
+        NovaWorkSupport.ensureOffhandSapling(nova, job.species().sapling);
         if(++action<20)return;
         var block=((BlockItem)job.species().sapling).getBlock();
         for(var pos:job.positions()) {
@@ -102,5 +115,5 @@ public final class NovaTreeReplantGoal extends Goal {
         if(missing(job)==0)nova.trees().planted(job);
         done=true;
     }
-    @Override public void stop(){job=null;path=null;nova.clearWorkAnimation();nova.getNavigation().stop();}
+    @Override public void stop(){nova.pathClearing().track(null);job=null;path=null;nova.clearWorkAnimation();nova.getNavigation().stop();}
 }

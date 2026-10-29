@@ -1,0 +1,238 @@
+{
+  "version": 2,
+  "group": "status",
+  "questions": [
+    {
+      "id": "STA_001",
+      "intent": "STATUS",
+      "match": "contains",
+      "priority": 55,
+      "phrases": [
+        "뭐하는거야?",
+        "현재 상태"
+      ],
+      "answer": "A_STA_001"
+    },
+    {
+      "id": "STA_002",
+      "intent": "WHY",
+      "match": "contains",
+      "priority": 90,
+      "phrases": [
+        "왜 일 안 해?",
+        "왜 붙어있어?"
+      ],
+      "answer": "A_STA_002"
+    },
+    {
+      "id": "STA_003",
+      "intent": "BATTERY",
+      "match": "contains",
+      "priority": 80,
+      "phrases": [
+        "배터리",
+        "에너지가 얼마나 남아있나"
+      ],
+      "answer": "A_STA_003"
+    },
+    {
+      "id": "STA_004",
+      "intent": "HEALTH",
+      "match": "contains",
+      "priority": 75,
+      "phrases": [
+        "체력",
+        "건강",
+        "당신은 부상을 입었습니까?"
+      ],
+      "answer": "A_STA_004"
+    },
+    {
+      "id": "STA_005",
+      "intent": "INVENTORY",
+      "match": "contains",
+      "priority": 70,
+      "phrases": [
+        "재고",
+        "배낭 공간"
+      ],
+      "answer": "A_STA_005"
+    },
+    {
+      "id": "STA_006",
+      "intent": "EXPERIENCE",
+      "match": "contains",
+      "priority": 68,
+      "phrases": [
+        "경험",
+        "당신의 레벨"
+      ],
+      "answer": "A_STA_006"
+    },
+    {
+      "id": "STA_007",
+      "intent": "NEED",
+      "match": "contains",
+      "priority": 60,
+      "phrases": [
+        "뭐가 필요해?",
+        "무엇이 빠졌나요?"
+      ],
+      "answer": "A_STA_007"
+    },
+    {
+      "id": "STA_008",
+      "intent": "BATTERY",
+      "match": "contains",
+      "priority": 85,
+      "phrases": [
+        "재충전하는 방법",
+        "배터리를 충전하는 방법"
+      ],
+      "answer": "A_STA_008"
+    },
+    {
+      "id": "STA_009",
+      "intent": "HEALTH",
+      "match": "contains",
+      "priority": 85,
+      "phrases": [
+        "치유하는 방법",
+        "자가 수리는 어떻게 작동하나요?"
+      ],
+      "answer": "A_STA_009"
+    },
+    {
+      "id": "STA_010",
+      "intent": "EQUIPMENT",
+      "match": "contains",
+      "priority": 78,
+      "phrases": [
+        "장비",
+        "현재 장비",
+        "당신은 어떤 도구를 가지고 있나요"
+      ],
+      "answer": "A_STA_010"
+    },
+    {
+      "id": "STA_011",
+      "intent": "CHEST",
+      "match": "contains",
+      "priority": 76,
+      "phrases": [
+        "연결된 가슴 위치",
+        "네 가슴은 어디 있어?"
+      ],
+      "answer": "A_STA_011"
+    },
+    {
+      "id": "STA_012",
+      "intent": "ENVIRONMENT",
+      "match": "contains",
+      "priority": 64,
+      "phrases": [
+        "날씨",
+        "하루 중 시간"
+      ],
+      "answer": "A_STA_012"
+    }
+  ],
+  "answers": {
+    "A_STA_001": {
+      "lines": [
+        "{status} • 장비: {tool} • 배터리: {battery}%, 상태: {health}.",
+        "보고서 {owner}: {status}(배터리 {battery}%, 백팩 {occupied_slots}/27셀)."
+      ]
+    },
+    "A_STA_002": {
+      "lines": [
+        "현재 어떤 조건에서도 막히거나 차단되지 않습니다. {status} 직접 실행하는 것이 보이지 않는다면 작업 반경 주변에 적합한 대상이 없을 수도 있습니다.",
+        "내 모든 것이 괜찮습니다 ({profession}). {status}"
+      ],
+      "variants": [
+        {
+          "when": "has_blocker",
+          "lines": [
+            "그 이유는 다음과 같습니다. {owner}: {blocker}"
+          ]
+        }
+      ]
+    },
+    "A_STA_003": {
+      "lines": [
+        "내 배터리에는 현재 {battery}%가 있습니다. 마우스 오른쪽 버튼을 클릭할 때마다 레드스톤 가루가 배터리를 +20% 충전합니다!",
+        "에너지는 {battery}%입니다. 업무를 하거나 자가 수리를 할 때만 배터리를 낭비합니다."
+      ],
+      "variants": [
+        {
+          "when": "battery_low",
+          "lines": [
+            "경고: 배터리가 {battery}%밖에 남지 않았습니다! {owner} Redstone을 잡고 마우스 오른쪽 버튼을 클릭하여 충전하면 계속 작업할 수 있습니다."
+          ]
+        }
+      ]
+    },
+    "A_STA_004": {
+      "lines": [
+        "내 현재 혈액은 {health}(핀: {battery}%)입니다. 나는 아직도 아주 건강해요!",
+        "본체상태 : {health} HP. 경미한 부상이 있는 경우 배터리를 사용하여 직접 수리하겠습니다."
+      ],
+      "variants": [
+        {
+          "when": "injured",
+          "lines": [
+            "부상당했어요({health} HP)! 10초 동안 맞지 않고 배터리가 11% 이상 남아 있으면 자동으로 회복됩니다."
+          ]
+        }
+      ]
+    },
+    "A_STA_005": {
+      "lines": [
+        "내 배낭은 {occupied_slots}/27셀을 사용하고 있습니다. 신체 장비: {tool}"
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "백팩은 {occupied_slots}/27셀을 사용하고 있습니다. 나는 {profession}니까 배낭에 여분의 검을 여러 개 넣어서 전투할 때 자동으로 꺼낼 수 있게 해준다!"
+          ]
+        }
+      ]
+    },
+    "A_STA_006": {
+      "lines": [
+        "{experience} 누적 성과: {totals}. 레벨이 높을수록 더 빨리 파고 썰고 더 세게 쳐야 합니다!"
+      ]
+    },
+    "A_STA_007": {
+      "lines": [
+        "{need}"
+      ]
+    },
+    "A_STA_008": {
+      "lines": [
+        "레드스톤 가루를 손에 들고 Shift 키를 누르지 않은 채 자신을 직접 마우스 오른쪽 버튼으로 클릭하면 각 약의 배터리가 20%씩 충전됩니다. 현재 배터리: {battery}%."
+      ]
+    },
+    "A_STA_009": {
+      "lines": [
+        "10초 동안 손상을 입지 않으면 자동으로 자가 수리 회로가 활성화됩니다. 즉, 배터리의 1%를 소모하여 5초마다 1.0 HP를 회복합니다(배터리 백업의 최소 10% 유지). 현재 체력: {health}."
+      ]
+    },
+    "A_STA_010": {
+      "lines": [
+        "내 현재 직업은 {profession}입니다. 장비 세부정보: {tool}"
+      ]
+    },
+    "A_STA_011": {
+      "lines": [
+        "가슴 정보 : {chest}"
+      ]
+    },
+    "A_STA_012": {
+      "lines": [
+        "현재 실외기는 {environment}입니다. 내 상태: {status}"
+      ]
+    }
+  }
+}

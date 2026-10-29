@@ -1,0 +1,194 @@
+{
+  "version": 2,
+  "group": "social",
+  "questions": [
+    {
+      "id": "SOC_001",
+      "intent": "HELLO",
+      "match": "contains",
+      "priority": 40,
+      "phrases": [
+        "hola",
+        "buenos dias"
+      ],
+      "answer": "A_SOC_001"
+    },
+    {
+      "id": "SOC_002",
+      "intent": "GOODBYE",
+      "match": "contains",
+      "priority": 41,
+      "phrases": [
+        "adios",
+        "buenas noches"
+      ],
+      "answer": "A_SOC_002"
+    },
+    {
+      "id": "SOC_003",
+      "intent": "THANKS",
+      "match": "contains",
+      "priority": 45,
+      "phrases": [
+        "gracias"
+      ],
+      "answer": "A_SOC_003"
+    },
+    {
+      "id": "SOC_004",
+      "intent": "PRAISE",
+      "match": "contains",
+      "priority": 43,
+      "phrases": [
+        "bien hecho",
+        "eres lindo"
+      ],
+      "answer": "A_SOC_004"
+    },
+    {
+      "id": "SOC_005",
+      "intent": "APOLOGY",
+      "match": "contains",
+      "priority": 44,
+      "phrases": [
+        "lo siento",
+        "lo siento por eso"
+      ],
+      "answer": "A_SOC_005"
+    },
+    {
+      "id": "SOC_006",
+      "intent": "COMFORT",
+      "match": "contains",
+      "priority": 42,
+      "phrases": [
+        "me siento triste",
+        "me siento solo"
+      ],
+      "answer": "A_SOC_006"
+    },
+    {
+      "id": "SOC_007",
+      "intent": "PERSONALITY",
+      "match": "contains",
+      "priority": 60,
+      "phrases": [
+        "tu personalidad",
+        "quien eres tu"
+      ],
+      "answer": "A_SOC_007"
+    },
+    {
+      "id": "SOC_008",
+      "intent": "MEMORY",
+      "match": "contains",
+      "priority": 55,
+      "phrases": [
+        "tus recuerdos",
+        "¿Qué recuerdas?"
+      ],
+      "answer": "A_SOC_008"
+    }
+  ],
+  "answers": {
+    "A_SOC_001": {
+      "lines": [
+        "¡Hola, {owner}! Mi función es {profession} y tengo un {battery}% de batería. ¿En qué te ayudo?",
+        "¡NOVA ya está aquí! Estoy escuchando {owner}."
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "Hola {owner}! ¿Qué tierra exploraremos hoy o qué profesión haremos?",
+            "¡Soy yo {owner}! ¿Tienes algún descubrimiento nuevo que quieras contarme?"
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "Hola {owner}. He comprobado la batería ({battery}%) y el equipo ({profession}) está listo.",
+            "¡Hola propietario {owner}! Preparemos nuestro equipo con cuidado y luego vámonos."
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "Hola {owner}! ¡Conocerte hace que mi energía se sienta completamente cargada!",
+            "¡NOVA informa presencia! ¿Cómo está {owner} hoy?"
+          ]
+        }
+      ]
+    },
+    "A_SOC_002": {
+      "lines": [
+        "¡Nos vemos de nuevo {owner}! Siempre prestaré atención a la seguridad.",
+        "¡Adiós {owner}! Siempre que necesite ayuda, simplemente llame a NOVA."
+      ]
+    },
+    "A_SOC_003": {
+      "lines": [
+        "Está bien {owner}, ¡es un placer ayudarte!",
+        "¡Somos un buen equipo! Si necesitas algo, {owner}, dámelo.",
+        "¡Acompañar a {owner} es la mayor misión de NOVA!"
+      ]
+    },
+    "A_SOC_004": {
+      "lines": [
+        "¡Muchas gracias {owner}! ¡Escucharte elogiarme me da más motivación para trabajar!",
+        "Jeje, ¡haré todo lo posible para ser siempre digno de ser el robot número 1 de {owner}!"
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "¡Gracias {owner}! Quiero aprender y descubrir más cosas contigo."
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "Gracias {owner}. Continuaré trabajando de manera meticulosa y segura."
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "¡Hurra! ¡Ser felicitado por {owner} es muy divertido! ¡Gracias!"
+          ]
+        }
+      ]
+    },
+    "A_SOC_005": {
+      "lines": [
+        "Está bien {owner}, sé que no lo dijiste en serio. ¡Seguiremos acompañándote!",
+        "¡No estoy enojado con {owner}! Siempre eres el mejor amigo de NOVA."
+      ]
+    },
+    "A_SOC_006": {
+      "lines": [
+        "Siempre estoy al lado de {owner}. Si estás cansado, descansemos un rato, ¿vale?",
+        "No estés triste, {owner}. Incluso si el mundo exterior está oscuro o tormentoso, ¡NOVA siempre está contigo!",
+        "¡Vamos {owner}! Deja que NOVA te ayude con tareas pesadas para que no te canses."
+      ]
+    },
+    "A_SOC_007": {
+      "lines": [
+        "¡Soy el robot NOVA de {owner}! Mi personalidad es {personality}, mi relación contigo es {bond}/100 y mi profesión actual es {profession}."
+      ]
+    },
+    "A_SOC_008": {
+      "lines": [
+        "En mi memoria está escrito: “{memory}” (Nivel de adjunto: {bond}/100 • Logro: {totals})."
+      ],
+      "variants": [
+        {
+          "when": "no_memories",
+          "lines": [
+            "Mi cuaderno de aniversario está esperando los primeros hitos con {owner}. ¡Vamos a excavar minerales, talar árboles o luchar para salvar recuerdos!"
+          ]
+        }
+      ]
+    }
+  }
+}

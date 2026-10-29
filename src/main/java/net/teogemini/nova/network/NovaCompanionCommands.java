@@ -74,7 +74,7 @@ public final class NovaCompanionCommands {
             memories.initialize(nova.getUUID().hashCode());
             if (request.action==1) memories.cyclePersonality();
             if (request.action==2) memories.toggleAutoTools();
-            String name=nova.getName().getString();
+            String name=nova.getNovaDisplayName();
             ServerPlayNetworking.send(player,new Page(nova.getId(),nova.getUUID(),name.substring(0,Math.min(128,name.length())),
                     memories.personality().label,memories.bond(),memories.autoTools(),memories.totals(),memories.journal(),
                     memories.deposits().size(),memories.buttons().size()));
@@ -84,6 +84,7 @@ public final class NovaCompanionCommands {
         if (hand!=InteractionHand.MAIN_HAND || player.isSpectator() || !player.isShiftKeyDown()
                 || !player.getItemInHand(hand).is(net.teogemini.nova.registry.ModBlocks.NOVA_CONTROL_ROD_ITEM)) return InteractionResult.PASS;
         var pos=hit.getBlockPos(); var state=level.getBlockState(pos);
+        if (state.is(net.teogemini.nova.registry.ModBlocks.NOVA_CHEST)) return InteractionResult.PASS;
         boolean button=state.getBlock() instanceof ButtonBlock;
         if (!button && !NovaChestAccess.chestBlock(state)) return InteractionResult.PASS;
         if (!(level instanceof ServerLevel server) || !(player instanceof ServerPlayer owner)) return InteractionResult.SUCCESS;
@@ -93,6 +94,7 @@ public final class NovaCompanionCommands {
             NovaWorkSupport.message(player,"Dùng gậy điều khiển chọn NOVA ở gần trước, rồi Shift + bấm vào rương/nút cần cho phép.");
             return InteractionResult.SUCCESS;
         }
+        if (!button && nova.isSwordNova()) { NovaWorkSupport.message(nova, owner, "Mình là NOVA chiến đấu nên không sử dụng rương cất đồ."); return InteractionResult.SUCCESS; }
         GlobalPos global=GlobalPos.of(server.dimension(),pos.immutable());
         int result=button ? nova.companion().memories().toggleButton(global) : nova.companion().memories().toggleDeposit(global);
         nova.companion().retry.clear();

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:copper_hoe",
+    "minecraft:redstone"
+  ],
+  "result": {
+    "count": 1,
+    "id": "robot-nova_mod:nova_hoe"
+  }
+}

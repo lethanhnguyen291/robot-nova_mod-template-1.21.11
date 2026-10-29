@@ -1,0 +1,97 @@
+{
+  "version": 2,
+  "group": "movement",
+  "questions": [
+    {
+      "id": "MOV_001",
+      "intent": "FOLLOW",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "folge mir",
+        "komm mit"
+      ],
+      "answer": "A_MOV_001"
+    },
+    {
+      "id": "MOV_002",
+      "intent": "FREE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "lauf frei herum"
+      ],
+      "answer": "A_MOV_002"
+    },
+    {
+      "id": "MOV_003",
+      "intent": "WAIT",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "warte hier"
+      ],
+      "answer": "A_MOV_003"
+    },
+    {
+      "id": "MOV_004",
+      "intent": "SIT",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "setz dich"
+      ],
+      "answer": "A_MOV_004"
+    },
+    {
+      "id": "MOV_005",
+      "intent": "STAND",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "steh auf"
+      ],
+      "answer": "A_MOV_005"
+    }
+  ],
+  "answers": {
+    "A_MOV_001": {
+      "lines": [
+        "Klar! Ich habe in den Follow {owner}-Modus gewechselt. Wohin Sie auch gehen, ich werde Ihnen genau folgen!",
+        "Ich folge dir! Wenn Sie mehr als 7 Blocks entfernt sind, beschleunigen Sie automatisch und folgen."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "Es ist klar! NOVA-Krieger folgt Wache {owner}. Wer auch immer Sie angreift, ich werde mich sofort darum kümmern!"
+          ]
+        }
+      ]
+    },
+    "A_MOV_002": {
+      "lines": [
+        "Ich habe in den Free-Modus ({profession}) gewechselt. Wenn Sie „Aufgaben zuweisen“ aktivieren, werde ich den Bereich proaktiv bearbeiten.",
+        "Okay, ich werde mich hier frei bewegen."
+      ]
+    },
+    "A_MOV_003": {
+      "lines": [
+        "Ich werde an dieser Stelle warten, bis {owner} anruft.",
+        "Es ist klar, ich werde hier stehen bleiben und Wache halten."
+      ]
+    },
+    "A_MOV_004": {
+      "lines": [
+        "Lasst uns dort sitzen und uns ausruhen, wo wir sind. Wenn Sie weitermachen, sagen Sie {owner} einfach „Aufstehen“!",
+        "Okay, lasst uns hinsetzen, ausruhen und Energie sparen."
+      ]
+    },
+    "A_MOV_005": {
+      "lines": [
+        "Ich stand auf und war bereit, meine vorherige Kur fortzusetzen!",
+        "NOVA hat aufgestanden! Lasst uns unsere Arbeit fortsetzen, {owner}."
+      ]
+    }
+  }
+}

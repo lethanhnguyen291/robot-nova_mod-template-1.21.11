@@ -1,0 +1,119 @@
+{
+  "version": 2,
+  "group": "system",
+  "questions": [
+    {
+      "id": "SYS_001",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 95,
+      "phrases": [
+        "ajuda",
+        "o que você pode fazer",
+        "instruções"
+      ],
+      "answer": "A_SYS_001"
+    },
+    {
+      "id": "SYS_002",
+      "intent": "UNKNOWN",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "frase desconhecida"
+      ],
+      "answer": "A_SYS_002"
+    },
+    {
+      "id": "SYS_003",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 98,
+      "phrases": [
+        "como invocar nova",
+        "como construir nova"
+      ],
+      "answer": "A_SYS_003"
+    },
+    {
+      "id": "SYS_004",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 98,
+      "phrases": [
+        "como se reunir",
+        "formação de rali"
+      ],
+      "answer": "A_SYS_004"
+    }
+  ],
+  "answers": {
+    "A_SYS_001": {
+      "lines": [
+        "Tenho 5 profissões baseadas nas ferramentas da Caixa 1: Guerreiro de Espada Dupla, Mineiro (Copa), Lenhador (Machado), Fazendeiro (Enxada), Escavador (Pá). Você pode perguntar: \"o que você está fazendo\", \"equipamento atual\", \"onde está o baú\", \"quanta bateria resta\", \"por que você não faz isso\", ou dar ordens: \"siga-me\", \"livre\", \"espera\", \"senta\", \"liga o trabalho\", \"desliga o trabalho\", \"acena\", \"celebra\", \"acena com a cabeça\", \"desculpe\"."
+      ]
+    },
+    "A_SYS_002": {
+      "lines": [
+        "Não entendo muito bem o significado desta frase, {owner}. Atualmente minha profissão é {profession}. Você pode perguntar sobre “bateria”, “equipamento”, “baú”, “trabalho” ou digitar “instruções”!",
+        "Esta frase é um pouco estranha para minha memória. Deseja perguntar o status ({profession}, Bateria {battery}%) ou deseja fazer o pedido você mesmo? Digite “instruções” para ver os comandos."
+      ]
+    },
+    "A_SYS_003": {
+      "lines": [
+        "Para invocar NOVA: coloque 1 Bloco de Ferro no meio, 2 Blocos Redstone em ambos os lados como mãos, 1 Bloco Esmaltado nas costas como mochila e coloque a Abóbora Esculpida em cima. Vareta de controle feita de Luu Ly + Redstone + Lightning Rod. O Baú NOVA é feito de 4 Embriões de Ferro, 2 Embriões de Cobre, 2 Redstone em torno de 1 Baú de Madeira."
+      ]
+    },
+    "A_SYS_004": {
+      "lines": [
+        "Quando você coloca o stick de controle NOVA no chão (ou clica com o botão direito no stick colocado), todos os NOVA dentro de um raio de 64 blocos se reunirão em uma formação organizada na frente do stick. Clique com o botão direito novamente ou recupere o manípulo para dispersar o esquadrão!"
+      ]
+    },
+    "SYS_AMBIGUOUS": {
+      "lines": [
+        "Vejo que esta frase tem mais de um comando diferente. {owner}, esclareça um comando para mim; Vou manter o modo atual."
+      ]
+    },
+    "SYS_NO_AI": {
+      "lines": [
+        "Minha IA está bloqueada pelo atributo NoAI, portanto não pode se mover de acordo com este comando."
+      ]
+    },
+    "SYS_PANIC": {
+      "lines": [
+        "Estou temporariamente fugindo do perigo! Espere até que eu esteja seguro e então {owner} me dê a ordem novamente."
+      ]
+    },
+    "SYS_ACTION_BLOCKED": {
+      "lines": [
+        "No momento não consigo fazer esse movimento (talvez esteja carregando um baú ou não esteja firme no chão)."
+      ]
+    },
+    "SYS_NOT_STARTED": {
+      "lines": [
+        "Ainda não comecei a realizar movimentos."
+      ]
+    },
+    "SYS_WORK_PENDING": {
+      "lines": [
+        "Ativei o Tarefa e mudei para Gratuito, mas preciso verificar mais: {detail}"
+      ]
+    }
+  },
+  "followups": {
+    "why": [
+      "por que",
+      "por que isso"
+    ],
+    "need": [
+      "o que mais você precisa"
+    ],
+    "memory": [
+      "conte-me mais lembranças"
+    ],
+    "more": [
+      "o que mais",
+      "conte-me mais"
+    ]
+  }
+}

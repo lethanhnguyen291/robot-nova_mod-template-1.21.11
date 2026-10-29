@@ -1,0 +1,155 @@
+{
+  "version": 2,
+  "group": "smalltalk",
+  "questions": [
+    {
+      "id": "TALK_001",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "농담 좀 해줘",
+        "재미있는 말 좀 해봐"
+      ],
+      "answer": "A_TALK_001"
+    },
+    {
+      "id": "TALK_002",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "당신은 무엇을 좋아하나요?",
+        "당신이 가장 좋아하는 활동"
+      ],
+      "answer": "A_TALK_002"
+    },
+    {
+      "id": "TALK_003",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "너 내 친구가 되어줄래?",
+        "내 친구가 되어줘"
+      ],
+      "answer": "A_TALK_003"
+    },
+    {
+      "id": "TALK_004",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "당신은 두려워합니까?",
+        "너 괴물을 무서워하니?"
+      ],
+      "answer": "A_TALK_004"
+    },
+    {
+      "id": "TALK_005",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "오늘은 어때?",
+        "오늘은 행복하니?"
+      ],
+      "answer": "A_TALK_005"
+    },
+    {
+      "id": "TALK_006",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "나는 배고프다",
+        "음식이 필요해"
+      ],
+      "answer": "A_TALK_006"
+    },
+    {
+      "id": "TALK_007",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "표정",
+        "얼굴 바꾸는 법"
+      ],
+      "answer": "A_TALK_007"
+    }
+  ],
+  "answers": {
+    "A_TALK_001": {
+      "lines": [
+        "나무꾼 로봇이 숲 속으로 들어가 이렇게 말했습니다. 오늘은 문제의 근원을 해결하겠습니다!",
+        "레드스톤에 대한 이야기를 하려고 했는데, {owner}가 이야기를 듣고 휩쓸려 갈까봐 두려웠어요!",
+        "곡괭이가 말을 할 수 있다면 아마 다음과 같이 말할 것입니다. 이 문제에 대해 좀 더 자세히 알아 보겠습니다.",
+        "왜 좀비는 NOVA Warriors에게 감히 접근하지 못합니까? 왜냐하면 나에게는... 따뜻하게 환영할 검이 두 개 있기 때문이다!"
+      ]
+    },
+    "A_TALK_002": {
+      "lines": [
+        "제가 가장 좋아하는 점은 Redstone으로 완전히 충전되어 슬롯 1에 좋은 도구를 보관하고 {owner}로 베이스를 구축하는 것입니다!",
+        "제가 가장 좋아하는 것은 레드스톤 가루입니다! 알약 하나는 즉시 에너지를 20% 증가시킵니다."
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "저는 깊은 동굴을 탐험하고 {owner}에 가져갈 반짝이는 다이아몬드를 찾는 것을 좋아합니다!"
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "나는 NOVA 상자에 소지품을 깔끔하게 정리하고, 횃불을 밝게 유지하고, 도구의 내구성을 유지하는 것을 좋아합니다."
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "제가 제일 좋아하는 건 일 마치고 {owner}한테 칭찬받고 같이 춤추며 축하하는 거예요!"
+          ]
+        }
+      ]
+    },
+    "A_TALK_003": {
+      "lines": [
+        "물론 {owner}! 화창한 날이든 비오는 밤이든 NOVA는 항상 여러분의 충실한 동반자가 될 것입니다!",
+        "나는 또한 {owner}를 매우 좋아합니다! 현재 채권 수준은 {bond}/100입니다."
+      ]
+    },
+    "A_TALK_004": {
+      "lines": [
+        "인부로 일할 땐 위험에서 벗어나지만, 검을 1번 상자(혹은 양손검)에 넣어주시면 바로 {owner}를 지키는 전사가 되어드리겠습니다! 크리퍼의 경우 건물이 폭파되는 것을 방지하기 위해 현명하게 피합니다."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "나는 {profession}입니다! 좀비, 스켈레톤, 스파이더가 {owner} 근처에 접근하면 즉시 검을 뽑아 처리하겠습니다. 폭발성 크리퍼는 제외됩니다!"
+          ]
+        }
+      ]
+    },
+    "A_TALK_005": {
+      "lines": [
+        "오늘도 {owner}와 함께해서 좋았어요! 현재 실외는 {environment}입니다. {status}",
+        "매우 활력이 넘칩니다(배터리 {battery}%). 오늘 {owner}는 어떤가요?"
+      ]
+    },
+    "A_TALK_006": {
+      "lines": [
+        "{owner}, 빵, 구운 고기, 당근을 빠르게 먹어서 음식을 상쾌하게 만드세요! 나는 즉시 포만감을 느끼기 위해 레드스톤 알약 몇 개만 있으면 됩니다.",
+        "{owner}에 식량이 필요하면 농부가 될 수 있도록 호미를 주거나 검을 주세요. 동물을 사냥하여 고기를 얻을 수 있도록 해주세요!"
+      ]
+    },
+    "A_TALK_007": {
+      "lines": [
+        "내 얼굴에 비치는 LED 화면은 40가지 표정(0~39)까지! {owner}는 조종 스틱을 잡고 자신을 마우스 왼쪽 버튼으로 클릭한 후 \"표현\"을 선택하여 실시간으로 시청할 수 있습니다."
+      ]
+    }
+  }
+}

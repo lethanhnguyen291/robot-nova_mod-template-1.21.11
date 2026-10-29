@@ -65,6 +65,7 @@ public final class NovaRallyManager {
         var stationed = robots.stream().filter(nova -> nova.isRallying() && anchor.equals(nova.work().rallyFace)).toList();
         if (!stationed.isEmpty()) {
             stationed.forEach(NovaEntity::stopRally);
+            stationed.getFirst().sounds().play(net.teogemini.nova.sound.NovaSounds.Cue.DISMISS);
             level.playSound(null, anchor, SoundEvents.BELL_BLOCK, SoundSource.BLOCKS, 1.0F, 1.0F);
             NovaWorkSupport.message(owner, "Đội hình giải tán! Trở lại chế độ trước đó.");
             return InteractionResult.SUCCESS;
@@ -75,6 +76,7 @@ public final class NovaRallyManager {
             robots.get(index).startRally(formationPosition(anchor, facing, index), anchor);
         }
         robots.getFirst().work().showRallyLeader(robots.getFirst(), robots.size());
+        robots.getFirst().sounds().play(net.teogemini.nova.sound.NovaSounds.Cue.RALLY);
         level.playSound(null, anchor, SoundEvents.RAID_HORN.value(), SoundSource.BLOCKS, 5.0F, 1.0F);
         owner.displayClientMessage(Component.literal("Tập hợp đội hình!").withStyle(ChatFormatting.RED), true);
         return InteractionResult.SUCCESS;

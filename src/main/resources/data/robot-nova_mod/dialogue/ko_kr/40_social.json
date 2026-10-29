@@ -1,0 +1,195 @@
+{
+  "version": 2,
+  "group": "social",
+  "questions": [
+    {
+      "id": "SOC_001",
+      "intent": "HELLO",
+      "match": "contains",
+      "priority": 40,
+      "phrases": [
+        "안녕하세요",
+        "좋은 아침"
+      ],
+      "answer": "A_SOC_001"
+    },
+    {
+      "id": "SOC_002",
+      "intent": "GOODBYE",
+      "match": "contains",
+      "priority": 41,
+      "phrases": [
+        "안녕",
+        "안녕히 주무세요"
+      ],
+      "answer": "A_SOC_002"
+    },
+    {
+      "id": "SOC_003",
+      "intent": "THANKS",
+      "match": "contains",
+      "priority": 45,
+      "phrases": [
+        "감사합니다"
+      ],
+      "answer": "A_SOC_003"
+    },
+    {
+      "id": "SOC_004",
+      "intent": "PRAISE",
+      "match": "contains",
+      "priority": 43,
+      "phrases": [
+        "잘했어",
+        "당신은 귀엽다"
+      ],
+      "answer": "A_SOC_004"
+    },
+    {
+      "id": "SOC_005",
+      "intent": "APOLOGY",
+      "match": "contains",
+      "priority": 44,
+      "phrases": [
+        "미안해요",
+        "그건 미안해"
+      ],
+      "answer": "A_SOC_005"
+    },
+    {
+      "id": "SOC_006",
+      "intent": "COMFORT",
+      "match": "contains",
+      "priority": 42,
+      "phrases": [
+        "나는 슬프다",
+        "외롭다고 느껴져"
+      ],
+      "answer": "A_SOC_006"
+    },
+    {
+      "id": "SOC_007",
+      "intent": "PERSONALITY",
+      "match": "contains",
+      "priority": 60,
+      "phrases": [
+        "당신의 성격",
+        "당신은 누구입니까?"
+      ],
+      "answer": "A_SOC_007"
+    },
+    {
+      "id": "SOC_008",
+      "intent": "MEMORY",
+      "match": "contains",
+      "priority": 55,
+      "phrases": [
+        "추억",
+        "당신의 추억",
+        "무엇을 기억하시나요?"
+      ],
+      "answer": "A_SOC_008"
+    }
+  ],
+  "answers": {
+    "A_SOC_001": {
+      "lines": [
+        "안녕, {owner}! 내 역할은 {profession}이고 배터리는 {battery}%야. 무엇을 도와줄까?",
+        "노바가 여기 있어요! {owner}를 듣고 있어요."
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "안녕하세요 {owner}! 오늘 우리는 어떤 땅을 탐험할 것인가, 어떤 직업을 가질 것인가?",
+            "나 {owner}야! 나에게 알려주고 싶은 새로운 발견이 있나요?"
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "안녕하세요 {owner}입니다. 배터리({battery}%)를 확인했고 장비({profession})가 준비되었습니다.",
+            "안녕하세요 소유자 {owner}입니다! 장비를 잘 준비하고 출발합시다."
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "안녕하세요 {owner}! 당신을 만나면 에너지가 충전되는 기분이에요!",
+            "NOVA가 존재를 보고합니다! 오늘 {owner}는 어떤가요?"
+          ]
+        }
+      ]
+    },
+    "A_SOC_002": {
+      "lines": [
+        "또 만나요 {owner}! 항상 안전에 유의하겠습니다.",
+        "안녕 {owner}! 도움이 필요할 때마다 NOVA에 전화하세요."
+      ]
+    },
+    "A_SOC_003": {
+      "lines": [
+        "괜찮습니다 {owner}. 도와드리게 되어 기쁘게 생각합니다!",
+        "우리는 좋은 팀이에요! 필요한 것이 있으면 {owner}, 저에게 주세요.",
+        "{owner}와 함께하는 것은 NOVA의 가장 큰 임무입니다!"
+      ]
+    },
+    "A_SOC_004": {
+      "lines": [
+        "{owner} 정말 감사합니다! 칭찬을 들으니 일할 의욕이 더 솟아오르네요!",
+        "ᄒᄒ 항상 {owner}의 1등 로봇이 될 수 있도록 노력하겠습니다!"
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "{owner} 감사합니다! 나는 당신과 함께 더 많은 것을 배우고 발견하고 싶습니다."
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "{owner}님, 감사합니다. 앞으로도 꼼꼼하고 안전하게 작업하겠습니다."
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "이야! {owner}로부터 칭찬을 받는 것은 정말 재미있습니다! 감사합니다!"
+          ]
+        }
+      ]
+    },
+    "A_SOC_005": {
+      "lines": [
+        "괜찮아 {owner}, 진심이 아니었음을 알아요. 우리는 계속해서 당신과 동행할 것입니다!",
+        "나는 {owner}에게 화를 내지 않습니다! 당신은 항상 NOVA의 가장 친한 친구입니다."
+      ]
+    },
+    "A_SOC_006": {
+      "lines": [
+        "저는 항상 {owner} 옆에 있어요. 피곤하면 잠시 쉬자, 응?",
+        "슬퍼하지 마세요, {owner}. 바깥 세상이 어둡거나 폭풍우가 몰아쳐도 NOVA는 항상 당신과 함께합니다!",
+        "어서 {owner}! 피곤하지 않도록 NOVA가 어려운 작업을 도와드리겠습니다."
+      ]
+    },
+    "A_SOC_007": {
+      "lines": [
+        "나는 {owner}의 NOVA 로봇이다! 내 성격은 {personality}이고, 나와 당신의 관계는 {bond}/100이며, 현재 직업은 {profession}입니다."
+      ]
+    },
+    "A_SOC_008": {
+      "lines": [
+        "내 기억에는 \"{memory}\"(부착 수준: {bond}/100 • 업적: {totals})라고 적혀 있습니다."
+      ],
+      "variants": [
+        {
+          "when": "no_memories",
+          "lines": [
+            "내 기념일 노트는 {owner}의 첫 번째 이정표를 기다리고 있습니다. 광석을 캐고, 나무를 베고, 싸우며 추억을 간직하세요!"
+          ]
+        }
+      ]
+    }
+  }
+}

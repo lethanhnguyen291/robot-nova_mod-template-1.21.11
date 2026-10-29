@@ -1,0 +1,240 @@
+{
+  "version": 2,
+  "group": "status",
+  "questions": [
+    {
+      "id": "STA_001",
+      "intent": "STATUS",
+      "match": "contains",
+      "priority": 55,
+      "phrases": [
+        "あなたは何をしていますか",
+        "現在の状態"
+      ],
+      "answer": "A_STA_001"
+    },
+    {
+      "id": "STA_002",
+      "intent": "WHY",
+      "match": "contains",
+      "priority": 90,
+      "phrases": [
+        "なぜ仕事をしないのですか",
+        "なぜ立ち往生しているのですか"
+      ],
+      "answer": "A_STA_002"
+    },
+    {
+      "id": "STA_003",
+      "intent": "BATTERY",
+      "match": "contains",
+      "priority": 80,
+      "phrases": [
+        "バッテリー",
+        "電池",
+        "どれくらいのエネルギーが残っているのか"
+      ],
+      "answer": "A_STA_003"
+    },
+    {
+      "id": "STA_004",
+      "intent": "HEALTH",
+      "match": "contains",
+      "priority": 75,
+      "phrases": [
+        "体力",
+        "ヘルス",
+        "健康",
+        "怪我をしていますか"
+      ],
+      "answer": "A_STA_004"
+    },
+    {
+      "id": "STA_005",
+      "intent": "INVENTORY",
+      "match": "contains",
+      "priority": 70,
+      "phrases": [
+        "在庫",
+        "バックパックスペース"
+      ],
+      "answer": "A_STA_005"
+    },
+    {
+      "id": "STA_006",
+      "intent": "EXPERIENCE",
+      "match": "contains",
+      "priority": 68,
+      "phrases": [
+        "経験",
+        "あなたのレベル"
+      ],
+      "answer": "A_STA_006"
+    },
+    {
+      "id": "STA_007",
+      "intent": "NEED",
+      "match": "contains",
+      "priority": 60,
+      "phrases": [
+        "何が必要ですか",
+        "何が足りないのか"
+      ],
+      "answer": "A_STA_007"
+    },
+    {
+      "id": "STA_008",
+      "intent": "BATTERY",
+      "match": "contains",
+      "priority": 85,
+      "phrases": [
+        "充電方法",
+        "バッテリーを充電する方法"
+      ],
+      "answer": "A_STA_008"
+    },
+    {
+      "id": "STA_009",
+      "intent": "HEALTH",
+      "match": "contains",
+      "priority": 85,
+      "phrases": [
+        "治す方法",
+        "自己修復はどのように機能しますか"
+      ],
+      "answer": "A_STA_009"
+    },
+    {
+      "id": "STA_010",
+      "intent": "EQUIPMENT",
+      "match": "contains",
+      "priority": 78,
+      "phrases": [
+        "装備",
+        "現在の設備",
+        "どのような道具を持っていますか"
+      ],
+      "answer": "A_STA_010"
+    },
+    {
+      "id": "STA_011",
+      "intent": "CHEST",
+      "match": "contains",
+      "priority": 76,
+      "phrases": [
+        "リンクされた胸の位置",
+        "あなたの胸はどこですか"
+      ],
+      "answer": "A_STA_011"
+    },
+    {
+      "id": "STA_012",
+      "intent": "ENVIRONMENT",
+      "match": "contains",
+      "priority": 64,
+      "phrases": [
+        "天気",
+        "時刻"
+      ],
+      "answer": "A_STA_012"
+    }
+  ],
+  "answers": {
+    "A_STA_001": {
+      "lines": [
+        "{status} • 装備: {tool} • バッテリー: {battery}%、ヘルス: {health}。",
+        "{owner} をレポートします: {status} (バッテリー {battery}%、バックパック {occupied_slots}/27 セル)。"
+      ]
+    },
+    "A_STA_002": {
+      "lines": [
+        "現在、どのような状況でもスタックしたりブロックされたりすることはありません。 {status} 自分がそれを行っているように見えない場合は、作業半径の周囲に適切なターゲットが存在しない可能性があります。",
+        "すべて問題ありません ({profession})。 {status}"
+      ],
+      "variants": [
+        {
+          "when": "has_blocker",
+          "lines": [
+            "理由は次のとおりです。{owner}: {blocker}"
+          ]
+        }
+      ]
+    },
+    "A_STA_003": {
+      "lines": [
+        "現在のバッテリーの残量は {battery}% です。レッドストーン パウダーを右クリックするたびに、バッテリーが +20% 充電されます。",
+        "エネルギーは{battery}%です。バッテリーを無駄にするのは、仕事や自己修理をするときだけです。"
+      ],
+      "variants": [
+        {
+          "when": "battery_low",
+          "lines": [
+            "警告: バッテリーの残量は {battery}% のみです。 {owner} レッドストーンを押したまま右クリックして充電すると、作業を続けることができます。"
+          ]
+        }
+      ]
+    },
+    "A_STA_004": {
+      "lines": [
+        "私の現在の血液型は {health} (ピン: {battery}%) です。私はまだとても健康です!",
+        "本体状態:{health} HP。軽い怪我ならバッテリーを使って自分で修理します。"
+      ],
+      "variants": [
+        {
+          "when": "injured",
+          "lines": [
+            "怪我をしています({health} HP)!攻撃を受けずに 10 秒間経過し、バッテリー残量が 11% 以上になると、自動的に回復します。"
+          ]
+        }
+      ]
+    },
+    "A_STA_005": {
+      "lines": [
+        "私のバックパックは {occupied_slots}/27 セルを使用しています。本体装備:{tool}"
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "バックパックは{occupied_slots}/27セルを使用しています。私は{profession}なので、バックパックに予備の剣を複数入れておけば、戦うときに自動的に抜くことができます!"
+          ]
+        }
+      ]
+    },
+    "A_STA_006": {
+      "lines": [
+        "{experience} 累計実績: {totals}。レベルが高いほど、掘る/切るのが速くなり、より強く攻撃できます。"
+      ]
+    },
+    "A_STA_007": {
+      "lines": [
+        "{need}"
+      ]
+    },
+    "A_STA_008": {
+      "lines": [
+        "レッドストーン パウダーを手に持ち、(Shift キーを押したままにせずに) 自分自身を直接右クリックして、各錠剤 + 20% のバッテリーを充電します。現在のバッテリー: {battery}%。"
+      ]
+    },
+    "A_STA_009": {
+      "lines": [
+        "ダメージを受けずに 10 秒経過すると、自動的に自己修復回路が作動します。バッテリーの 1% を消費して、5 秒ごとに 1.0 HP を回復します (バッテリー バックアップの少なくとも 10% を保持)。現在の状態: {health}。"
+      ]
+    },
+    "A_STA_010": {
+      "lines": [
+        "私の現在の職業は {profession} です。機器詳細:{tool}"
+      ]
+    },
+    "A_STA_011": {
+      "lines": [
+        "チェスト情報: {chest}"
+      ]
+    },
+    "A_STA_012": {
+      "lines": [
+        "現在の屋外は {environment} です。私のステータス: {status}"
+      ]
+    }
+  }
+}

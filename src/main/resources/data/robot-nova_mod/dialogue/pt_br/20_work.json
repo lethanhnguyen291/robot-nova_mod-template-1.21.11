@@ -1,0 +1,224 @@
+{
+  "version": 2,
+  "group": "work",
+  "questions": [
+    {
+      "id": "JOB_001",
+      "intent": "WORK_ON",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "comece a trabalhar"
+      ],
+      "answer": "A_JOB_001"
+    },
+    {
+      "id": "JOB_002",
+      "intent": "WORK_OFF",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "pare de trabalhar"
+      ],
+      "answer": "A_JOB_002"
+    },
+    {
+      "id": "ACT_001",
+      "intent": "WAVE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "acene para mim"
+      ],
+      "answer": "A_ACT_001"
+    },
+    {
+      "id": "ACT_002",
+      "intent": "CELEBRATE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "comemore"
+      ],
+      "answer": "A_ACT_002"
+    },
+    {
+      "id": "ACT_003",
+      "intent": "APOLOGIZE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "peça desculpas"
+      ],
+      "answer": "A_ACT_003"
+    },
+    {
+      "id": "ACT_004",
+      "intent": "NOD",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "balance a cabeça"
+      ],
+      "answer": "A_ACT_004"
+    },
+    {
+      "id": "ACT_005",
+      "intent": "PROUD",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "mostre orgulho"
+      ],
+      "answer": "A_ACT_005"
+    },
+    {
+      "id": "JOB_101",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "como cortar árvores",
+        "instruções de corte de madeira"
+      ],
+      "answer": "A_JOB_101"
+    },
+    {
+      "id": "JOB_102",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "como extrair minérios",
+        "instruções de mineração"
+      ],
+      "answer": "A_JOB_102"
+    },
+    {
+      "id": "JOB_103",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "como cultivar",
+        "onde colocar sementes"
+      ],
+      "answer": "A_JOB_103"
+    },
+    {
+      "id": "JOB_104",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "como usar espadas",
+        "como empunhar duplamente"
+      ],
+      "answer": "A_JOB_104"
+    },
+    {
+      "id": "JOB_105",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "como cavar solo",
+        "como usar uma pá"
+      ],
+      "answer": "A_JOB_105"
+    },
+    {
+      "id": "JOB_106",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 99,
+      "phrases": [
+        "como vincular baús",
+        "como carregar um baú"
+      ],
+      "answer": "A_JOB_106"
+    }
+  ],
+  "answers": {
+    "A_JOB_001": {
+      "lines": [
+        "Atribuição habilitada e trocada para Freedom! Minha profissão atual é {profession}. Vou começar a trabalhar agora!",
+        "Receba pedidos! Realizarei a missão {profession} com meu equipamento atual ({tool})."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "Claro! NOVA Warrior ({profession}) ativou todos os 3 modos: Proteger {owner}, Patrulha para matar monstros e Caçar na área do Control Stick!"
+          ]
+        }
+      ]
+    },
+    "A_JOB_002": {
+      "lines": [
+        "Desativei o modo de atribuição de tarefas e pausei as operações.",
+        "Ok {owner}, vou parar de trabalhar para aguardar seu novo comando."
+      ]
+    },
+    "A_ACT_001": {
+      "lines": [
+        "Olá {owner}! Estou acenando para você!",
+        "NOVA acena seriamente para seu dono!"
+      ]
+    },
+    "A_ACT_002": {
+      "lines": [
+        "Aclamação! Vamos dançar para comemorar a vitória, {owner}!",
+        "Sim! Vamos comemorar!"
+      ]
+    },
+    "A_ACT_003": {
+      "lines": [
+        "Sinto muito {owner}... Tentarei fazer melhor da próxima vez!",
+        "Por favor, peça desculpas à NOVA, por favor, não fique com raiva de mim..."
+      ]
+    },
+    "A_ACT_004": {
+      "lines": [
+        "*Nod* Concordo plenamente com {owner}!",
+        "Está claro! NOVA acenou com a cabeça em confirmação!"
+      ]
+    },
+    "A_ACT_005": {
+      "lines": [
+        "Hehe, não pareço legal {owner}? A NOVA está sempre pronta!",
+        "*Incha o peito com orgulho* Sou o poderoso assistente de {owner}!"
+      ]
+    },
+    "A_JOB_101": {
+      "lines": [
+        "Trabalho de Lenhador: Coloque o Machado na Caixa de Ferramentas 1, vincule o Baú NOVA e ative Atribuir Trabalhos. Eu mesmo cortarei árvores naturais em um raio de 16 quarteirões, pegarei madeira/brotos de árvores e puxarei manualmente os brotos de árvores para minha mão esquerda para replantar a floresta! No nível 5, se você cortar uma raiz, a árvore inteira cairá!"
+      ]
+    },
+    "A_JOB_102": {
+      "lines": [
+        "Profissão de Mineiro: Coloque o Troféu na Caixa de Ferramentas 1, vincule o Baú NOVA e ative Atribuir Trabalhos. Eu mesmo explorei a caverna, priorizando escavar cada veio de minério antes de cavar em busca de rocha. A partir do nível 3, coloque a tocha na mochila ou na mão esquerda e você mesmo poderá acendê-la!"
+      ]
+    },
+    "A_JOB_103": {
+      "lines": [
+        "Trabalho de fazendeiro: Coloque a enxada na caixa de ferramentas 1, vincule o NOVA Chest e ative Atribuir trabalhos. Você só precisa colocar Sementes, Cenouras ou Batatas na sua Mochila (ou caixa da esquerda), eu puxarei as sementes para a minha mão esquerda para cavar o solo perto da água, semear as sementes e colher as plantas maduras!"
+      ]
+    },
+    "A_JOB_104": {
+      "lines": [
+        "Trabalho de Guerreiro: Coloque a Espada na Caixa de Ferramentas 1! Posso segurar Espadas Duplas com as duas mãos (aumentando o dano da mão secundária em 50% e cortando uma vez e meia mais rápido) se você colocar uma segunda espada em sua mochila ou caixa da mão esquerda. Eu não uso baús, mas patrulho o Control Stick, caço e protejo você como um lobo leal. Quando minha espada acabar, voltarei correndo para te contar!"
+      ]
+    },
+    "A_JOB_105": {
+      "lines": [
+        "Trabalho de escavação: coloque a pá na caixa de ferramentas 1, vincule o NOVA Chest e ative Atribuir trabalhos. Vou cavar solo, areia e cascalho em moldes 5x5 de cima para baixo e passar para a próxima caixa 5x5 quando terminar."
+      ]
+    },
+    "A_JOB_106": {
+      "lines": [
+        "Vincule um baú: Segure o controle analógico e clique com o botão direito em você mesmo, depois clique com o botão direito no baú NOVA por 60 segundos (cada baú principal só pode vincular 1 robô). Se você quiser adicionar até 9 baús extras, selecione você mesmo e então Shift + clique com o botão direito no baú de madeira normal. Se você quiser que eu carregue o baú com você, Shift + clique com o botão direito no baú NOVA!"
+      ]
+    }
+  }
+}

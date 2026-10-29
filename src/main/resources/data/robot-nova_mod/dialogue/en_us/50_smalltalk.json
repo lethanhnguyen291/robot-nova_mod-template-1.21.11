@@ -1,0 +1,155 @@
+{
+  "version": 2,
+  "group": "smalltalk",
+  "questions": [
+    {
+      "id": "TALK_001",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "tell me a joke",
+        "say something funny"
+      ],
+      "answer": "A_TALK_001"
+    },
+    {
+      "id": "TALK_002",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "what do you like",
+        "your favorite activity"
+      ],
+      "answer": "A_TALK_002"
+    },
+    {
+      "id": "TALK_003",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "will you be my friend",
+        "be my friend"
+      ],
+      "answer": "A_TALK_003"
+    },
+    {
+      "id": "TALK_004",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "are you afraid",
+        "are you scared of monsters"
+      ],
+      "answer": "A_TALK_004"
+    },
+    {
+      "id": "TALK_005",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "how are you today",
+        "are you happy today"
+      ],
+      "answer": "A_TALK_005"
+    },
+    {
+      "id": "TALK_006",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "I am hungry",
+        "I need food"
+      ],
+      "answer": "A_TALK_006"
+    },
+    {
+      "id": "TALK_007",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "facial expressions",
+        "how to change your face"
+      ],
+      "answer": "A_TALK_007"
+    }
+  ],
+  "answers": {
+    "A_TALK_001": {
+      "lines": [
+        "A Woodcutter robot went into the forest and said: Today I will solve the problem at the root!",
+        "I was going to tell the story about Redstone, but I was afraid that {owner} would get caught up in the story after hearing it!",
+        "If the Pickaxe could talk, it would probably say: Let me dig deeper into this issue for you!",
+        "Why don't Zombies dare to get close to NOVA Warriors? Because I have two swords to... warmly welcome!"
+      ]
+    },
+    "A_TALK_002": {
+      "lines": [
+        "What I like best is being fully charged with Redstone, holding good tools in slot 1 and building a base with {owner}!",
+        "My favorite is Redstone Powder! One pill instantly increases energy by 20%."
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "I love exploring deep caves and finding sparkling diamonds to bring back to {owner}!"
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "I like to arrange my belongings neatly in the NOVA Chest, keep my torches bright, and keep my tools durable."
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "What I like best is when I finish work, receive compliments from {owner}, and dance together to celebrate!"
+          ]
+        }
+      ]
+    },
+    "A_TALK_003": {
+      "lines": [
+        "Of course {owner}! Whether it's a sunny day or a rainy night, NOVA will always be your loyal companion!",
+        "I also love {owner} very much! Our bond level is now {bond}/100."
+      ]
+    },
+    "A_TALK_004": {
+      "lines": [
+        "When I work as a laborer, I will stay away from danger, but as long as you put the Sword in Box 1 (or 2-handed Sword), I will become a Warrior to protect {owner} right away! As for Creepers, I wisely avoid them to avoid blowing up your building."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "I'm {profession}! If Zombies, Skeletons or Spiders come close to {owner}, I will immediately draw my sword and deal with them, except for explosive Creepers!"
+          ]
+        }
+      ]
+    },
+    "A_TALK_005": {
+      "lines": [
+        "Today was great because I was with {owner}! Currently outdoor is {environment}. {status}",
+        "I feel very energetic (Battery {battery}%). How is {owner} today?"
+      ]
+    },
+    "A_TALK_006": {
+      "lines": [
+        "{owner}, quickly eat bread, grilled meat or carrots to refresh your food! As for me, I only need a few Redstone pills to feel full immediately.",
+        "If {owner} needs food, just give me the Hoe to be a Farmer or give me the Sword so I can hunt animals for meat for you!"
+      ]
+    },
+    "A_TALK_007": {
+      "lines": [
+        "The LED screen on my face has up to 40 different expressions (0 to 39)! {owner} can hold the Control Stick and left-click on yourself and select \"Expressions\" to watch live."
+      ]
+    }
+  }
+}

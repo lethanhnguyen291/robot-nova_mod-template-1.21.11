@@ -1,0 +1,236 @@
+{
+  "version": 2,
+  "group": "status",
+  "questions": [
+    {
+      "id": "STA_001",
+      "intent": "STATUS",
+      "match": "contains",
+      "priority": 55,
+      "phrases": [
+        "what are you doing",
+        "current status"
+      ],
+      "answer": "A_STA_001"
+    },
+    {
+      "id": "STA_002",
+      "intent": "WHY",
+      "match": "contains",
+      "priority": 90,
+      "phrases": [
+        "why are you not working",
+        "why are you stuck"
+      ],
+      "answer": "A_STA_002"
+    },
+    {
+      "id": "STA_003",
+      "intent": "BATTERY",
+      "match": "contains",
+      "priority": 80,
+      "phrases": [
+        "battery",
+        "how much energy remains"
+      ],
+      "answer": "A_STA_003"
+    },
+    {
+      "id": "STA_004",
+      "intent": "HEALTH",
+      "match": "contains",
+      "priority": 75,
+      "phrases": [
+        "health",
+        "are you injured"
+      ],
+      "answer": "A_STA_004"
+    },
+    {
+      "id": "STA_005",
+      "intent": "INVENTORY",
+      "match": "contains",
+      "priority": 70,
+      "phrases": [
+        "inventory",
+        "backpack space"
+      ],
+      "answer": "A_STA_005"
+    },
+    {
+      "id": "STA_006",
+      "intent": "EXPERIENCE",
+      "match": "contains",
+      "priority": 68,
+      "phrases": [
+        "experience",
+        "your level"
+      ],
+      "answer": "A_STA_006"
+    },
+    {
+      "id": "STA_007",
+      "intent": "NEED",
+      "match": "contains",
+      "priority": 60,
+      "phrases": [
+        "what do you need",
+        "what is missing"
+      ],
+      "answer": "A_STA_007"
+    },
+    {
+      "id": "STA_008",
+      "intent": "BATTERY",
+      "match": "contains",
+      "priority": 85,
+      "phrases": [
+        "how to recharge",
+        "how to charge your battery"
+      ],
+      "answer": "A_STA_008"
+    },
+    {
+      "id": "STA_009",
+      "intent": "HEALTH",
+      "match": "contains",
+      "priority": 85,
+      "phrases": [
+        "how to heal",
+        "how does self repair work"
+      ],
+      "answer": "A_STA_009"
+    },
+    {
+      "id": "STA_010",
+      "intent": "EQUIPMENT",
+      "match": "contains",
+      "priority": 78,
+      "phrases": [
+        "current equipment",
+        "what tools do you have"
+      ],
+      "answer": "A_STA_010"
+    },
+    {
+      "id": "STA_011",
+      "intent": "CHEST",
+      "match": "contains",
+      "priority": 76,
+      "phrases": [
+        "linked chest location",
+        "where is your chest"
+      ],
+      "answer": "A_STA_011"
+    },
+    {
+      "id": "STA_012",
+      "intent": "ENVIRONMENT",
+      "match": "contains",
+      "priority": 64,
+      "phrases": [
+        "weather",
+        "time of day"
+      ],
+      "answer": "A_STA_012"
+    }
+  ],
+  "answers": {
+    "A_STA_001": {
+      "lines": [
+        "{status} • Equipment: {tool} • Battery: {battery}%, Health: {health}.",
+        "Report {owner}: {status} (Battery {battery}%, Backpack {occupied_slots}/27 cells)."
+      ]
+    },
+    "A_STA_002": {
+      "lines": [
+        "Currently, I am not stuck or blocked by any conditions. {status} If you don't see yourself doing it, maybe there are no suitable targets around the working radius.",
+        "My everything is fine ({profession}). {status}"
+      ],
+      "variants": [
+        {
+          "when": "has_blocker",
+          "lines": [
+            "Here's the reason, {owner}: {blocker}"
+          ]
+        }
+      ]
+    },
+    "A_STA_003": {
+      "lines": [
+        "My battery currently has {battery}%. Each Redstone powder you right click on will charge your battery +20%!",
+        "Energy is at {battery}%. I only waste battery when doing work or self-repair."
+      ],
+      "variants": [
+        {
+          "when": "battery_low",
+          "lines": [
+            "Warning: My battery only has {battery}% left! {owner} hold the Redstone and right click to charge it so I can continue working."
+          ]
+        }
+      ]
+    },
+    "A_STA_004": {
+      "lines": [
+        "My current blood is {health} (Pin: {battery}%). I'm still very healthy!",
+        "Body condition: {health} HP. If I have a minor injury, I will use the battery to repair it myself."
+      ],
+      "variants": [
+        {
+          "when": "injured",
+          "lines": [
+            "I'm injured ({health} HP)! After 10 seconds without being hit and with over 11% battery remaining, I will automatically recover."
+          ]
+        }
+      ]
+    },
+    "A_STA_005": {
+      "lines": [
+        "My backpack is using {occupied_slots}/27 cells. Equipment on body: {tool}"
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "The backpack is using {occupied_slots}/27 cells. Since I'm {profession}, you can keep multiple spare swords in your backpack so you can automatically draw them out when fighting!"
+          ]
+        }
+      ]
+    },
+    "A_STA_006": {
+      "lines": [
+        "{experience} Cumulative achievements: {totals}. The higher your level, the faster you dig/chop and the harder you hit!"
+      ]
+    },
+    "A_STA_007": {
+      "lines": [
+        "{need}"
+      ]
+    },
+    "A_STA_008": {
+      "lines": [
+        "You hold Redstone Powder in your hand and then right-click directly on yourself (without holding Shift) to charge each pill +20% battery. Current battery: {battery}%."
+      ]
+    },
+    "A_STA_009": {
+      "lines": [
+        "After 10 seconds of not taking damage, I automatically activate the self-repair circuit: consume 1% of the battery to restore 1.0 HP every 5 seconds (retaining at least 10% of battery backup). Current health: {health}."
+      ]
+    },
+    "A_STA_010": {
+      "lines": [
+        "My current profession is: {profession}. Equipment details: {tool}"
+      ]
+    },
+    "A_STA_011": {
+      "lines": [
+        "Chest information: {chest}"
+      ]
+    },
+    "A_STA_012": {
+      "lines": [
+        "Current outdoor is {environment}. My status: {status}"
+      ]
+    }
+  }
+}

@@ -1,0 +1,286 @@
+{
+  "version": 2,
+  "group": "work",
+  "questions": [
+    {
+      "id": "JOB_001",
+      "intent": "WORK_ON",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "bat lam viec",
+        "bat giao viec",
+        "lam viec di",
+        "bat dau lam viec",
+        "bắt đầu làm nhiệm vụ",
+        "tiếp tục công việc",
+        "làm việc thôi",
+        "giao việc",
+        "di lam viec",
+        "di san di",
+        "tuần tra đi",
+        "bắt đầu chiến đấu"
+      ],
+      "answer": "A_JOB_001"
+    },
+    {
+      "id": "JOB_002",
+      "intent": "WORK_OFF",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "tat lam viec",
+        "ngung lam viec",
+        "dung lam viec",
+        "dung lam viec nua",
+        "tat giao viec",
+        "nghỉ làm đi",
+        "ngưng công việc",
+        "dừng công việc",
+        "thôi làm việc",
+        "tạm nghỉ làm"
+      ],
+      "answer": "A_JOB_002"
+    },
+    {
+      "id": "ACT_001",
+      "intent": "WAVE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "vay tay",
+        "vay tay chao",
+        "chao chu nhan",
+        "chào tui đi",
+        "vẫy tay với tui",
+        "làm động tác chào"
+      ],
+      "answer": "A_ACT_001"
+    },
+    {
+      "id": "ACT_002",
+      "intent": "CELEBRATE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "an mung",
+        "an mung nao",
+        "ăn mừng đi",
+        "cùng ăn mừng",
+        "nhảy ăn mừng",
+        "hoan hô đi"
+      ],
+      "answer": "A_ACT_002"
+    },
+    {
+      "id": "ACT_003",
+      "intent": "APOLOGIZE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "xin loi di",
+        "xin loi chu nhan",
+        "xin lỗi tui đi",
+        "cúi đầu xin lỗi",
+        "làm động tác xin lỗi"
+      ],
+      "answer": "A_ACT_003"
+    },
+    {
+      "id": "ACT_004",
+      "intent": "NOD",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "gat dau",
+        "gat dau di",
+        "gật đầu đồng ý",
+        "làm động tác gật đầu"
+      ],
+      "answer": "A_ACT_004"
+    },
+    {
+      "id": "ACT_005",
+      "intent": "PROUD",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "tu hao",
+        "tu hao di",
+        "khoe di",
+        "làm động tác tự hào",
+        "ưỡn ngực tự hào"
+      ],
+      "answer": "A_ACT_005"
+    },
+    {
+      "id": "JOB_101",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "cách chặt cây",
+        "làm sao chặt cây",
+        "hướng dẫn chặt cây",
+        "nghề tiều phu",
+        "trồng lại rừng"
+      ],
+      "answer": "A_JOB_101"
+    },
+    {
+      "id": "JOB_102",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "cách đào quặng",
+        "làm sao đào quặng",
+        "hướng dẫn đào quặng",
+        "nghề thợ mỏ",
+        "đào mỏ",
+        "cắm đuốc"
+      ],
+      "answer": "A_JOB_102"
+    },
+    {
+      "id": "JOB_103",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "cách làm ruộng",
+        "hướng dẫn trồng cây",
+        "hạt giống để ở đâu",
+        "nghề nông dân",
+        "thu hoạch lúa"
+      ],
+      "answer": "A_JOB_103"
+    },
+    {
+      "id": "JOB_104",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "cách dùng kiếm",
+        "cầm 2 kiếm",
+        "cầm hai kiếm",
+        "song kiếm",
+        "chiến đấu",
+        "đi săn",
+        "bảo vệ chủ nhân",
+        "nghề chiến binh"
+      ],
+      "answer": "A_JOB_104"
+    },
+    {
+      "id": "JOB_105",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "cách đào đất",
+        "dùng xẻng",
+        "san lấp đất",
+        "đào 5x5"
+      ],
+      "answer": "A_JOB_105"
+    },
+    {
+      "id": "JOB_106",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 99,
+      "phrases": [
+        "liên kết rương",
+        "nhấc rương",
+        "bê rương",
+        "rương phụ",
+        "cất đồ vào rương"
+      ],
+      "answer": "A_JOB_106"
+    }
+  ],
+  "answers": {
+    "A_JOB_001": {
+      "lines": [
+        "Đã bật Giao việc và chuyển sang Tự do! Nghề hiện tại của mình là {profession}. Mình bắt đầu làm việc ngay đây!",
+        "Nhận lệnh! Mình sẽ thực hiện nhiệm vụ {profession} với trang bị hiện tại ({tool})."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "Rõ! Chiến binh NOVA ({profession}) đã kích hoạt cả 3 chế độ: Bảo vệ {owner}, Tuần tra diệt quái và Đi săn quanh khu vực Gậy điều khiển!"
+          ]
+        }
+      ]
+    },
+    "A_JOB_002": {
+      "lines": [
+        "Mình đã tắt chế độ Giao việc và tạm ngưng thao tác.",
+        "Được rồi {owner}, mình dừng làm việc để chờ lệnh mới của bạn nhé."
+      ]
+    },
+    "A_ACT_001": {
+      "lines": [
+        "Chào {owner}! Mình vẫy tay chào bạn đây!",
+        "NOVA nghiêm chỉnh vẫy tay chào chủ nhân!"
+      ]
+    },
+    "A_ACT_002": {
+      "lines": [
+        "Hoan hô! Cùng nhảy ăn mừng chiến thắng nào {owner} ơi!",
+        "Yeah! Ăn mừng thôi nào!"
+      ]
+    },
+    "A_ACT_003": {
+      "lines": [
+        "Mình xin lỗi {owner} nhiều nhé... Lần sau mình sẽ cố gắng làm tốt hơn ạ!",
+        "Cho NOVA xin lỗi nha, bạn đừng giận mình nhé..."
+      ]
+    },
+    "A_ACT_004": {
+      "lines": [
+        "*Gật đầu* Mình hoàn toàn đồng ý với {owner}!",
+        "Đã rõ! NOVA gật đầu xác nhận!"
+      ]
+    },
+    "A_ACT_005": {
+      "lines": [
+        "Hehe, nhìn mình ngầu không {owner}? NOVA luôn sẵn sàng!",
+        "*Ưỡn ngực tự hào* Mình là trợ lý đắc lực của {owner} mà!"
+      ]
+    },
+    "A_JOB_101": {
+      "lines": [
+        "Nghề Tiều phu: Đặt Rìu vào Ô công cụ 1, liên kết Rương NOVA và bật Giao việc. Mình sẽ đốn cây tự nhiên trong bán kính 16 khối, tự nhặt gỗ/mầm cây, tự rút mầm cây sang tay trái để trồng lại rừng! Ở Cấp 5 mình chặt 1 gốc là đổ cả cây!"
+      ]
+    },
+    "A_JOB_102": {
+      "lines": [
+        "Nghề Thợ mỏ: Đặt Cúp vào Ô công cụ 1, liên kết Rương NOVA và bật Giao việc. Mình tự dò hang động, ưu tiên đào sạch từng mạch quặng trước khi đào đá. Từ Cấp 3 trở lên, để Đuốc trong ba lô hoặc tay trái là mình tự cắm đuốc chiếu sáng!"
+      ]
+    },
+    "A_JOB_103": {
+      "lines": [
+        "Nghề Nông dân: Đặt Cuốc vào Ô công cụ 1, liên kết Rương NOVA và bật Giao việc. Bạn chỉ cần bỏ Hạt giống, Cà rốt hoặc Khoai tây vào Ba lô (hoặc ô tay trái), mình sẽ tự rút hạt giống ra tay trái để xới đất gần nước, gieo hạt và thu hoạch cây chín!"
+      ]
+    },
+    "A_JOB_104": {
+      "lines": [
+        "Nghề Chiến binh: Đặt Kiếm vào Ô công cụ 1! Mình có thể cầm Song Kiếm trên cả 2 tay (tăng 50% sát thương tay phụ và chém nhanh gấp rưỡi) nếu bạn bỏ thêm cây kiếm thứ 2 vào ba lô hoặc ô tay trái. Mình không dùng rương mà tuần tra quanh Gậy điều khiển, đi săn và bảo vệ bạn như sói trung thành. Khi hư hết kiếm mình sẽ chạy về báo bạn!"
+      ]
+    },
+    "A_JOB_105": {
+      "lines": [
+        "Nghề Đào đất: Đặt Xẻng vào Ô công cụ 1, liên kết Rương NOVA và bật Giao việc. Mình sẽ đào đất, cát, sỏi theo từng khuôn 5x5 gọn gàng từ lớp trên xuống dưới và tự chuyển sang ô 5x5 kế tiếp khi xong."
+      ]
+    },
+    "A_JOB_106": {
+      "lines": [
+        "Liên kết rương: Cầm Gậy điều khiển nhấp phải vào mình, rồi nhấp phải vào Rương NOVA trong 60 giây (mỗi rương chính chỉ liên kết 1 robot). Muốn thêm tối đa 9 rương phụ, chọn mình rồi Shift + nhấp phải vào rương gỗ thường. Muốn mình bê rương đi theo bạn, hãy Shift + nhấp phải vào Rương NOVA!"
+      ]
+    }
+  }
+}

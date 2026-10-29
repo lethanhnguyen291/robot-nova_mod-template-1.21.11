@@ -30,8 +30,11 @@ public class NovaChopTreeGoal extends Goal {
     }
     @Override public boolean requiresUpdateEveryTick(){return true;}
     @Override public boolean canUse() {
-        if(!nova.canNovaWork() || nova.work().energy()<=100 || !nova.getMainHandItem().is(ItemTags.AXES)
-                || !nova.companion().usableTool(nova.getMainHandItem()) || nova.trees().full())return false;
+        if(!nova.canStartNovaJob() || nova.work().energy()<=100 || !nova.getPrimaryTool().is(ItemTags.AXES))return false;
+        if(!nova.companion().usableTool(nova.getPrimaryTool())) {
+            NovaWorkSupport.swapToolFromBody(nova);
+        }
+        if(!nova.companion().usableTool(nova.getPrimaryTool()) || nova.trees().full())return false;
         long now=nova.level().getGameTime();if(now<nextTry)return false;
         nextTry=now+10+Math.floorMod(nova.getId(),11);
         NovaTreeService.request(nova);
@@ -49,8 +52,9 @@ public class NovaChopTreeGoal extends Goal {
             if(!candidate.root().equals(tryingRoot)){tryingRoot=candidate.root();standAttempt=0;}
             var stands=NovaTreeService.stands(nova,candidate.root());
             if(standAttempt>=stands.size()) {
-                NovaTreeService.release(nova,candidate);nova.companion().retry.fail(candidate.root(),now);
-                standAttempt=0;continue;
+                NovaTreeService.release(nova,candidate);
+                nova.companion().stuck(candidate.root());
+                standAttempt=0;return false;
             }
             var target=stands.get(standAttempt);
             var result=NovaTreeService.route(nova,target);
@@ -61,24 +65,30 @@ public class NovaChopTreeGoal extends Goal {
         return false;
     }
     @Override public void start() {
+        nova.pathClearing().track(plan.root());
         finished=false;walkTicks=noProgress=replans=actionTicks=logIndex=0;previousDistance=Double.MAX_VALUE;
         nova.trees().begin(GlobalPos.of(nova.level().dimension(),plan.root()),plan);
+        NovaWorkSupport.autoSelectOffhandSapling(nova);
         nova.clearWorkAnimation();nova.getNavigation().moveTo(route,speed);
     }
     @Override public boolean canContinueToUse() {
-        return !finished && plan!=null && nova.canNovaWork() && nova.work().energy()>100
-                && nova.getMainHandItem().is(ItemTags.AXES) && nova.companion().usableTool(nova.getMainHandItem())
+        if(!nova.companion().usableTool(nova.getPrimaryTool())) {
+            NovaWorkSupport.swapToolFromBody(nova);
+        }
+        return !finished && plan!=null && nova.canStartNovaJob() && nova.work().energy()>100
+                && nova.getPrimaryTool().is(ItemTags.AXES) && nova.companion().usableTool(nova.getPrimaryTool())
                 && !nova.trees().protectedTree(nova.level().dimension(),plan)
                 && NovaTreeService.inside(nova,plan.root());
     }
     @Override public void tick() {
         if(!canContinueToUse() || !NovaTreeService.claim(nova,plan)){finished=true;return;}
         double distance=nova.distanceToSqr(Vec3.atBottomCenterOf(stand));
-        if(distance>1.5) {
+        boolean arrived = distance <= 0.6 || (nova.getNavigation().isDone() && distance <= 1.2);
+        if(!arrived) {
             nova.clearWorkAnimation();walkTicks++;
             if(walkTicks%20==0) {
                 noProgress=distance<previousDistance-.25 ? 0 : noProgress+20;previousDistance=distance;
-                if(noProgress>=80 || nova.getNavigation().isDone()) {
+                if(noProgress>=80 || (nova.getNavigation().isDone() && distance > 1.2)) {
                     var alternatives=NovaTreeService.stands(nova,plan.root());
                     var target=alternatives.get((standAttempt+replans+1)%alternatives.size());
                     var result=NovaTreeService.route(nova,target);
@@ -96,7 +106,8 @@ public class NovaChopTreeGoal extends Goal {
         if(rootState==null){finished=true;return;}
         if(actionTicks==0 && rootState.is(plan.species().log) && !NovaWorkSupport.canReach(nova,plan.root())) {
             // A reachable standing spot may still have an obstacle between the axe and trunk.
-            // Try the next side before placing the whole tree on the retry cooldown.
+            // Let the rescue Goal clear nearby leaves/terrain, then retry the tree.
+            nova.companion().stuck(plan.root());
             standAttempt++;finished=true;return;
         }
         NovaWorkSupport.faceTarget(nova,plan.root());nova.playWorkAnimation(NovaEntity.WORK_CHOP);
@@ -116,7 +127,7 @@ public class NovaChopTreeGoal extends Goal {
             nova.companion().gesture("proud");finished=true;
         }
     }
-    @Override public void stop() {
+    @Override public void stop() { nova.pathClearing().track(null);
         NovaTreeService.release(nova,plan);plan=null;route=null;
         nova.clearWorkAnimation();nova.getNavigation().stop();
     }

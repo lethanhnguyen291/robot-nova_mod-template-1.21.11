@@ -1,0 +1,194 @@
+{
+  "version": 2,
+  "group": "social",
+  "questions": [
+    {
+      "id": "SOC_001",
+      "intent": "HELLO",
+      "match": "contains",
+      "priority": 40,
+      "phrases": [
+        "Hallo",
+        "Guten Morgen"
+      ],
+      "answer": "A_SOC_001"
+    },
+    {
+      "id": "SOC_002",
+      "intent": "GOODBYE",
+      "match": "contains",
+      "priority": 41,
+      "phrases": [
+        "Auf Wiedersehen",
+        "gute Nacht"
+      ],
+      "answer": "A_SOC_002"
+    },
+    {
+      "id": "SOC_003",
+      "intent": "THANKS",
+      "match": "contains",
+      "priority": 45,
+      "phrases": [
+        "Danke"
+      ],
+      "answer": "A_SOC_003"
+    },
+    {
+      "id": "SOC_004",
+      "intent": "PRAISE",
+      "match": "contains",
+      "priority": 43,
+      "phrases": [
+        "gut gemacht",
+        "Du bist süß"
+      ],
+      "answer": "A_SOC_004"
+    },
+    {
+      "id": "SOC_005",
+      "intent": "APOLOGY",
+      "match": "contains",
+      "priority": 44,
+      "phrases": [
+        "Es tut mir leid",
+        "Tut mir leid"
+      ],
+      "answer": "A_SOC_005"
+    },
+    {
+      "id": "SOC_006",
+      "intent": "COMFORT",
+      "match": "contains",
+      "priority": 42,
+      "phrases": [
+        "Ich bin traurig",
+        "Ich fühle mich einsam"
+      ],
+      "answer": "A_SOC_006"
+    },
+    {
+      "id": "SOC_007",
+      "intent": "PERSONALITY",
+      "match": "contains",
+      "priority": 60,
+      "phrases": [
+        "Deine Persönlichkeit",
+        "Wer bist du?"
+      ],
+      "answer": "A_SOC_007"
+    },
+    {
+      "id": "SOC_008",
+      "intent": "MEMORY",
+      "match": "contains",
+      "priority": 55,
+      "phrases": [
+        "Deine Erinnerungen",
+        "Woran erinnerst du dich?"
+      ],
+      "answer": "A_SOC_008"
+    }
+  ],
+  "answers": {
+    "A_SOC_001": {
+      "lines": [
+        "Hallo, {owner}! Meine Aufgabe ist {profession}, mein Akku steht bei {battery}%. Wie kann ich helfen?",
+        "NOVA ist da! Ich höre {owner}."
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "Hallo {owner}! Welches Land werden wir heute erkunden oder welchen Beruf werden wir ausüben?",
+            "Ich bin es {owner}! Haben Sie neue Entdeckungen, von denen Sie mir erzählen möchten?"
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "Hallo {owner}. Ich habe die Batterie ({battery}%) überprüft und das Gerät ({profession}) ist bereit.",
+            "Hallo Besitzer {owner}! Bereiten wir unsere Ausrüstung sorgfältig vor und dann geht es los."
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "Hallo {owner}! Wenn ich dich treffe, fühle ich mich voller Energie!",
+            "NOVA meldet Präsenz! Wie geht es {owner} heute?"
+          ]
+        }
+      ]
+    },
+    "A_SOC_002": {
+      "lines": [
+        "Wir sehen uns wieder {owner}! Ich werde immer auf Sicherheit achten.",
+        "Auf Wiedersehen {owner}! Wenn Sie Hilfe benötigen, rufen Sie einfach NOVA an."
+      ]
+    },
+    "A_SOC_003": {
+      "lines": [
+        "Alles in Ordnung {owner}, es ist mir eine Freude, Ihnen zu helfen!",
+        "Wir sind ein gutes Team! Wenn Sie etwas brauchen, {owner}, geben Sie es mir einfach.",
+        "{owner} zu begleiten ist NOVAs größte Mission!"
+      ]
+    },
+    "A_SOC_004": {
+      "lines": [
+        "Vielen Dank {owner}! Wenn ich höre, dass Sie mich loben, motiviert es mich noch mehr, zu arbeiten!",
+        "Hehe, ich werde mein Bestes geben, um immer würdig zu sein, der Roboter Nummer 1 von {owner} zu sein!"
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "Vielen Dank {owner}! Ich möchte mit Dir noch mehr lernen und entdecken."
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "Vielen Dank {owner}. Ich werde weiterhin sorgfältig und sicher arbeiten."
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "Juhuu! Von {owner} ein Kompliment zu bekommen, macht so viel Spaß! Danke schön!"
+          ]
+        }
+      ]
+    },
+    "A_SOC_005": {
+      "lines": [
+        "Es ist okay {owner}, ich weiß, dass du es nicht so gemeint hast. Wir begleiten Sie weiterhin!",
+        "Ich bin {owner} nicht böse! Du bist immer NOVAs bester Freund."
+      ]
+    },
+    "A_SOC_006": {
+      "lines": [
+        "Ich bin immer direkt neben {owner}. Wenn du müde bist, lass uns eine Weile ausruhen, okay?",
+        "Sei nicht traurig, {owner}. Auch wenn die Welt draußen dunkel oder stürmisch ist, NOVA ist immer bei Ihnen!",
+        "Komm schon {owner}! Lassen Sie sich von NOVA bei schweren Aufgaben helfen, damit Sie nicht müde werden."
+      ]
+    },
+    "A_SOC_007": {
+      "lines": [
+        "Ich bin der NOVA-Roboter von {owner}! Meine Persönlichkeit ist {personality}, meine Beziehung zu Ihnen ist {bond}/100 und mein aktueller Beruf ist {profession}."
+      ]
+    },
+    "A_SOC_008": {
+      "lines": [
+        "In meiner Erinnerung steht geschrieben: „{memory}“ (Anhangsstufe: {bond}/100 • Erfolg: {totals})."
+      ],
+      "variants": [
+        {
+          "when": "no_memories",
+          "lines": [
+            "Mein Jubiläumsnotizbuch wartet mit {owner} auf die ersten Meilensteine. Lasst uns Erz graben, Bäume fällen oder kämpfen, um Erinnerungen zu retten!"
+          ]
+        }
+      ]
+    }
+  }
+}

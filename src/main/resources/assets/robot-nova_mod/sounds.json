@@ -1,0 +1,713 @@
+{
+  "entity.nova.boot": {
+    "subtitle": "subtitles.robot-nova_mod.nova.boot",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/boot_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/boot_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/boot_3",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.idle": {
+    "subtitle": "subtitles.robot-nova_mod.nova.idle",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/idle_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/idle_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/idle_3",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/idle_4",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/idle_5",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/idle_6",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.greet": {
+    "subtitle": "subtitles.robot-nova_mod.nova.greet",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/greet_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/greet_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/greet_3",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/greet_4",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/greet_5",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/greet_6",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.celebrate": {
+    "subtitle": "subtitles.robot-nova_mod.nova.celebrate",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/celebrate_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/celebrate_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/celebrate_3",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/celebrate_4",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/celebrate_5",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.ack": {
+    "subtitle": "subtitles.robot-nova_mod.nova.ack",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/ack_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/ack_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/ack_3",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/ack_4",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.chat": {
+    "subtitle": "subtitles.robot-nova_mod.nova.chat",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/chat_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/chat_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/chat_3",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/chat_4",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/chat_5",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/chat_6",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.curious": {
+    "subtitle": "subtitles.robot-nova_mod.nova.curious",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/curious_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/curious_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/curious_3",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/curious_4",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.hurt": {
+    "subtitle": "subtitles.robot-nova_mod.nova.hurt",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/hurt_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/hurt_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/hurt_3",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/hurt_4",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/hurt_5",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.death": {
+    "subtitle": "subtitles.robot-nova_mod.nova.death",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/death_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/death_2",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.step": {
+    "subtitle": "subtitles.robot-nova_mod.nova.step",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/step_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/step_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/step_3",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/step_4",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.work": {
+    "subtitle": "subtitles.robot-nova_mod.nova.work",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/work_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/work_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/work_3",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.recharge": {
+    "subtitle": "subtitles.robot-nova_mod.nova.recharge",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/recharge_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/recharge_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/recharge_3",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/recharge_4",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.low_battery": {
+    "subtitle": "subtitles.robot-nova_mod.nova.low_battery",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/low_battery_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/low_battery_2",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.repair": {
+    "subtitle": "subtitles.robot-nova_mod.nova.repair",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/repair_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/repair_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/repair_3",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.complete": {
+    "subtitle": "subtitles.robot-nova_mod.nova.complete",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/complete_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/complete_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/complete_3",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/complete_4",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.help": {
+    "subtitle": "subtitles.robot-nova_mod.nova.help",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/help_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/help_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/help_3",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/help_4",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.level_up": {
+    "subtitle": "subtitles.robot-nova_mod.nova.level_up",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/level_up_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/level_up_2",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.sleep": {
+    "subtitle": "subtitles.robot-nova_mod.nova.sleep",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/sleep_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/sleep_2",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.wake": {
+    "subtitle": "subtitles.robot-nova_mod.nova.wake",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/wake_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/wake_2",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.tame": {
+    "subtitle": "subtitles.robot-nova_mod.nova.tame",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/tame_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/tame_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/tame_3",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.thanks": {
+    "subtitle": "subtitles.robot-nova_mod.nova.thanks",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/thanks_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/thanks_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/thanks_3",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/thanks_4",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.sad": {
+    "subtitle": "subtitles.robot-nova_mod.nova.sad",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/sad_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/sad_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/sad_3",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.comfort": {
+    "subtitle": "subtitles.robot-nova_mod.nova.comfort",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/comfort_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/comfort_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/comfort_3",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.fear": {
+    "subtitle": "subtitles.robot-nova_mod.nova.fear",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/fear_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/fear_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/fear_3",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.think": {
+    "subtitle": "subtitles.robot-nova_mod.nova.think",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/think_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/think_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/think_3",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.equip": {
+    "subtitle": "subtitles.robot-nova_mod.nova.equip",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/equip_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/equip_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/equip_3",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.link": {
+    "subtitle": "subtitles.robot-nova_mod.nova.link",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/link_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/link_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/link_3",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.chest_lift": {
+    "subtitle": "subtitles.robot-nova_mod.nova.chest_lift",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/chest_lift_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/chest_lift_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/chest_lift_3",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.chest_drop": {
+    "subtitle": "subtitles.robot-nova_mod.nova.chest_drop",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/chest_drop_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/chest_drop_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/chest_drop_3",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.bag_open": {
+    "subtitle": "subtitles.robot-nova_mod.nova.bag_open",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/bag_open_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/bag_open_2",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.bag_close": {
+    "subtitle": "subtitles.robot-nova_mod.nova.bag_close",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/bag_close_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/bag_close_2",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.attack": {
+    "subtitle": "subtitles.robot-nova_mod.nova.attack",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/attack_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/attack_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/attack_3",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/attack_4",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.work_chop": {
+    "subtitle": "subtitles.robot-nova_mod.nova.work_chop",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/work_chop_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/work_chop_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/work_chop_3",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.work_mine": {
+    "subtitle": "subtitles.robot-nova_mod.nova.work_mine",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/work_mine_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/work_mine_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/work_mine_3",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.work_dig": {
+    "subtitle": "subtitles.robot-nova_mod.nova.work_dig",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/work_dig_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/work_dig_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/work_dig_3",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.work_farm": {
+    "subtitle": "subtitles.robot-nova_mod.nova.work_farm",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/work_farm_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/work_farm_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/work_farm_3",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.work_plant": {
+    "subtitle": "subtitles.robot-nova_mod.nova.work_plant",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/work_plant_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/work_plant_2",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/work_plant_3",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.rally": {
+    "subtitle": "subtitles.robot-nova_mod.nova.rally",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/rally_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/rally_2",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "entity.nova.dismiss": {
+    "subtitle": "subtitles.robot-nova_mod.nova.dismiss",
+    "sounds": [
+      {
+        "name": "robot-nova_mod:nova/dismiss_1",
+        "attenuation_distance": 16
+      },
+      {
+        "name": "robot-nova_mod:nova/dismiss_2",
+        "attenuation_distance": 16
+      }
+    ]
+  }
+}

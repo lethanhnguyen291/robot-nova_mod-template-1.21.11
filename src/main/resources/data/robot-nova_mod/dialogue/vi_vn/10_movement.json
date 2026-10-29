@@ -1,0 +1,149 @@
+{
+  "version": 2,
+  "group": "movement",
+  "questions": [
+    {
+      "id": "MOV_001",
+      "intent": "FOLLOW",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "theo tui",
+        "theo toi",
+        "theo minh",
+        "di theo",
+        "di theo tui",
+        "di theo toi",
+        "di theo minh",
+        "theo chu nhan",
+        "đi cùng tui",
+        "đi cùng tôi",
+        "đi cùng mình",
+        "đi với tui",
+        "đi với tôi",
+        "đi với mình",
+        "theo sát tui",
+        "theo sát mình",
+        "lại đây",
+        "lại đây với tui",
+        "lại đây với mình",
+        "đi theo hộ vệ"
+      ],
+      "answer": "A_MOV_001"
+    },
+    {
+      "id": "MOV_002",
+      "intent": "FREE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "tu do",
+        "di choi di",
+        "tu di lai",
+        "di dao",
+        "đi dạo quanh đây",
+        "tự đi chơi",
+        "cứ đi lại tự do",
+        "chế độ tự do",
+        "hoạt động tự do"
+      ],
+      "answer": "A_MOV_002"
+    },
+    {
+      "id": "MOV_003",
+      "intent": "WAIT",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "dung cho",
+        "dung yen",
+        "cho o day",
+        "dung o day",
+        "dung di theo tui",
+        "dung di theo toi",
+        "dung theo tui",
+        "dung theo toi",
+        "chờ tui ở đây",
+        "chờ tôi ở đây",
+        "chờ mình ở đây",
+        "đợi ở đây",
+        "ở yên đây",
+        "đứng lại",
+        "dừng lại ở đây"
+      ],
+      "answer": "A_MOV_003"
+    },
+    {
+      "id": "MOV_004",
+      "intent": "SIT",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "ngoi",
+        "ngoi xuong",
+        "ngoi nghi",
+        "ngồi nghỉ một chút",
+        "ngồi xuống nghỉ",
+        "ngồi tại chỗ",
+        "ngồi yên"
+      ],
+      "answer": "A_MOV_004"
+    },
+    {
+      "id": "MOV_005",
+      "intent": "STAND",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "dung day",
+        "dung ngoi nua",
+        "đứng lên",
+        "dậy thôi",
+        "đứng lên nào",
+        "đứng dậy đi",
+        "hết giờ nghỉ rồi"
+      ],
+      "answer": "A_MOV_005"
+    }
+  ],
+  "answers": {
+    "A_MOV_001": {
+      "lines": [
+        "Rõ! Mình chuyển sang chế độ Đi theo {owner}. Bạn đi đâu mình theo sát đó!",
+        "Mình theo bạn đây! Nếu cách xa trên 7 khối mình sẽ tự động tăng tốc chạy theo."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "Đã rõ! Chiến binh NOVA đi theo hộ vệ {owner}. Kẻ nào tấn công bạn, mình sẽ xử lý ngay!"
+          ]
+        }
+      ]
+    },
+    "A_MOV_002": {
+      "lines": [
+        "Mình đã chuyển sang chế độ Tự do ({profession}). Nếu bạn bật Giao việc, mình sẽ chủ động làm việc quanh khu vực.",
+        "Được rồi, mình sẽ tự do di chuyển quanh đây nhé."
+      ]
+    },
+    "A_MOV_003": {
+      "lines": [
+        "Mình sẽ đứng chờ tại vị trí này cho tới khi {owner} gọi.",
+        "Đã rõ, mình đứng yên canh giữ ở đây nhé."
+      ]
+    },
+    "A_MOV_004": {
+      "lines": [
+        "Mình ngồi nghỉ tại chỗ nhé. Khi nào đi tiếp {owner} cứ bảo “đứng dậy”!",
+        "Được rồi, mình ngồi xuống nghỉ ngơi và tiết kiệm năng lượng đây."
+      ]
+    },
+    "A_MOV_005": {
+      "lines": [
+        "Mình đã đứng dậy và sẵn sàng tiếp tục chế độ trước đó!",
+        "NOVA đã đứng lên! Chúng mình tiếp tục công việc thôi {owner} ơi."
+      ]
+    }
+  }
+}

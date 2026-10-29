@@ -1,0 +1,155 @@
+{
+  "version": 2,
+  "group": "smalltalk",
+  "questions": [
+    {
+      "id": "TALK_001",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "给我讲个笑话",
+        "说一些有趣的话"
+      ],
+      "answer": "A_TALK_001"
+    },
+    {
+      "id": "TALK_002",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "你喜欢什么",
+        "你最喜欢的活动"
+      ],
+      "answer": "A_TALK_002"
+    },
+    {
+      "id": "TALK_003",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "你愿意做我的朋友吗",
+        "做我的朋友"
+      ],
+      "answer": "A_TALK_003"
+    },
+    {
+      "id": "TALK_004",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "你害怕吗",
+        "你害怕怪物吗"
+      ],
+      "answer": "A_TALK_004"
+    },
+    {
+      "id": "TALK_005",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "你今天怎么样",
+        "你今天快乐吗"
+      ],
+      "answer": "A_TALK_005"
+    },
+    {
+      "id": "TALK_006",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "我饿了",
+        "我需要食物"
+      ],
+      "answer": "A_TALK_006"
+    },
+    {
+      "id": "TALK_007",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "面部表情",
+        "如何改变你的脸"
+      ],
+      "answer": "A_TALK_007"
+    }
+  ],
+  "answers": {
+    "A_TALK_001": {
+      "lines": [
+        "一个樵夫机器人走进森林说:今天我要从根本上解决问题!",
+        "本来想讲一下红石的故事,但是又怕{owner}听完之后会陷入其中!",
+        "如果镐会说话,它可能会说:让我为你深入研究一下这个问题!",
+        "为什么僵尸不敢靠近NOVA战士?因为我有两把剑......热烈欢迎!"
+      ]
+    },
+    "A_TALK_002": {
+      "lines": [
+        "我最喜欢的是充满红石,在插槽 1 中持有好工具并使用 {owner} 建造基地!",
+        "我最喜欢的是红石粉!一粒药丸立即增加 20% 的能量。"
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "我喜欢探索深处的洞穴并寻找闪闪发光的钻石带回 {owner}!"
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "我喜欢将我的物品整齐地摆放在 NOVA 箱中,保持我的手电筒明亮,并保持我的工具耐用。"
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "我最喜欢的就是当我完成工作,收到{owner}的赞美,一起跳舞庆祝!"
+          ]
+        }
+      ]
+    },
+    "A_TALK_003": {
+      "lines": [
+        "当然是{owner}!无论是晴天还是雨夜,NOVA永远是您忠实的伴侣!",
+        "我也非常喜欢{owner}!我们的债券水平现在是 {bond}/100。"
+      ]
+    },
+    "A_TALK_004": {
+      "lines": [
+        "当我当工人的时候,我会远离危险,但只要你把剑放进1号盒子里(或者2手剑),我马上就会成为一个战士来保护{owner}!至于苦力怕,我明智地避开它们,以免炸毁你的建筑物。"
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "我是{profession}!如果僵尸、骷髅、蜘蛛接近{owner},我会立即拔剑对付它们,除了爆炸爬行者!"
+          ]
+        }
+      ]
+    },
+    "A_TALK_005": {
+      "lines": [
+        "今天很棒,因为我和 {owner} 在一起!目前室外是{environment}。 {status}",
+        "我感觉精力非常充沛(电池{battery}%)。 {owner} 今天怎么样?"
+      ]
+    },
+    "A_TALK_006": {
+      "lines": [
+        "{owner},赶紧吃面包、烤肉或者胡萝卜来提神你的食物吧!而我,只需要几粒红石药丸,就能立刻感到饱足。",
+        "如果 {owner} 需要食物,就给我锄头让我成为农民,或者给我剑,这样我就可以为你捕猎动物!"
+      ]
+    },
+    "A_TALK_007": {
+      "lines": [
+        "我脸上的 LED 屏幕有多达 40 种不同的表情(0 到 39)! {owner}可以按住控制杆左键点击自己,选择“表情”来观看直播。"
+      ]
+    }
+  }
+}

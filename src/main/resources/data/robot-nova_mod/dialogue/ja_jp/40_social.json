@@ -1,0 +1,195 @@
+{
+  "version": 2,
+  "group": "social",
+  "questions": [
+    {
+      "id": "SOC_001",
+      "intent": "HELLO",
+      "match": "contains",
+      "priority": 40,
+      "phrases": [
+        "こんにちは。",
+        "おはようございます"
+      ],
+      "answer": "A_SOC_001"
+    },
+    {
+      "id": "SOC_002",
+      "intent": "GOODBYE",
+      "match": "contains",
+      "priority": 41,
+      "phrases": [
+        "さようなら",
+        "おやすみ"
+      ],
+      "answer": "A_SOC_002"
+    },
+    {
+      "id": "SOC_003",
+      "intent": "THANKS",
+      "match": "contains",
+      "priority": 45,
+      "phrases": [
+        "ありがとう"
+      ],
+      "answer": "A_SOC_003"
+    },
+    {
+      "id": "SOC_004",
+      "intent": "PRAISE",
+      "match": "contains",
+      "priority": 43,
+      "phrases": [
+        "よくやった",
+        "あなたはかわいいです"
+      ],
+      "answer": "A_SOC_004"
+    },
+    {
+      "id": "SOC_005",
+      "intent": "APOLOGY",
+      "match": "contains",
+      "priority": 44,
+      "phrases": [
+        "ごめんなさい",
+        "それについては申し訳ありません"
+      ],
+      "answer": "A_SOC_005"
+    },
+    {
+      "id": "SOC_006",
+      "intent": "COMFORT",
+      "match": "contains",
+      "priority": 42,
+      "phrases": [
+        "悲しいです",
+        "寂しいです"
+      ],
+      "answer": "A_SOC_006"
+    },
+    {
+      "id": "SOC_007",
+      "intent": "PERSONALITY",
+      "match": "contains",
+      "priority": 60,
+      "phrases": [
+        "あなたの性格",
+        "あなたは誰ですか"
+      ],
+      "answer": "A_SOC_007"
+    },
+    {
+      "id": "SOC_008",
+      "intent": "MEMORY",
+      "match": "contains",
+      "priority": 55,
+      "phrases": [
+        "思い出",
+        "あなたの思い出",
+        "何を覚えていますか"
+      ],
+      "answer": "A_SOC_008"
+    }
+  ],
+  "answers": {
+    "A_SOC_001": {
+      "lines": [
+        "こんにちは、{owner}! 今の役割は{profession}で、バッテリーは{battery}%です。何を手伝おうか?",
+        "NOVAはここにあります! {owner}を聞いています。"
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "こんにちは、{owner}!今日はどの土地を探索するのか、あるいはどのような職業に就くのか?",
+            "私、{owner}です!私に伝えたい新しい発見はありますか?"
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "こんにちは、{owner}。バッテリー ({battery}%) を確認し、機器 ({profession}) の準備が整いました。",
+            "こんにちは、オーナー {owner}!しっかりと装備を整えて出発しましょう。"
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "こんにちは、{owner}!あなたに会えるとエネルギーがフル充電されます!",
+            "NOVAが存在感をレポート!今日の{owner}はどうですか?"
+          ]
+        }
+      ]
+    },
+    "A_SOC_002": {
+      "lines": [
+        "{owner} また会いましょう!常に安全には気をつけていきたいと思います。",
+        "さようなら、{owner}!助けが必要なときはいつでもNOVAに電話してください。"
+      ]
+    },
+    "A_SOC_003": {
+      "lines": [
+        "大丈夫です、{owner}、お役に立てて光栄です!",
+        "私たちは良いチームです!何か必要なものがあれば、{owner}、私にください。",
+        "{owner}への同行はNOVA最大の使命です!"
+      ]
+    },
+    "A_SOC_004": {
+      "lines": [
+        "{owner}さん、ありがとうございます!褒めてもらえると仕事のモチベーションも上がります!",
+        "ふふ、これからも{owner}のナンバー1ロボットに恥じないように頑張ります!"
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "{owner}さん、ありがとうございます!私はあなたと一緒にもっと多くのことを学び、発見したいと思っています。"
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "{owner}さん、ありがとうございます。これからも丁寧かつ安全に作業を進めてまいります。"
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "わーい! {owner} に褒められるのはとても楽しいです!ありがとう!"
+          ]
+        }
+      ]
+    },
+    "A_SOC_005": {
+      "lines": [
+        "大丈夫です、{owner}、本意ではないことはわかっています。これからも同行させていただきます!",
+        "私は{owner}に怒っていません!あなたはいつもNOVAの親友です。"
+      ]
+    },
+    "A_SOC_006": {
+      "lines": [
+        "私はいつも{owner}の隣にいます。疲れたら少し休みましょうね?",
+        "悲しくないでください、{owner}。外の世界が暗くても、嵐でも、NOVA はいつもあなたのそばにあります。",
+        "さあ、{owner}!面倒な作業はNOVAに任せて疲れないようにしましょう。"
+      ]
+    },
+    "A_SOC_007": {
+      "lines": [
+        "私は{owner}のNOVAロボットです!私の性格は {personality}、あなたとの関係は {bond}/100、私の現在の職業は {profession} です。"
+      ]
+    },
+    "A_SOC_008": {
+      "lines": [
+        "私の記憶では「{memory}」(愛着レベル:{bond}/100・実績:{totals})と書かれています。"
+      ],
+      "variants": [
+        {
+          "when": "no_memories",
+          "lines": [
+            "私の記念日ノートブックは、{owner} で最初のマイルストーンを待っています。鉱石を掘ったり、木を伐採したり、思い出を守るために戦ったりしましょう!"
+          ]
+        }
+      ]
+    }
+  }
+}

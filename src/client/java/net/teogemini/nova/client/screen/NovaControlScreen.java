@@ -96,20 +96,20 @@ public final class NovaControlScreen extends Screen {
         int subW = 68;
 
         // 1. Nút "Ra lệnh" (ở vị trí nút Đi theo cũ)
-        String cmdArrow = currentSubMenu == SubMenu.COMMANDS ? " ◀" : " ▶";
+        String cmdArrow = currentSubMenu == SubMenu.COMMANDS ? " ◀" : "";
         addRenderableWidget(Button.builder(Component.literal("Ra lệnh" + cmdArrow),
                 b -> switchSubMenu(SubMenu.COMMANDS))
                 .bounds(mainX, startY, mainW, btnH).build());
 
         // 2. Nút "Giao việc" (Thay ngọc lục bảo)
-        boolean isWorking = nova.work().enabled();
+        boolean isWorking = nova.isNovaWorkEnabled();
         String workLabel = isWorking ? "Giao việc: [Bật]" : "Giao việc: [Tắt]";
         addRenderableWidget(Button.builder(Component.literal(workLabel), b -> {
             sendAction(NovaControlPayload.TOGGLE_WORK, true);
         }).bounds(mainX, startY + gap, mainW, btnH).build());
 
         // 3. Nút "Biểu cảm" (Mở màn hình xem trực tiếp không bị che robot)
-        addRenderableWidget(Button.builder(Component.literal("Biểu cảm ▶"), b -> {
+        addRenderableWidget(Button.builder(Component.literal("Biểu cảm "), b -> {
             NovaEntity n = getNova();
             if (n != null) {
                 minecraft.setScreen(new NovaExpressionScreen(n));
@@ -117,7 +117,7 @@ public final class NovaControlScreen extends Screen {
         }).bounds(mainX, startY + gap * 2, mainW, btnH).build());
 
         // 4. Nút "Hành động" (Gộp chào, ăn mừng, xin lỗi, gật đầu, tự hào)
-        String actArrow = currentSubMenu == SubMenu.ACTIONS ? " ◀" : " ▶";
+        String actArrow = currentSubMenu == SubMenu.ACTIONS ? " ◀" : " ";
         addRenderableWidget(Button.builder(Component.literal("Hành động" + actArrow),
                 b -> switchSubMenu(SubMenu.ACTIONS))
                 .bounds(mainX, startY + gap * 3, mainW, btnH).build());
@@ -203,7 +203,7 @@ public final class NovaControlScreen extends Screen {
                 default -> "Đi theo";
             };
             String status = mode + (nova.isNovaSitRequested() ? " • Đang ngồi" : "")
-                    + (nova.work().enabled() ? " • Đang làm việc" : "");
+                    + (nova.isNovaWorkEnabled() ? " • Đang làm việc" : "");
             graphics.drawCenteredString(font, status, width / 2, height / 2 - 90, 0xFF80E5FF);
         }
     }

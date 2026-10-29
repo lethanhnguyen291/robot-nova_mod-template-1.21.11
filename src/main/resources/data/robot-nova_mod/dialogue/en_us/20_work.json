@@ -1,0 +1,231 @@
+{
+  "version": 2,
+  "group": "work",
+  "questions": [
+    {
+      "id": "JOB_001",
+      "intent": "WORK_ON",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "start working",
+        "enable work"
+      ],
+      "answer": "A_JOB_001"
+    },
+    {
+      "id": "JOB_002",
+      "intent": "WORK_OFF",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "stop working",
+        "disable work"
+      ],
+      "answer": "A_JOB_002"
+    },
+    {
+      "id": "ACT_001",
+      "intent": "WAVE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "wave",
+        "wave at me"
+      ],
+      "answer": "A_ACT_001"
+    },
+    {
+      "id": "ACT_002",
+      "intent": "CELEBRATE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "celebrate",
+        "celebrate with me"
+      ],
+      "answer": "A_ACT_002"
+    },
+    {
+      "id": "ACT_003",
+      "intent": "APOLOGIZE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "apologize",
+        "apologize to me"
+      ],
+      "answer": "A_ACT_003"
+    },
+    {
+      "id": "ACT_004",
+      "intent": "NOD",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "nod",
+        "nod your head"
+      ],
+      "answer": "A_ACT_004"
+    },
+    {
+      "id": "ACT_005",
+      "intent": "PROUD",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "show pride",
+        "be proud"
+      ],
+      "answer": "A_ACT_005"
+    },
+    {
+      "id": "JOB_101",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "how to chop trees",
+        "woodcutting instructions"
+      ],
+      "answer": "A_JOB_101"
+    },
+    {
+      "id": "JOB_102",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "how to mine ores",
+        "mining instructions"
+      ],
+      "answer": "A_JOB_102"
+    },
+    {
+      "id": "JOB_103",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "how to farm",
+        "where to put seeds"
+      ],
+      "answer": "A_JOB_103"
+    },
+    {
+      "id": "JOB_104",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "how to use swords",
+        "how to dual wield"
+      ],
+      "answer": "A_JOB_104"
+    },
+    {
+      "id": "JOB_105",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "how to dig soil",
+        "how to use a shovel"
+      ],
+      "answer": "A_JOB_105"
+    },
+    {
+      "id": "JOB_106",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 99,
+      "phrases": [
+        "how to link chests",
+        "how to carry a chest"
+      ],
+      "answer": "A_JOB_106"
+    }
+  ],
+  "answers": {
+    "A_JOB_001": {
+      "lines": [
+        "Enabled Assignment and switched to Freedom! My current profession is {profession}. I'll start working now!",
+        "Receive orders! I will perform mission {profession} with my current equipment ({tool})."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "Clear! NOVA Warrior ({profession}) has activated all 3 modes: Protect {owner}, Patrol to kill monsters and Hunt around the Control Stick area!"
+          ]
+        }
+      ]
+    },
+    "A_JOB_002": {
+      "lines": [
+        "I turned off Task Assignment mode and paused operations.",
+        "Okay {owner}, I'll stop working to wait for your new command."
+      ]
+    },
+    "A_ACT_001": {
+      "lines": [
+        "Hello {owner}! I'm waving to you!",
+        "NOVA seriously waves to its owner!"
+      ]
+    },
+    "A_ACT_002": {
+      "lines": [
+        "Acclaim! Let's dance to celebrate victory, {owner}!",
+        "Yeah! Let's celebrate!"
+      ]
+    },
+    "A_ACT_003": {
+      "lines": [
+        "I'm so sorry {owner}... I'll try to do better next time!",
+        "Please apologize to NOVA, please don't be angry with me..."
+      ]
+    },
+    "A_ACT_004": {
+      "lines": [
+        "*Nod* I completely agree with {owner}!",
+        "It's clear! NOVA nodded in confirmation!"
+      ]
+    },
+    "A_ACT_005": {
+      "lines": [
+        "Hehe, don't I look cool {owner}? NOVA is always ready!",
+        "*Puffs out his chest proudly* I'm {owner}'s powerful assistant!"
+      ]
+    },
+    "A_JOB_101": {
+      "lines": [
+        "Woodcutter Job: Place the Ax in Toolbox 1, link the NOVA Chest, and turn on Assign Jobs. I will cut down natural trees within a radius of 16 blocks, pick up wood/tree sprouts myself, and manually pull the tree sprouts to my left hand to replant the forest! At Level 5, if you cut down one root, the whole tree will fall!"
+      ]
+    },
+    "A_JOB_102": {
+      "lines": [
+        "Miner Profession: Place the Trophy in Toolbox 1, link the NOVA Chest, and turn on Assign Jobs. I explored the cave myself, prioritizing digging out each ore vein before digging for rock. From Level 3 and up, put the Torch in your backpack or left hand and you can light it yourself!"
+      ]
+    },
+    "A_JOB_103": {
+      "lines": [
+        "Farmer Job: Place Hoe in Toolbox 1, link NOVA Chest, and turn on Assign Jobs. You just need to put Seeds, Carrots or Potatoes in your Backpack (or left hand box), I will pull the seeds out to my left hand to dig up the soil near the water, sow the seeds and harvest the ripe plants!"
+      ]
+    },
+    "A_JOB_104": {
+      "lines": [
+        "Warrior Job: Place Sword in Toolbox 1! I can hold Dual Swords in both hands (increasing secondary hand damage by 50% and slashing one and a half times faster) if you put a second sword in your backpack or left hand box. I don't use chests but patrol around the Control Stick, hunt and protect you like a loyal wolf. When my sword runs out, I'll run back to tell you!"
+      ]
+    },
+    "A_JOB_105": {
+      "lines": [
+        "Digging Job: Place Shovel in Toolbox 1, link NOVA Chest, and turn on Assign Jobs. I will dig soil, sand, and gravel in neat 5x5 molds from top to bottom and move to the next 5x5 box when finished."
+      ]
+    },
+    "A_JOB_106": {
+      "lines": [
+        "Link a chest: Hold the Control Stick and right-click on yourself, then right-click on the NOVA Chest for 60 seconds (each main chest can only link 1 robot). If you want to add up to 9 extra chests, select yourself and then Shift + right click on the regular wooden chest. If you want me to carry the chest with you, Shift + right click on the NOVA Chest!"
+      ]
+    }
+  }
+}

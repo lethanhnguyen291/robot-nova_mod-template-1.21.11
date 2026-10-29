@@ -1,0 +1,224 @@
+{
+  "version": 2,
+  "group": "work",
+  "questions": [
+    {
+      "id": "JOB_001",
+      "intent": "WORK_ON",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "empieza a trabajar"
+      ],
+      "answer": "A_JOB_001"
+    },
+    {
+      "id": "JOB_002",
+      "intent": "WORK_OFF",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "deja de trabajar"
+      ],
+      "answer": "A_JOB_002"
+    },
+    {
+      "id": "ACT_001",
+      "intent": "WAVE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "saluda con la mano"
+      ],
+      "answer": "A_ACT_001"
+    },
+    {
+      "id": "ACT_002",
+      "intent": "CELEBRATE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "celebra"
+      ],
+      "answer": "A_ACT_002"
+    },
+    {
+      "id": "ACT_003",
+      "intent": "APOLOGIZE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "discúlpate"
+      ],
+      "answer": "A_ACT_003"
+    },
+    {
+      "id": "ACT_004",
+      "intent": "NOD",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "asiente"
+      ],
+      "answer": "A_ACT_004"
+    },
+    {
+      "id": "ACT_005",
+      "intent": "PROUD",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "muestra orgullo"
+      ],
+      "answer": "A_ACT_005"
+    },
+    {
+      "id": "JOB_101",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "cómo cortar árboles",
+        "instrucciones de corte de madera"
+      ],
+      "answer": "A_JOB_101"
+    },
+    {
+      "id": "JOB_102",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "cómo extraer minerales",
+        "instrucciones de minería"
+      ],
+      "answer": "A_JOB_102"
+    },
+    {
+      "id": "JOB_103",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "como cultivar",
+        "donde poner semillas"
+      ],
+      "answer": "A_JOB_103"
+    },
+    {
+      "id": "JOB_104",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "cómo usar espadas",
+        "cómo usar doble empuñadura"
+      ],
+      "answer": "A_JOB_104"
+    },
+    {
+      "id": "JOB_105",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "cómo cavar tierra",
+        "cómo usar una pala"
+      ],
+      "answer": "A_JOB_105"
+    },
+    {
+      "id": "JOB_106",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 99,
+      "phrases": [
+        "cómo vincular cofres",
+        "cómo llevar un cofre"
+      ],
+      "answer": "A_JOB_106"
+    }
+  ],
+  "answers": {
+    "A_JOB_001": {
+      "lines": [
+        "¡Asignación habilitada y cambiado a Libertad! Mi profesión actual es {profession}. ¡Empezaré a trabajar ahora!",
+        "¡Recibe pedidos! Realizaré la misión {profession} con mi equipo actual ({tool})."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "¡Claro! NOVA Warrior ({profession}) ha activado los 3 modos: Proteger {owner}, Patrullar para matar monstruos y Cazar alrededor del área de la palanca de control."
+          ]
+        }
+      ]
+    },
+    "A_JOB_002": {
+      "lines": [
+        "Desactivé el modo de asignación de tareas y pausé las operaciones.",
+        "Bien {owner}, dejaré de trabajar para esperar tu nuevo comando."
+      ]
+    },
+    "A_ACT_001": {
+      "lines": [
+        "Hola {owner}! ¡Te estoy saludando!",
+        "¡NOVA saluda seriamente a su dueño!"
+      ]
+    },
+    "A_ACT_002": {
+      "lines": [
+        "¡Aclamación! ¡Bailemos para celebrar la victoria, {owner}!",
+        "¡Sí! ¡Celebremos!"
+      ]
+    },
+    "A_ACT_003": {
+      "lines": [
+        "Lo siento mucho {owner}... ¡Intentaré hacerlo mejor la próxima vez!",
+        "Por favor, discúlpate con NOVA, por favor no te enfades conmigo..."
+      ]
+    },
+    "A_ACT_004": {
+      "lines": [
+        "*Asiente* ¡Estoy completamente de acuerdo con {owner}!",
+        "¡Está vacío! ¡NOVA asintió en confirmación!"
+      ]
+    },
+    "A_ACT_005": {
+      "lines": [
+        "Jeje, ¿no me veo genial {owner}? ¡NOVA siempre está lista!",
+        "*Infla su pecho con orgullo* ¡Soy el poderoso asistente de {owner}!"
+      ]
+    },
+    "A_JOB_101": {
+      "lines": [
+        "Trabajo de leñador: coloque el hacha en la Caja de herramientas 1, vincule el cofre NOVA y active Asignar trabajos. ¡Talaré árboles naturales dentro de un radio de 16 cuadras, recogeré madera/brotes de árboles yo mismo y arrastraré manualmente los brotes de los árboles hacia mi mano izquierda para replantar el bosque! En el nivel 5, si cortas una raíz, ¡todo el árbol caerá!"
+      ]
+    },
+    "A_JOB_102": {
+      "lines": [
+        "Profesión de minero: coloque el trofeo en la Caja de herramientas 1, vincule el cofre NOVA y active Asignar trabajos. Yo mismo exploré la cueva, priorizando la excavación de cada veta de mineral antes de excavar en busca de roca. ¡Desde el nivel 3 en adelante, coloca la antorcha en tu mochila o en tu mano izquierda y podrás encenderla tú mismo!"
+      ]
+    },
+    "A_JOB_103": {
+      "lines": [
+        "Trabajo de granjero: coloque la azada en la caja de herramientas 1, vincule el cofre NOVA y active Asignar trabajos. Solo necesitas poner semillas, zanahorias o papas en tu mochila (o en la caja de la izquierda). Yo sacaré las semillas con mi mano izquierda para excavar la tierra cerca del agua, sembrar las semillas y cosechar las plantas maduras."
+      ]
+    },
+    "A_JOB_104": {
+      "lines": [
+        "Trabajo de guerrero: ¡Coloca la espada en la caja de herramientas 1! Puedo sostener espadas dobles con ambas manos (aumentando el daño de la mano secundaria en un 50% y cortando una vez y media más rápido) si pones una segunda espada en tu mochila o caja de la izquierda. No uso cofres, pero patrulla alrededor de la palanca de control, te cazo y te protejo como un lobo leal. ¡Cuando se me acabe la espada, volveré corriendo para decírtelo!"
+      ]
+    },
+    "A_JOB_105": {
+      "lines": [
+        "Trabajo de excavación: coloque la pala en la Caja de herramientas 1, vincule el Cofre NOVA y active Asignar trabajos. Cavaré tierra, arena y grava en moldes limpios de 5x5 de arriba a abajo y pasaré a la siguiente caja de 5x5 cuando termine."
+      ]
+    },
+    "A_JOB_106": {
+      "lines": [
+        "Vincular un cofre: mantén presionada la palanca de control y haz clic derecho sobre ti mismo, luego haz clic derecho en el cofre NOVA durante 60 segundos (cada cofre principal solo puede vincular 1 robot). Si desea agregar hasta 9 cofres adicionales, selecciónelo usted mismo y luego Mayús + clic derecho en el cofre de madera normal. Si quieres que lleve el cofre contigo, ¡Mayús + clic derecho en el cofre NOVA!"
+      ]
+    }
+  }
+}

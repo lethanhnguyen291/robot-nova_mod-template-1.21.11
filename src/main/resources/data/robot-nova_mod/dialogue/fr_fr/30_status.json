@@ -1,0 +1,236 @@
+{
+  "version": 2,
+  "group": "status",
+  "questions": [
+    {
+      "id": "STA_001",
+      "intent": "STATUS",
+      "match": "contains",
+      "priority": 55,
+      "phrases": [
+        "que fais-tu",
+        "état actuel"
+      ],
+      "answer": "A_STA_001"
+    },
+    {
+      "id": "STA_002",
+      "intent": "WHY",
+      "match": "contains",
+      "priority": 90,
+      "phrases": [
+        "pourquoi tu ne travailles pas",
+        "pourquoi es-tu coincé"
+      ],
+      "answer": "A_STA_002"
+    },
+    {
+      "id": "STA_003",
+      "intent": "BATTERY",
+      "match": "contains",
+      "priority": 80,
+      "phrases": [
+        "batterie",
+        "combien d'énergie reste"
+      ],
+      "answer": "A_STA_003"
+    },
+    {
+      "id": "STA_004",
+      "intent": "HEALTH",
+      "match": "contains",
+      "priority": 75,
+      "phrases": [
+        "santé",
+        "es-tu blessé"
+      ],
+      "answer": "A_STA_004"
+    },
+    {
+      "id": "STA_005",
+      "intent": "INVENTORY",
+      "match": "contains",
+      "priority": 70,
+      "phrases": [
+        "inventaire",
+        "espace sac à dos"
+      ],
+      "answer": "A_STA_005"
+    },
+    {
+      "id": "STA_006",
+      "intent": "EXPERIENCE",
+      "match": "contains",
+      "priority": 68,
+      "phrases": [
+        "expérience",
+        "votre niveau"
+      ],
+      "answer": "A_STA_006"
+    },
+    {
+      "id": "STA_007",
+      "intent": "NEED",
+      "match": "contains",
+      "priority": 60,
+      "phrases": [
+        "de quoi as-tu besoin",
+        "ce qui manque"
+      ],
+      "answer": "A_STA_007"
+    },
+    {
+      "id": "STA_008",
+      "intent": "BATTERY",
+      "match": "contains",
+      "priority": 85,
+      "phrases": [
+        "comment recharger",
+        "comment charger votre batterie"
+      ],
+      "answer": "A_STA_008"
+    },
+    {
+      "id": "STA_009",
+      "intent": "HEALTH",
+      "match": "contains",
+      "priority": 85,
+      "phrases": [
+        "comment guérir",
+        "comment fonctionne l'auto-réparation"
+      ],
+      "answer": "A_STA_009"
+    },
+    {
+      "id": "STA_010",
+      "intent": "EQUIPMENT",
+      "match": "contains",
+      "priority": 78,
+      "phrases": [
+        "équipement actuel",
+        "de quels outils disposez-vous"
+      ],
+      "answer": "A_STA_010"
+    },
+    {
+      "id": "STA_011",
+      "intent": "CHEST",
+      "match": "contains",
+      "priority": 76,
+      "phrases": [
+        "emplacement thoracique lié",
+        "où est ta poitrine"
+      ],
+      "answer": "A_STA_011"
+    },
+    {
+      "id": "STA_012",
+      "intent": "ENVIRONMENT",
+      "match": "contains",
+      "priority": 64,
+      "phrases": [
+        "météo",
+        "heure de la journée"
+      ],
+      "answer": "A_STA_012"
+    }
+  ],
+  "answers": {
+    "A_STA_001": {
+      "lines": [
+        "{status} • Équipement : {tool} • Batterie : {battery}%, Santé : {health}.",
+        "Rapport {owner} : {status} (Batterie {battery}%, Sac à dos {occupied_slots}/27 cellules)."
+      ]
+    },
+    "A_STA_002": {
+      "lines": [
+        "Actuellement, je ne suis bloqué ou bloqué par aucune condition. {status} Si vous ne vous voyez pas le faire, il n'y a peut-être pas de cibles appropriées dans le rayon de travail.",
+        "Tout va bien ({profession}). {status}"
+      ],
+      "variants": [
+        {
+          "when": "has_blocker",
+          "lines": [
+            "Voici la raison, {owner} : {blocker}"
+          ]
+        }
+      ]
+    },
+    "A_STA_003": {
+      "lines": [
+        "Ma batterie a actuellement {battery}%. Chaque poudre de Redstone sur laquelle vous faites un clic droit chargera votre batterie de +20% !",
+        "L'énergie est à {battery}%. Je ne gaspille la batterie que lorsque je travaille ou que je fais des réparations moi-même."
+      ],
+      "variants": [
+        {
+          "when": "battery_low",
+          "lines": [
+            "Attention : il ne reste plus que {battery}% à ma batterie ! {owner} maintenez le Redstone et faites un clic droit pour le charger afin que je puisse continuer à travailler."
+          ]
+        }
+      ]
+    },
+    "A_STA_004": {
+      "lines": [
+        "Mon sang actuel est {health} (Pin : {battery}%). Je suis toujours en très bonne santé !",
+        "État de la carrosserie : {health} CV. Si je suis légèrement blessé, j'utiliserai la batterie pour la réparer moi-même."
+      ],
+      "variants": [
+        {
+          "when": "injured",
+          "lines": [
+            "Je suis blessé ({health} HP) ! Après 10 secondes sans être touché et avec plus de 11 % de batterie restante, je récupérerai automatiquement."
+          ]
+        }
+      ]
+    },
+    "A_STA_005": {
+      "lines": [
+        "Mon sac à dos utilise des cellules {occupied_slots}/27. Équipement sur carrosserie : {tool}"
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "Le sac à dos utilise des cellules {occupied_slots}/27. Puisque je m'appelle {profession}, vous pouvez garder plusieurs épées de rechange dans votre sac à dos afin de pouvoir les sortir automatiquement lorsque vous combattez !"
+          ]
+        }
+      ]
+    },
+    "A_STA_006": {
+      "lines": [
+        "{experience} Réalisations cumulées : {totals}. Plus votre niveau est élevé, plus vous creusez/hachez vite et plus vous frappez fort !"
+      ]
+    },
+    "A_STA_007": {
+      "lines": [
+        "{need}"
+      ]
+    },
+    "A_STA_008": {
+      "lines": [
+        "Vous tenez Redstone Powder dans votre main puis faites un clic droit directement sur vous-même (sans maintenir Shift) pour charger chaque pilule +20% de batterie. Batterie actuelle : {battery}%."
+      ]
+    },
+    "A_STA_009": {
+      "lines": [
+        "Après 10 secondes sans subir de dégâts, j'active automatiquement le circuit d'auto-réparation : consomme 1 % de la batterie pour restaurer 1,0 HP toutes les 5 secondes (en conservant au moins 10 % de la batterie de secours). État de santé actuel : {health}."
+      ]
+    },
+    "A_STA_010": {
+      "lines": [
+        "Ma profession actuelle est : {profession}. Détails de l'équipement : {tool}"
+      ]
+    },
+    "A_STA_011": {
+      "lines": [
+        "Informations sur la poitrine : {chest}"
+      ]
+    },
+    "A_STA_012": {
+      "lines": [
+        "L'extérieur actuel est {environment}. Mon statut : {status}"
+      ]
+    }
+  }
+}

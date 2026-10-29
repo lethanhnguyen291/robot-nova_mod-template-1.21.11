@@ -1,0 +1,119 @@
+{
+  "version": 2,
+  "group": "system",
+  "questions": [
+    {
+      "id": "SYS_001",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 95,
+      "phrases": [
+        "aide",
+        "que peux-tu faire",
+        "mode d'emploi"
+      ],
+      "answer": "A_SYS_001"
+    },
+    {
+      "id": "SYS_002",
+      "intent": "UNKNOWN",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "phrase inconnue"
+      ],
+      "answer": "A_SYS_002"
+    },
+    {
+      "id": "SYS_003",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 98,
+      "phrases": [
+        "comment invoquer nova",
+        "comment construire nova"
+      ],
+      "answer": "A_SYS_003"
+    },
+    {
+      "id": "SYS_004",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 98,
+      "phrases": [
+        "comment se rallier",
+        "formation de rallye"
+      ],
+      "answer": "A_SYS_004"
+    }
+  ],
+  "answers": {
+    "A_SYS_001": {
+      "lines": [
+        "J'ai 5 métiers basés sur les outils de la case 1 : Guerrier à double épée, Mineur (Tasse), Bûcheron (Hache), Fermier (Hoe), Digger (Pelle). Vous pouvez demander : « que faites-vous », « équipement actuel », « où est le coffre », « combien de batterie reste-t-il », « pourquoi ne le faites-vous pas », ou donner des ordres : « suivez-moi », « libre », « attendez », « asseyez-vous », « allumez le travail », « éteignez le travail », « faites signe », « célébrez », « hochez la tête », « désolé »."
+      ]
+    },
+    "A_SYS_002": {
+      "lines": [
+        "Je ne comprends pas bien le sens de cette phrase, {owner}. Actuellement, ma profession est {profession}. Vous pouvez poser des questions sur « batterie », « équipement », « coffre », « travail » ou taper « instructions » !",
+        "Cette phrase est un peu étrange dans ma mémoire. Voulez-vous demander l'état ({profession}, Batterie {battery}%) ou souhaitez-vous le commander vous-même ? Tapez « instructions » pour voir les commandes."
+      ]
+    },
+    "A_SYS_003": {
+      "lines": [
+        "Pour invoquer NOVA : placez 1 bloc de fer au milieu, 2 blocs de pierre rouge des deux côtés en guise de mains, 1 bloc glacé au dos en guise de sac à dos et placez la citrouille sculptée sur le dessus. Bâton de contrôle en Luu Ly + Redstone + Paratonnerre. Le coffre NOVA est composé de 4 embryons de fer, 2 embryons de cuivre, 2 pierres rouges autour d'un coffre en bois."
+      ]
+    },
+    "A_SYS_004": {
+      "lines": [
+        "Lorsque vous placez le NOVA Control Stick sur le sol (ou faites un clic droit sur le bâton placé), tous les NOVA dans un rayon de 64 blocs se rassembleront en une formation soignée devant le bâton. Faites un nouveau clic droit ou rappelez le bâton pour disperser l'escouade !"
+      ]
+    },
+    "SYS_AMBIGUOUS": {
+      "lines": [
+        "Je vois que cette phrase a plus d'une commande différente. {owner}, veuillez clarifier une commande pour moi ; Je garderai le mode actuel."
+      ]
+    },
+    "SYS_NO_AI": {
+      "lines": [
+        "Mon IA est verrouillée par l'attribut NoAI et ne peut donc pas se déplacer selon cette commande."
+      ]
+    },
+    "SYS_PANIC": {
+      "lines": [
+        "Je fuis temporairement le danger ! Attendez que je sois en sécurité, puis {owner} me redonne l'ordre."
+      ]
+    },
+    "SYS_ACTION_BLOCKED": {
+      "lines": [
+        "Pour le moment, je ne peux pas faire ce mouvement (peut-être que je porte un coffre ou que je ne me tiens pas fermement au sol)."
+      ]
+    },
+    "SYS_NOT_STARTED": {
+      "lines": [
+        "Je n'ai pas encore commencé à effectuer des mouvements."
+      ]
+    },
+    "SYS_WORK_PENDING": {
+      "lines": [
+        "J'ai activé Devoir et suis passé à Gratuit, mais je dois vérifier davantage : {detail}"
+      ]
+    }
+  },
+  "followups": {
+    "why": [
+      "pourquoi",
+      "pourquoi est-ce"
+    ],
+    "need": [
+      "de quoi d'autre as-tu besoin"
+    ],
+    "memory": [
+      "raconte-moi plus de souvenirs"
+    ],
+    "more": [
+      "quoi d'autre",
+      "dis m'en plus"
+    ]
+  }
+}

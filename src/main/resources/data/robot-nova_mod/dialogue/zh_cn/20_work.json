@@ -1,0 +1,227 @@
+{
+  "version": 2,
+  "group": "work",
+  "questions": [
+    {
+      "id": "JOB_001",
+      "intent": "WORK_ON",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "开始工作",
+        "开启工作"
+      ],
+      "answer": "A_JOB_001"
+    },
+    {
+      "id": "JOB_002",
+      "intent": "WORK_OFF",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "停止工作",
+        "关闭工作"
+      ],
+      "answer": "A_JOB_002"
+    },
+    {
+      "id": "ACT_001",
+      "intent": "WAVE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "挥手",
+        "向我挥手"
+      ],
+      "answer": "A_ACT_001"
+    },
+    {
+      "id": "ACT_002",
+      "intent": "CELEBRATE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "庆祝一下"
+      ],
+      "answer": "A_ACT_002"
+    },
+    {
+      "id": "ACT_003",
+      "intent": "APOLOGIZE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "向我道歉"
+      ],
+      "answer": "A_ACT_003"
+    },
+    {
+      "id": "ACT_004",
+      "intent": "NOD",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "点头"
+      ],
+      "answer": "A_ACT_004"
+    },
+    {
+      "id": "ACT_005",
+      "intent": "PROUD",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "表现得自豪一点"
+      ],
+      "answer": "A_ACT_005"
+    },
+    {
+      "id": "JOB_101",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "如何砍树",
+        "木刻说明"
+      ],
+      "answer": "A_JOB_101"
+    },
+    {
+      "id": "JOB_102",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "如何开采矿石",
+        "采矿指令"
+      ],
+      "answer": "A_JOB_102"
+    },
+    {
+      "id": "JOB_103",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "如何耕种",
+        "把种子放在哪里"
+      ],
+      "answer": "A_JOB_103"
+    },
+    {
+      "id": "JOB_104",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "如何使用剑",
+        "如何双持"
+      ],
+      "answer": "A_JOB_104"
+    },
+    {
+      "id": "JOB_105",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "如何挖土",
+        "如何使用铲子"
+      ],
+      "answer": "A_JOB_105"
+    },
+    {
+      "id": "JOB_106",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 99,
+      "phrases": [
+        "如何链接宝箱",
+        "如何携带胸部"
+      ],
+      "answer": "A_JOB_106"
+    }
+  ],
+  "answers": {
+    "A_JOB_001": {
+      "lines": [
+        "启用分配并切换到自由!我目前的职业是{profession}。我现在就开始工作吧!",
+        "接收订单!我将使用我当前的设备({tool})执行任务{profession}。"
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "清除! NOVA 战士 ({profession}) 已激活全部 3 种模式:保护 {owner}、巡逻杀死怪物以及在控制杆区域周围狩猎!"
+          ]
+        }
+      ]
+    },
+    "A_JOB_002": {
+      "lines": [
+        "我关闭了任务分配模式并暂停了操作。",
+        "好的{owner},我就停止工作等待你的新命令。"
+      ]
+    },
+    "A_ACT_001": {
+      "lines": [
+        "你好{owner}!我在向你招手!",
+        "NOVA认真地向它的主人挥手!"
+      ]
+    },
+    "A_ACT_002": {
+      "lines": [
+        "欢呼!让我们跳舞庆祝胜利吧,{owner}!",
+        "是的!让我们庆祝一下吧!"
+      ]
+    },
+    "A_ACT_003": {
+      "lines": [
+        "非常抱歉{owner}...下次我会努力做得更好!",
+        "请向NOVA道歉,请不要生我的气......"
+      ]
+    },
+    "A_ACT_004": {
+      "lines": [
+        "*点头*我完全同意{owner}!",
+        "天气晴朗! NOVA点头确认!"
+      ]
+    },
+    "A_ACT_005": {
+      "lines": [
+        "呵呵,我看起来是不是很酷{owner}? NOVA时刻准备着!",
+        "*骄傲地挺起胸膛*我是{owner}的得力助手!"
+      ]
+    },
+    "A_JOB_101": {
+      "lines": [
+        "樵夫工作:将斧头放入工具箱 1,链接 NOVA 宝箱,然后打开分配工作。我会砍伐半径16个街区内的天然树木,自己捡起木头/树芽,然后手动将树芽拉到我的左手以重新种植森林! 5级时,如果砍掉一根根,整棵树就会倒下!"
+      ]
+    },
+    "A_JOB_102": {
+      "lines": [
+        "矿工职业:将奖杯放入工具箱 1,链接 NOVA 宝箱,然后打开分配工作。我亲自探索了这个洞穴,在挖掘岩石之前优先挖掘每个矿脉。从 3 级及以上,将火炬放在背包或左手中,你就可以自己点燃它!"
+      ]
+    },
+    "A_JOB_103": {
+      "lines": [
+        "农民工作:将锄头放入工具箱 1,链接 NOVA 宝箱,然后打开分配工作。你只需要把种子、胡萝卜或土豆放进你的背包(或左手盒子)里,我就会把种子拉到我的左手边挖出水边的土壤,播种种子并收获成熟的植物!"
+      ]
+    },
+    "A_JOB_104": {
+      "lines": [
+        "战士职业:将剑放入工具箱1!如果你在背包或左手盒子里放第二把剑,我可以双手握住双剑(副手伤害增加 50%,砍伐速度提高一倍半)。我不使用箱子,而是在控制杆周围巡逻,像忠诚的狼一样狩猎和保护你。等我的剑用完了,我就跑回来告诉你!"
+      ]
+    },
+    "A_JOB_105": {
+      "lines": [
+        "挖掘作业:将铲子放入工具箱 1 中,链接 NOVA 宝箱,然后打开分配作业。我会在整齐的 5x5 模具中从上到下挖掘土壤、沙子和砾石,完成后移至下一个 5x5 盒子。"
+      ]
+    },
+    "A_JOB_106": {
+      "lines": [
+        "链接宝箱:按住控制杆右键单击自己,然后右键单击NOVA宝箱60秒(每个主宝箱只能链接1个机器人)。如果您想添加最多 9 个额外的箱子,请选择您自己,然后按住 Shift 键并右键单击常规木箱。如果你想让我随身携带箱子,请按住 Shift 键并右键单击 NOVA 箱子!"
+      ]
+    }
+  }
+}

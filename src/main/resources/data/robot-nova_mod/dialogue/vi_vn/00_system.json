@@ -1,0 +1,148 @@
+{
+  "version": 2,
+  "group": "system",
+  "questions": [
+    {
+      "id": "SYS_001",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 95,
+      "phrases": [
+        "hướng dẫn",
+        "giúp đỡ",
+        "bạn làm được gì",
+        "biết làm gì",
+        "có chức năng gì",
+        "có những nghề gì",
+        "help",
+        "danh sách lệnh",
+        "cách điều khiển",
+        "chỉ mình cách dùng"
+      ],
+      "answer": "A_SYS_001"
+    },
+    {
+      "id": "SYS_002",
+      "intent": "UNKNOWN",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "chưa hiểu câu này"
+      ],
+      "answer": "A_SYS_002"
+    },
+    {
+      "id": "SYS_003",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 98,
+      "phrases": [
+        "cách triệu hồi",
+        "làm sao tạo nova",
+        "công thức chế tạo",
+        "cách chế tạo gậy",
+        "cách chế tạo rương"
+      ],
+      "answer": "A_SYS_003"
+    },
+    {
+      "id": "SYS_004",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 98,
+      "phrases": [
+        "tập hợp đội hình",
+        "cách tập hợp",
+        "cắm gậy xuống đất",
+        "xếp hàng",
+        "đội hình quân đội"
+      ],
+      "answer": "A_SYS_004"
+    }
+  ],
+  "answers": {
+    "A_SYS_001": {
+      "lines": [
+        "Mình có 5 nghề theo công cụ ở Ô số 1: Chiến binh Song Kiếm, Thợ mỏ (Cúp), Tiều phu (Rìu), Nông dân (Cuốc), Đào đất (Xẻng). Bạn có thể hỏi: “đang làm gì”, “trang bị hiện tại”, “rương ở đâu”, “pin còn bao nhiêu”, “sao không làm”, hoặc ra lệnh: “theo tui”, “tự do”, “đứng chờ”, “ngồi”, “bật làm việc”, “tắt làm việc”, “vẫy tay”, “ăn mừng”, “gật đầu”, “xin lỗi đi”."
+      ]
+    },
+    "A_SYS_002": {
+      "lines": [
+        "Mình chưa hiểu rõ ý câu này lắm, {owner} ơi. Hiện tại nghề của mình là {profession}. Bạn có thể hỏi về “pin”, “trang bị”, “rương”, “công việc” hoặc gõ “hướng dẫn” nhé!",
+        "Câu này hơi lạ với bộ nhớ của mình. Bạn muốn hỏi tình trạng ({profession}, Pin {battery}%) hay muốn ra lệnh cho mình? Gõ “hướng dẫn” để xem các câu lệnh nhé."
+      ]
+    },
+    "A_SYS_003": {
+      "lines": [
+        "Để triệu hồi NOVA: đặt 1 Khối Sắt ở giữa, 2 Khối Redstone hai bên làm tay, 1 Khối Lưu Ly sau lưng làm ba lô và đặt Bí Ngô Khắc lên đỉnh. Gậy điều khiển ghép từ Lưu Ly + Redstone + Cột Thu Lôi. Rương NOVA ghép từ 4 Phôi Sắt, 2 Phôi Đồng, 2 Redstone quanh 1 Rương gỗ."
+      ]
+    },
+    "A_SYS_004": {
+      "lines": [
+        "Khi bạn đặt Gậy điều khiển NOVA xuống mặt đất (hoặc nhấp chuột phải vào gậy đã đặt), tất cả NOVA trong bán kính 64 khối sẽ tập hợp xếp đội hình ngay ngắn trước gậy. Nhấp phải lần nữa hoặc thu hồi gậy để giải tán đội hình!"
+      ]
+    },
+    "SYS_AMBIGUOUS": {
+      "lines": [
+        "Mình thấy câu này có nhiều hơn một ý lệnh khác nhau. {owner} nói rõ một lệnh giúp mình nhé; mình tạm giữ nguyên chế độ hiện tại."
+      ]
+    },
+    "SYS_NO_AI": {
+      "lines": [
+        "AI của mình đang bị khóa bởi thuộc tính NoAI nên chưa thể cử động theo lệnh này."
+      ]
+    },
+    "SYS_PANIC": {
+      "lines": [
+        "Mình đang tạm chạy tránh nguy hiểm! Đợi mình an toàn rồi {owner} ra lệnh lại nhé."
+      ]
+    },
+    "SYS_ACTION_BLOCKED": {
+      "lines": [
+        "Lúc này mình chưa làm động tác đó được (có thể đang bê rương hoặc chưa đứng vững trên mặt đất)."
+      ]
+    },
+    "SYS_NOT_STARTED": {
+      "lines": [
+        "Mình chưa bắt đầu được động tác biểu diễn lúc này."
+      ]
+    },
+    "SYS_WORK_PENDING": {
+      "lines": [
+        "Mình đã bật Giao việc và chuyển sang Tự do, nhưng cần kiểm tra thêm: {detail}"
+      ]
+    }
+  },
+  "followups": {
+    "why": [
+      "vậy sao",
+      "tại sao",
+      "vì sao",
+      "sao vậy",
+      "vì sao vậy",
+      "sao thế",
+      "lý do là gì"
+    ],
+    "need": [
+      "vậy thiếu gì",
+      "vậy cần gì",
+      "giờ cần gì",
+      "thế còn thiếu gì",
+      "cách khắc phục",
+      "sửa sao"
+    ],
+    "memory": [
+      "kể tiếp đi",
+      "còn kỷ niệm nào nữa",
+      "kể thêm đi",
+      "nhớ gì nữa không"
+    ],
+    "more": [
+      "còn gì nữa",
+      "chi tiết hơn",
+      "báo cáo đầy đủ",
+      "nói rõ hơn đi",
+      "thế còn gì nữa"
+    ]
+  }
+}

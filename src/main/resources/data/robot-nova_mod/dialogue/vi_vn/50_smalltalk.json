@@ -1,0 +1,172 @@
+{
+  "version": 2,
+  "group": "smalltalk",
+  "questions": [
+    {
+      "id": "TALK_001",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "kể chuyện cười",
+        "nói gì vui đi",
+        "chọc cười mình",
+        "chuyện hài",
+        "kể chuyện vui"
+      ],
+      "answer": "A_TALK_001"
+    },
+    {
+      "id": "TALK_002",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "bạn thích gì",
+        "bạn thích làm gì nhất",
+        "sở thích của bạn",
+        "món ăn yêu thích"
+      ],
+      "answer": "A_TALK_002"
+    },
+    {
+      "id": "TALK_003",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "làm bạn với mình được không",
+        "làm bạn với tôi nha",
+        "bạn của mình",
+        "bạn của tôi",
+        "bạn thân",
+        "thương bạn",
+        "yêu bạn"
+      ],
+      "answer": "A_TALK_003"
+    },
+    {
+      "id": "TALK_004",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "bạn có sợ không",
+        "có sợ quái vật không",
+        "sợ creeper không",
+        "sợ zombie không"
+      ],
+      "answer": "A_TALK_004"
+    },
+    {
+      "id": "TALK_005",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "hôm nay thế nào",
+        "hôm nay vui không",
+        "dạo này sao rồi"
+      ],
+      "answer": "A_TALK_005"
+    },
+    {
+      "id": "TALK_006",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "tui đói",
+        "tôi đói",
+        "mình đói",
+        "ăn gì chưa"
+      ],
+      "answer": "A_TALK_006"
+    },
+    {
+      "id": "TALK_007",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "biểu cảm",
+        "đổi mặt",
+        "khuôn mặt",
+        "mặt cười"
+      ],
+      "answer": "A_TALK_007"
+    }
+  ],
+  "answers": {
+    "A_TALK_001": {
+      "lines": [
+        "Một robot Tiều phu đi vào rừng rồi bảo: Hôm nay mình sẽ giải quyết công việc tận... gốc rễ!",
+        "Mình định kể chuyện về Đá Đỏ (Redstone), nhưng sợ {owner} nghe xong lại bị... cuốn vào mạch chuyện!",
+        "Nếu Cuốc chim biết nói, chắc nó sẽ bảo: Để mình đào sâu vấn đề này giúp bạn nhé!",
+        "Tại sao Zombie không dám lại gần Chiến binh NOVA? Vì mình có tới hai thanh kiếm để... tiếp đón nhiệt tình!"
+      ]
+    },
+    "A_TALK_002": {
+      "lines": [
+        "Mình thích nhất là được sạc đầy Redstone, cầm công cụ xịn ở ô số 1 và cùng {owner} xây dựng căn cứ!",
+        "Món khoái khẩu của mình là Bột Đá Đỏ (Redstone)! Một viên là tăng ngay 20% năng lượng."
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "Mình thích khám phá các hang động sâu và tìm viên kim cương lấp lánh mang về cho {owner}!"
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "Mình thích sắp xếp đồ đạc gọn gàng vào Rương NOVA, cắm đuốc sáng trưng và giữ độ bền công cụ thật tốt."
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "Mình thích nhất là những lúc hoàn thành công việc, được {owner} khen và cùng nhau nhảy ăn mừng!"
+          ]
+        }
+      ]
+    },
+    "A_TALK_003": {
+      "lines": [
+        "Tất nhiên rồi {owner}! Dù là ngày nắng hay đêm mưa, NOVA sẽ luôn là người bạn đồng hành trung thành của bạn!",
+        "Mình cũng quý {owner} lắm! Độ gắn bó của chúng mình hiện đã là {bond}/100 rồi đó."
+      ]
+    },
+    "A_TALK_004": {
+      "lines": [
+        "Khi làm công nhân lao động thì mình sẽ tránh xa nguy hiểm, nhưng chỉ cần bạn trao Kiếm vào Ô số 1 (hoặc Song Kiếm 2 tay), mình sẽ trở thành Chiến binh bảo vệ {owner} ngay! Riêng Creeper thì mình khôn ngoan né ra để không làm nổ tung công trình của bạn."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "Mình đang là {profession} mà! Zombie, Skeleton hay Nhện tới gần {owner} là mình rút kiếm xử lý ngay, chỉ trừ Creeper dễ nổ thôi!"
+          ]
+        }
+      ]
+    },
+    "A_TALK_005": {
+      "lines": [
+        "Hôm nay của mình rất tuyệt vì được đồng hành cùng {owner}! Hiện tại ngoài trời đang là {environment}. {status}",
+        "Mình cảm thấy rất tràn đầy năng lượng (Pin {battery}%). Còn hôm nay của {owner} thế nào?"
+      ]
+    },
+    "A_TALK_006": {
+      "lines": [
+        "{owner} mau ăn bánh mì, thịt nướng hay cà rốt để hồi thanh thức ăn nhé! Còn mình thì chỉ cần vài viên Redstone là no bụng ngay.",
+        "Nếu {owner} cần lương thực, cứ giao Cuốc cho mình làm Nông dân hoặc giao Kiếm để mình đi săn thú kiếm thịt giúp bạn nhé!"
+      ]
+    },
+    "A_TALK_007": {
+      "lines": [
+        "Màn hình LED trên mặt mình có tới 40 biểu cảm khác nhau (0 đến 39)! {owner} có thể cầm Gậy điều khiển nhấp trái vào mình rồi chọn mục “Biểu cảm” để xem trực tiếp nhé."
+      ]
+    }
+  }
+}

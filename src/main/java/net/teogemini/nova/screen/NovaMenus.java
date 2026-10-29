@@ -25,7 +25,7 @@ public final class NovaMenus {
         if (!(player instanceof ServerPlayer) || !NovaInventoryMenu.canAccess(nova, player)) return;
         player.openMenu(new ExtendedScreenHandlerFactory<Integer>() {
             @Override public Integer getScreenOpeningData(ServerPlayer viewer) { return nova.getId(); }
-            @Override public Component getDisplayName() { return Component.literal("NOVA"); }
+            @Override public Component getDisplayName() { return Component.literal(nova.getNovaDisplayName()); }
             @Override public AbstractContainerMenu createMenu(int id, Inventory inventory, Player viewer) {
                 return new NovaInventoryMenu(id, inventory, nova);
             }

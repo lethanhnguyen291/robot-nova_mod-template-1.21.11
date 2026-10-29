@@ -1,0 +1,102 @@
+{
+  "version": 2,
+  "group": "movement",
+  "questions": [
+    {
+      "id": "MOV_001",
+      "intent": "FOLLOW",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "follow me",
+        "come with me"
+      ],
+      "answer": "A_MOV_001"
+    },
+    {
+      "id": "MOV_002",
+      "intent": "FREE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "roam freely",
+        "free mode"
+      ],
+      "answer": "A_MOV_002"
+    },
+    {
+      "id": "MOV_003",
+      "intent": "WAIT",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "wait here",
+        "stand still",
+        "don't follow me"
+      ],
+      "answer": "A_MOV_003"
+    },
+    {
+      "id": "MOV_004",
+      "intent": "SIT",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "sit down",
+        "sit"
+      ],
+      "answer": "A_MOV_004"
+    },
+    {
+      "id": "MOV_005",
+      "intent": "STAND",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "stand up",
+        "get up"
+      ],
+      "answer": "A_MOV_005"
+    }
+  ],
+  "answers": {
+    "A_MOV_001": {
+      "lines": [
+        "Clear! I switched to Follow {owner} mode. Wherever you go, I will follow closely!",
+        "I follow you! If you are more than 7 blocks away, you will automatically speed up and follow."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "It's clear! NOVA warrior follows guard {owner}. Whoever attacks you, I will deal with it immediately!"
+          ]
+        }
+      ]
+    },
+    "A_MOV_002": {
+      "lines": [
+        "I switched to Free mode ({profession}). If you turn on Assign Tasks, I will proactively work around the area.",
+        "Okay, I'll move around here freely."
+      ]
+    },
+    "A_MOV_003": {
+      "lines": [
+        "I will wait at this location until {owner} calls.",
+        "It's clear, I'll stand still and guard here."
+      ]
+    },
+    "A_MOV_004": {
+      "lines": [
+        "Let's sit and rest where we are. When you keep going, {owner} just say \"get up\"!",
+        "Okay, let's sit down and rest and save energy."
+      ]
+    },
+    "A_MOV_005": {
+      "lines": [
+        "I stood up and was ready to continue my previous regimen!",
+        "NOVA has stood up! Let's continue our work, {owner}."
+      ]
+    }
+  }
+}

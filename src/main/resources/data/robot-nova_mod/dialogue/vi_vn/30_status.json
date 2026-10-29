@@ -1,0 +1,295 @@
+{
+  "version": 2,
+  "group": "status",
+  "questions": [
+    {
+      "id": "STA_001",
+      "intent": "STATUS",
+      "match": "contains",
+      "priority": 55,
+      "phrases": [
+        "đang làm gì",
+        "làm gì đó",
+        "công việc",
+        "tình trạng",
+        "trạng thái",
+        "bận gì vậy",
+        "báo cáo tình hình",
+        "đang ở chế độ nào"
+      ],
+      "answer": "A_STA_001"
+    },
+    {
+      "id": "STA_002",
+      "intent": "WHY",
+      "match": "contains",
+      "priority": 90,
+      "phrases": [
+        "sao không",
+        "sao đứng yên",
+        "bị gì",
+        "tại sao",
+        "vì sao",
+        "mắc kẹt",
+        "bị kẹt",
+        "bị lỗi gì",
+        "không hoạt động",
+        "không chịu làm"
+      ],
+      "answer": "A_STA_002"
+    },
+    {
+      "id": "STA_003",
+      "intent": "BATTERY",
+      "match": "contains",
+      "priority": 80,
+      "phrases": [
+        "pin",
+        "năng lượng",
+        "sạc",
+        "redstone",
+        "đá đỏ",
+        "pin còn bao nhiêu",
+        "còn bao nhiêu pin",
+        "yếu pin",
+        "hết pin"
+      ],
+      "answer": "A_STA_003"
+    },
+    {
+      "id": "STA_004",
+      "intent": "HEALTH",
+      "match": "contains",
+      "priority": 75,
+      "phrases": [
+        "máu",
+        "sức khỏe",
+        "khỏe không",
+        "bị thương",
+        "máu còn bao nhiêu",
+        "còn bao nhiêu máu",
+        "có đau không"
+      ],
+      "answer": "A_STA_004"
+    },
+    {
+      "id": "STA_005",
+      "intent": "INVENTORY",
+      "match": "contains",
+      "priority": 70,
+      "phrases": [
+        "ba lô",
+        "túi đồ",
+        "còn chỗ",
+        "đầy đồ",
+        "kho đồ",
+        "trong người có gì",
+        "chứa bao nhiêu đồ"
+      ],
+      "answer": "A_STA_005"
+    },
+    {
+      "id": "STA_006",
+      "intent": "EXPERIENCE",
+      "match": "contains",
+      "priority": 68,
+      "phrases": [
+        "kinh nghiệm",
+        "cấp độ",
+        "cấp mấy",
+        "level",
+        "kỹ năng",
+        "thống kê",
+        "làm được bao nhiêu"
+      ],
+      "answer": "A_STA_006"
+    },
+    {
+      "id": "STA_007",
+      "intent": "NEED",
+      "match": "contains",
+      "priority": 60,
+      "phrases": [
+        "cần gì",
+        "thiếu gì",
+        "cần giúp",
+        "cần tui giúp gì",
+        "cần mình giúp gì",
+        "có thiếu đồ không"
+      ],
+      "answer": "A_STA_007"
+    },
+    {
+      "id": "STA_008",
+      "intent": "BATTERY",
+      "match": "contains",
+      "priority": 85,
+      "phrases": [
+        "làm sao để sạc pin",
+        "cách sạc pin",
+        "sạc như thế nào",
+        "sạc pin bằng gì"
+      ],
+      "answer": "A_STA_008"
+    },
+    {
+      "id": "STA_009",
+      "intent": "HEALTH",
+      "match": "contains",
+      "priority": 85,
+      "phrases": [
+        "cách hồi máu",
+        "làm sao hồi máu",
+        "tự hồi máu được không",
+        "tự sửa chữa"
+      ],
+      "answer": "A_STA_009"
+    },
+    {
+      "id": "STA_010",
+      "intent": "EQUIPMENT",
+      "match": "contains",
+      "priority": 78,
+      "phrases": [
+        "trang bị hiện tại",
+        "trang bị",
+        "đang cầm gì",
+        "cầm công cụ gì",
+        "cầm vũ khí gì",
+        "độ bền",
+        "vũ khí",
+        "công cụ",
+        "nghề gì",
+        "làm nghề gì"
+      ],
+      "answer": "A_STA_010"
+    },
+    {
+      "id": "STA_011",
+      "intent": "CHEST",
+      "match": "contains",
+      "priority": 76,
+      "phrases": [
+        "rương ở đâu",
+        "rương liên kết",
+        "tọa độ rương",
+        "mấy rương phụ",
+        "kiểm tra rương"
+      ],
+      "answer": "A_STA_011"
+    },
+    {
+      "id": "STA_012",
+      "intent": "ENVIRONMENT",
+      "match": "contains",
+      "priority": 64,
+      "phrases": [
+        "thời tiết",
+        "mấy giờ",
+        "trời mưa",
+        "ban ngày hay ban đêm",
+        "bây giờ là buổi nào",
+        "trời tối chưa"
+      ],
+      "answer": "A_STA_012"
+    }
+  ],
+  "answers": {
+    "A_STA_001": {
+      "lines": [
+        "{status} • Trang bị: {tool} • Pin: {battery}%, Máu: {health}.",
+        "Báo cáo {owner}: {status} (Pin {battery}%, Ba lô {occupied_slots}/27 ô)."
+      ]
+    },
+    "A_STA_002": {
+      "lines": [
+        "Hiện tại mình không bị kẹt hay chặn bởi điều kiện nào. {status} Nếu chưa thấy mình làm, có thể quanh bán kính làm việc đã hết mục tiêu phù hợp.",
+        "Mọi thứ của mình vẫn ổn ({profession}). {status}"
+      ],
+      "variants": [
+        {
+          "when": "has_blocker",
+          "lines": [
+            "Lý do đây {owner} ơi: {blocker}"
+          ]
+        }
+      ]
+    },
+    "A_STA_003": {
+      "lines": [
+        "Pin của mình hiện còn {battery}%. Mỗi viên Bột Đá Đỏ (Redstone) nhấp phải vào mình sẽ sạc thêm +20% pin!",
+        "Năng lượng đang ở mức {battery}%. Mình chỉ tốn pin khi thực hiện thao tác làm việc hoặc tự sửa chữa thôi."
+      ],
+      "variants": [
+        {
+          "when": "battery_low",
+          "lines": [
+            "Cảnh báo: Pin mình chỉ còn {battery}% thôi! {owner} cầm Redstone nhấp phải sạc giúp mình để làm việc tiếp nhé."
+          ]
+        }
+      ]
+    },
+    "A_STA_004": {
+      "lines": [
+        "Máu hiện tại của mình là {health} (Pin: {battery}%). Mình vẫn rất khỏe mạnh!",
+        "Tình trạng cơ thể: {health} HP. Nếu bị thương nhẹ mình sẽ tự dùng pin để sửa chữa."
+      ],
+      "variants": [
+        {
+          "when": "injured",
+          "lines": [
+            "Mình đang bị thương ({health} HP)! Sau 10 giây không bị đánh và còn trên 11% pin, mình sẽ tự động hồi phục."
+          ]
+        }
+      ]
+    },
+    "A_STA_005": {
+      "lines": [
+        "Ba lô của mình đang dùng {occupied_slots}/27 ô. Trang bị trên người: {tool}"
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "Ba lô đang dùng {occupied_slots}/27 ô. Vì mình là {profession}, bạn có thể để sẵn nhiều kiếm dự phòng trong ba lô để mình tự động rút ra thay thế khi chiến đấu!"
+          ]
+        }
+      ]
+    },
+    "A_STA_006": {
+      "lines": [
+        "{experience} Thành tích tích lũy: {totals}. Cấp độ càng cao mình đào/chặt càng nhanh và đánh càng mạnh!"
+      ]
+    },
+    "A_STA_007": {
+      "lines": [
+        "{need}"
+      ]
+    },
+    "A_STA_008": {
+      "lines": [
+        "Bạn cầm Bột Đá Đỏ (Redstone) trên tay rồi nhấp chuột phải trực tiếp vào mình (không giữ Shift) để sạc +20% pin mỗi viên. Pin hiện tại: {battery}%."
+      ]
+    },
+    "A_STA_009": {
+      "lines": [
+        "Sau 10 giây không nhận sát thương, mình tự động kích hoạt mạch tự sửa chữa: tiêu hao 1% pin để hồi 1.0 HP mỗi 5 giây (giữ lại tối thiểu 10% pin dự phòng). Máu hiện tại: {health}."
+      ]
+    },
+    "A_STA_010": {
+      "lines": [
+        "Nghề hiện tại của mình là: {profession}. Chi tiết trang bị: {tool}"
+      ]
+    },
+    "A_STA_011": {
+      "lines": [
+        "Thông tin rương: {chest}"
+      ]
+    },
+    "A_STA_012": {
+      "lines": [
+        "Ngoài trời hiện tại là {environment}. Tình trạng của mình: {status}"
+      ]
+    }
+  }
+}

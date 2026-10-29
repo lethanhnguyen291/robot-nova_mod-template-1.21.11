@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "fallback": "en_us",
+  "languages": [
+    "vi_vn",
+    "en_us",
+    "zh_cn",
+    "ja_jp",
+    "ko_kr",
+    "ru_ru",
+    "de_de",
+    "fr_fr",
+    "es_es",
+    "pt_br"
+  ]
+}

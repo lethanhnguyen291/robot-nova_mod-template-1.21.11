@@ -1,0 +1,119 @@
+{
+  "version": 2,
+  "group": "system",
+  "questions": [
+    {
+      "id": "SYS_001",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 95,
+      "phrases": [
+        "Hilfe",
+        "Was können Sie tun?",
+        "Anweisungen"
+      ],
+      "answer": "A_SYS_001"
+    },
+    {
+      "id": "SYS_002",
+      "intent": "UNKNOWN",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "unbekannter Satz"
+      ],
+      "answer": "A_SYS_002"
+    },
+    {
+      "id": "SYS_003",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 98,
+      "phrases": [
+        "wie man Nova beschwört",
+        "wie man Nova baut"
+      ],
+      "answer": "A_SYS_003"
+    },
+    {
+      "id": "SYS_004",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 98,
+      "phrases": [
+        "wie man sich sammelt",
+        "Rallye-Formation"
+      ],
+      "answer": "A_SYS_004"
+    }
+  ],
+  "answers": {
+    "A_SYS_001": {
+      "lines": [
+        "Ich habe 5 Berufe, die auf den Werkzeugen in Box 1 basieren: Doppelschwertkrieger, Bergmann (Pokal), Holzfäller (Axt), Bauer (Hacke), Bagger (Schaufel). Sie können fragen: „Was machen Sie gerade“, „Aktuelle Ausrüstung“, „Wo ist die Truhe“, „Wie viel Akku ist noch übrig“, „Warum machen Sie das nicht“ oder Befehle erteilen: „Folge mir“, „Frei“, „Warten“, „Sitzen“, „Arbeit einschalten“, „Arbeit ausschalten“, „winken“, „feiern“, „nicken“, „Entschuldigung“."
+      ]
+    },
+    "A_SYS_002": {
+      "lines": [
+        "Ich verstehe die Bedeutung dieses Satzes, {owner}, nicht ganz. Derzeit ist mein Beruf {profession}. Sie können nach „Batterie“, „Ausrüstung“, „Truhe“, „Job“ oder Typ „Anleitung“ fragen!",
+        "Dieser Satz ist in meiner Erinnerung etwas seltsam. Möchten Sie den Status ({profession}, Batterie {battery}%) erfragen oder selbst bestellen? Geben Sie „Anweisungen“ ein, um die Befehle anzuzeigen."
+      ]
+    },
+    "A_SYS_003": {
+      "lines": [
+        "Um NOVA zu beschwören: Platzieren Sie 1 Eisenblock in der Mitte, 2 Redstone-Blöcke auf beiden Seiten als Hände, 1 glasierten Block auf der Rückseite als Rucksack und legen Sie den geschnitzten Kürbis darauf. Steuerknüppel aus Luu Ly + Redstone + Lightning Rod. Die NOVA-Truhe besteht aus 4 Eisenembryos, 2 Kupferembryos und 2 Redstone-Embryonen rund um 1 Holztruhe."
+      ]
+    },
+    "A_SYS_004": {
+      "lines": [
+        "Wenn Sie den NOVA Control Stick auf den Boden legen (oder mit der rechten Maustaste auf den platzierten Stick klicken), versammeln sich alle NOVA innerhalb eines Radius von 64 Blöcken in einer ordentlichen Formation vor dem Stick. Klicken Sie erneut mit der rechten Maustaste oder rufen Sie den Stick zurück, um die Truppe zu zerstreuen!"
+      ]
+    },
+    "SYS_AMBIGUOUS": {
+      "lines": [
+        "Ich sehe, dass dieser Satz mehr als einen verschiedenen Befehl enthält. {owner}, bitte klären Sie einen Befehl für mich; Ich werde den aktuellen Modus beibehalten."
+      ]
+    },
+    "SYS_NO_AI": {
+      "lines": [
+        "Meine KI ist durch das NoAI-Attribut gesperrt, sodass sie sich gemäß diesem Befehl nicht bewegen kann."
+      ]
+    },
+    "SYS_PANIC": {
+      "lines": [
+        "Ich renne vorübergehend vor der Gefahr davon! Warte, bis ich in Sicherheit bin. {owner} erneut bestellen."
+      ]
+    },
+    "SYS_ACTION_BLOCKED": {
+      "lines": [
+        "Im Moment kann ich diese Bewegung nicht ausführen (vielleicht trage ich eine Truhe oder stehe nicht fest auf dem Boden)."
+      ]
+    },
+    "SYS_NOT_STARTED": {
+      "lines": [
+        "Ich habe noch nicht angefangen, Bewegungen auszuführen."
+      ]
+    },
+    "SYS_WORK_PENDING": {
+      "lines": [
+        "Ich habe „Zuweisung“ aktiviert und auf „Kostenlos“ umgestellt, muss aber noch mehr überprüfen: {detail}"
+      ]
+    }
+  },
+  "followups": {
+    "why": [
+      "warum",
+      "Warum ist das so?"
+    ],
+    "need": [
+      "Was brauchst du sonst noch?"
+    ],
+    "memory": [
+      "Erzähl mir mehr Erinnerungen"
+    ],
+    "more": [
+      "was noch",
+      "erzähl mir mehr"
+    ]
+  }
+}

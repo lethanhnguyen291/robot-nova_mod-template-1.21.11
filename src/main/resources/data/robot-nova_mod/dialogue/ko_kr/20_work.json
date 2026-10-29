@@ -1,0 +1,224 @@
+{
+  "version": 2,
+  "group": "work",
+  "questions": [
+    {
+      "id": "JOB_001",
+      "intent": "WORK_ON",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "일을 시작해"
+      ],
+      "answer": "A_JOB_001"
+    },
+    {
+      "id": "JOB_002",
+      "intent": "WORK_OFF",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "일을 멈춰"
+      ],
+      "answer": "A_JOB_002"
+    },
+    {
+      "id": "ACT_001",
+      "intent": "WAVE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "손을 흔들어"
+      ],
+      "answer": "A_ACT_001"
+    },
+    {
+      "id": "ACT_002",
+      "intent": "CELEBRATE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "축하해"
+      ],
+      "answer": "A_ACT_002"
+    },
+    {
+      "id": "ACT_003",
+      "intent": "APOLOGIZE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "사과해"
+      ],
+      "answer": "A_ACT_003"
+    },
+    {
+      "id": "ACT_004",
+      "intent": "NOD",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "고개를 끄덕여"
+      ],
+      "answer": "A_ACT_004"
+    },
+    {
+      "id": "ACT_005",
+      "intent": "PROUD",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "자랑스러워해"
+      ],
+      "answer": "A_ACT_005"
+    },
+    {
+      "id": "JOB_101",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "나무를 자르는 방법",
+        "목판화 지침"
+      ],
+      "answer": "A_JOB_101"
+    },
+    {
+      "id": "JOB_102",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "광석을 채굴하는 방법",
+        "채굴 지침"
+      ],
+      "answer": "A_JOB_102"
+    },
+    {
+      "id": "JOB_103",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "농사짓는 방법",
+        "씨앗을 어디에 심을까"
+      ],
+      "answer": "A_JOB_103"
+    },
+    {
+      "id": "JOB_104",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "검을 사용하는 방법",
+        "쌍수하는 방법"
+      ],
+      "answer": "A_JOB_104"
+    },
+    {
+      "id": "JOB_105",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 100,
+      "phrases": [
+        "흙을 파는 방법",
+        "삽을 사용하는 방법"
+      ],
+      "answer": "A_JOB_105"
+    },
+    {
+      "id": "JOB_106",
+      "intent": "HELP",
+      "match": "contains",
+      "priority": 99,
+      "phrases": [
+        "상자를 연결하는 방법",
+        "가슴을 운반하는 방법"
+      ],
+      "answer": "A_JOB_106"
+    }
+  ],
+  "answers": {
+    "A_JOB_001": {
+      "lines": [
+        "과제를 활성화하고 자유로 전환했습니다! 현재 직업은 {profession}입니다. 이제 일을 시작하겠습니다!",
+        "주문을 받아보세요! 현재 장비({tool})를 사용하여 {profession} 임무를 수행하겠습니다."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "분명한! NOVA Warrior({profession})는 {owner} 보호, 순찰을 통해 몬스터 처치, 컨트롤 스틱 주변 사냥의 3가지 모드를 모두 활성화했습니다!"
+          ]
+        }
+      ]
+    },
+    "A_JOB_002": {
+      "lines": [
+        "작업 할당 모드를 끄고 작업을 일시 중지했습니다.",
+        "알았어 {owner}, 새 명령을 기다리기 위해 작업을 중단하겠습니다."
+      ]
+    },
+    "A_ACT_001": {
+      "lines": [
+        "안녕하세요 {owner}! 나는 당신에게 손을 흔들고 있습니다!",
+        "NOVA는 주인에게 진지하게 손을 흔들었습니다!"
+      ]
+    },
+    "A_ACT_002": {
+      "lines": [
+        "환호! 승리를 축하하며 춤을 추자 {owner}!",
+        "응! 축하하자!"
+      ]
+    },
+    "A_ACT_003": {
+      "lines": [
+        "정말 죄송해요 {owner}... 다음엔 더 잘하도록 노력할게요!",
+        "노바에게 사과해주세요, 화내지 말아주세요..."
+      ]
+    },
+    "A_ACT_004": {
+      "lines": [
+        "*끄덕* {owner}의 의견에 전적으로 동의합니다!",
+        "분명해요! NOVA는 확인에 고개를 끄덕였습니다!"
+      ]
+    },
+    "A_ACT_005": {
+      "lines": [
+        "헤헤, 나 멋지지 않나요 {owner}? NOVA는 언제나 준비되어 있습니다!",
+        "*자랑스럽게 가슴을 부풀린다* 나는 {owner}의 강력한 조력자다!"
+      ]
+    },
+    "A_JOB_101": {
+      "lines": [
+        "Woodcutter Job: 도구 상자 1에 도끼를 놓고 NOVA 상자를 연결한 다음 작업 할당을 켭니다. 반경 16블록 내의 자연나무를 자르고, 나무/나물을 직접 줍고, 나무나물을 왼손으로 수동으로 당겨서 숲을 다시 심겠습니다! 레벨 5에서는 뿌리 하나를 자르면 나무 전체가 쓰러집니다!"
+      ]
+    },
+    "A_JOB_102": {
+      "lines": [
+        "광부 직업: 도구 상자 1에 트로피를 놓고 NOVA 상자를 연결한 다음 작업 할당을 켭니다. 나는 암석을 파기 전에 각 광맥을 파는 것을 우선으로 하면서 동굴을 직접 탐험했습니다. 레벨 3 이상부터는 토치를 배낭이나 왼손에 들고 직접 불을 붙일 수 있습니다!"
+      ]
+    },
+    "A_JOB_103": {
+      "lines": [
+        "Farmer Job: 도구 상자 1에 Hoe를 놓고 NOVA Chest를 연결한 다음 Assign Jobs를 켭니다. 배낭(또는 왼손 상자)에 씨앗, 당근 또는 감자를 넣기만 하면 됩니다. 저는 씨앗을 왼손으로 꺼내서 물 근처의 흙을 파고 씨앗을 뿌리고 잘 익은 식물을 수확할 것입니다!"
+      ]
+    },
+    "A_JOB_104": {
+      "lines": [
+        "전사 직업: 도구 상자 1에 검을 넣으세요! 배낭이나 왼손 상자에 두 번째 검을 넣으면 양손에 듀얼 소드를 잡을 수 있습니다(보조 손 데미지가 50% 증가하고 베기 속도가 1.5배 더 빨라짐). 나는 상자를 사용하지 않고 조종간을 순찰하며 충성스러운 늑대처럼 당신을 사냥하고 보호합니다. 내 검이 다 떨어지면 달려가서 말해줄게!"
+      ]
+    },
+    "A_JOB_105": {
+      "lines": [
+        "굴착 작업: 도구 상자 1에 삽을 놓고 NOVA 상자를 연결한 다음 작업 할당을 켭니다. 깔끔한 5x5 틀에 흙, 모래, 자갈을 위에서 아래로 파고 작업이 끝나면 다음 5x5 상자로 옮깁니다."
+      ]
+    },
+    "A_JOB_106": {
+      "lines": [
+        "상자 연결: 조종 스틱을 잡고 자신을 마우스 오른쪽 버튼으로 클릭한 다음 NOVA 상자를 60초 동안 마우스 오른쪽 버튼으로 클릭하세요(각 기본 상자는 로봇 1개만 연결할 수 있습니다). 상자를 최대 9개까지 추가하려면 자신을 선택한 다음 일반 나무 상자를 Shift + 마우스 오른쪽 버튼으로 클릭하세요. 제가 상자를 가지고 다니기를 원하시면 NOVA 상자를 Shift + 마우스 오른쪽 버튼으로 클릭하세요!"
+      ]
+    }
+  }
+}

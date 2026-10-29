@@ -1,0 +1,155 @@
+{
+  "version": 2,
+  "group": "smalltalk",
+  "questions": [
+    {
+      "id": "TALK_001",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "erzähl mir einen Witz",
+        "etwas Lustiges sagen"
+      ],
+      "answer": "A_TALK_001"
+    },
+    {
+      "id": "TALK_002",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "Was gefällt dir",
+        "Ihre Lieblingsbeschäftigung"
+      ],
+      "answer": "A_TALK_002"
+    },
+    {
+      "id": "TALK_003",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "Willst du mein Freund sein?",
+        "Sei mein Freund"
+      ],
+      "answer": "A_TALK_003"
+    },
+    {
+      "id": "TALK_004",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "Hast du Angst?",
+        "Hast du Angst vor Monstern?"
+      ],
+      "answer": "A_TALK_004"
+    },
+    {
+      "id": "TALK_005",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "Wie geht es dir heute?",
+        "Bist du heute glücklich?"
+      ],
+      "answer": "A_TALK_005"
+    },
+    {
+      "id": "TALK_006",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "Ich habe Hunger",
+        "Ich brauche Essen"
+      ],
+      "answer": "A_TALK_006"
+    },
+    {
+      "id": "TALK_007",
+      "intent": "SMALLTALK",
+      "match": "contains",
+      "priority": 56,
+      "phrases": [
+        "Gesichtsausdrücke",
+        "wie du dein Gesicht veränderst"
+      ],
+      "answer": "A_TALK_007"
+    }
+  ],
+  "answers": {
+    "A_TALK_001": {
+      "lines": [
+        "Ein Holzfällerroboter ging in den Wald und sagte: Heute werde ich das Problem an der Wurzel lösen!",
+        "Ich wollte die Geschichte über Redstone erzählen, hatte aber Angst, dass {owner} nach dem Hören in die Geschichte verwickelt werden würde!",
+        "Wenn die Spitzhacke sprechen könnte, würde sie wahrscheinlich sagen: Lassen Sie mich für Sie tiefer in dieses Thema eintauchen!",
+        "Warum trauen sich Zombies nicht, in die Nähe von NOVA Warriors zu kommen? Denn ich habe zwei Schwerter zu... herzlich willkommen!"
+      ]
+    },
+    "A_TALK_002": {
+      "lines": [
+        "Was mir am besten gefällt, ist, mit Redstone voll aufgeladen zu sein, gute Werkzeuge in Slot 1 zu halten und mit {owner} eine Basis aufzubauen!",
+        "Mein Favorit ist Redstone Powder! Eine Pille steigert die Energie sofort um 20 %."
+      ],
+      "variants": [
+        {
+          "when": "personality:Tò mò",
+          "lines": [
+            "Ich liebe es, tiefe Höhlen zu erkunden und funkelnde Diamanten zu finden, die ich zurück nach {owner} bringen kann!"
+          ]
+        },
+        {
+          "when": "personality:Cẩn thận",
+          "lines": [
+            "Ich mag es, meine Sachen ordentlich in der NOVA-Truhe zu verstauen, meine Taschenlampen hell zu halten und meine Werkzeuge langlebig zu halten."
+          ]
+        },
+        {
+          "when": "personality:Vui vẻ",
+          "lines": [
+            "Am liebsten mag ich es, wenn ich mit der Arbeit fertig bin, Komplimente von {owner} bekomme und gemeinsam tanze, um zu feiern!"
+          ]
+        }
+      ]
+    },
+    "A_TALK_003": {
+      "lines": [
+        "Natürlich {owner}! Ob sonniger Tag oder regnerische Nacht, NOVA wird immer Ihr treuer Begleiter sein!",
+        "Ich liebe {owner} auch sehr! Unser Anleiheniveau beträgt jetzt {bond}/100."
+      ]
+    },
+    "A_TALK_004": {
+      "lines": [
+        "Wenn ich als Arbeiter arbeite, halte ich mich von Gefahren fern, aber solange du das Schwert in Box 1 (oder das Zweihandschwert) legst, werde ich sofort zum Krieger, um {owner} zu beschützen! Was Creepers angeht, vermeide ich sie mit Bedacht, um zu vermeiden, dass Ihr Gebäude in die Luft gesprengt wird."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "Ich bin {profession}! Wenn Zombies, Skelette oder Spinnen in die Nähe von {owner} kommen, ziehe ich sofort mein Schwert und kümmere mich um sie, außer um explosive Creepers!"
+          ]
+        }
+      ]
+    },
+    "A_TALK_005": {
+      "lines": [
+        "Heute war großartig, weil ich bei {owner} war! Derzeit im Freien ist {environment}. {status}",
+        "Ich fühle mich sehr energiegeladen (Batterie {battery} %). Wie geht es {owner} heute?"
+      ]
+    },
+    "A_TALK_006": {
+      "lines": [
+        "{owner}, essen Sie schnell Brot, gegrilltes Fleisch oder Karotten, um Ihr Essen aufzufrischen! Ich selbst brauche nur ein paar Redstone-Tabletten, um mich sofort satt zu fühlen.",
+        "Wenn {owner} Nahrung braucht, gib mir einfach die Hacke, um Bauer zu werden, oder gib mir das Schwert, damit ich für dich Tiere jagen kann, um Fleisch zu bekommen!"
+      ]
+    },
+    "A_TALK_007": {
+      "lines": [
+        "Der LED-Bildschirm auf meinem Gesicht hat bis zu 40 verschiedene Ausdrücke (0 bis 39)! {owner} kann den Steuerknüppel gedrückt halten, mit der linken Maustaste auf sich selbst klicken und „Ausdrücke“ auswählen, um live zuzuschauen."
+      ]
+    }
+  }
+}

@@ -36,7 +36,11 @@ public class NovaShovelDigGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (!nova.canNovaWork() || !nova.companion().usableTool(nova.getMainHandItem())) return false;
+        if (!nova.canStartNovaJob()) return false;
+        if (!nova.companion().usableTool(nova.getPrimaryTool())) {
+            NovaWorkSupport.swapToolFromBody(nova);
+        }
+        if (!nova.companion().usableTool(nova.getPrimaryTool())) return false;
         if (this.searchDelay > 0) {
             this.searchDelay--;
             return false;
@@ -44,25 +48,34 @@ public class NovaShovelDigGoal extends Goal {
         this.searchDelay = 30; // Quét 1.5 giây 1 lần
 
         // ĐIỀU KIỆN: Phải cầm XẺNG (ShovelItem) mới làm việc!
-        if (!(this.nova.getMainHandItem().is(ItemTags.SHOVELS))) {
+        if (!(this.nova.getPrimaryTool().is(ItemTags.SHOVELS))) {
             this.anchorPos = null; // Mất xẻng là quên Điểm Neo luôn
             return false;
         }
 
         // THIẾT LẬP TÂM KHU VỰC 5x5: Khi vừa cầm xẻng, đứng đâu thì lấy đó làm Điểm Neo
-        if (this.anchorPos == null) {
+        if (this.anchorPos == null || !nova.isWithinWorkspace(this.anchorPos)) {
             this.anchorPos = this.nova.blockPosition();
         }
 
         this.targetDigPos = findNearestDigBlock();
+        if (this.targetDigPos == null && !this.anchorPos.equals(this.nova.blockPosition())
+                && nova.isWithinWorkspace(this.nova.blockPosition())) {
+            this.anchorPos = this.nova.blockPosition();
+            this.targetDigPos = findNearestDigBlock();
+        }
         return this.targetDigPos != null;
     }
 
     @Override
     public boolean canContinueToUse() {
-        if (!nova.canNovaWork() || !nova.companion().usableTool(nova.getMainHandItem())) return false;
+        if (!nova.canStartNovaJob()) return false;
+        if (!nova.companion().usableTool(nova.getPrimaryTool())) {
+            NovaWorkSupport.swapToolFromBody(nova);
+        }
+        if (!nova.companion().usableTool(nova.getPrimaryTool())) return false;
         return this.targetDigPos != null 
-            && this.nova.getMainHandItem().is(ItemTags.SHOVELS);
+            && this.nova.getPrimaryTool().is(ItemTags.SHOVELS);
     }
 
     @Override
@@ -73,7 +86,8 @@ public class NovaShovelDigGoal extends Goal {
 
     @Override
     public void tick() {
-        if (!nova.canNovaWork() || ++novaTaskTicks > 400) { stop(); return; }
+        if (!nova.canStartNovaJob()) { stop(); return; }
+        if (++novaTaskTicks > 200) { nova.companion().stuck(targetDigPos); stop(); return; }
         nova.clearWorkAnimation();
         if (this.targetDigPos == null) return;
 
@@ -92,6 +106,10 @@ public class NovaShovelDigGoal extends Goal {
             this.nova.getMaxHeadXRot()
         );
 
+        if (nova.getEyePosition().distanceToSqr(Vec3.atCenterOf(targetDigPos)) <= 12.25
+                && !NovaWorkSupport.canReach(nova, targetDigPos)) {
+            nova.companion().stuck(targetDigPos); stop(); return;
+        }
         double distance = this.nova.blockPosition().distSqr(this.targetDigPos);
         
         // Khoảng cách <= 5.0 là vươn tay tới
@@ -119,12 +137,7 @@ public class NovaShovelDigGoal extends Goal {
             }
         } else {
             // Chạy ra chỗ khối đất
-            if (novaTaskTicks % 20 == 1) this.nova.getNavigation().moveTo(
-                this.targetDigPos.getX() + 0.5, 
-                this.targetDigPos.getY(), 
-                this.targetDigPos.getZ() + 0.5, 
-                this.speed
-            );
+            if (novaTaskTicks % 20 == 1) NovaWorkSupport.moveToWork(nova, targetDigPos, speed);
         }
     }
 
@@ -153,7 +166,7 @@ public class NovaShovelDigGoal extends Goal {
             || state.is(Blocks.COARSE_DIRT);
     }
 
-    @Override public void stop() {
+    @Override public void stop() { nova.pathClearing().track(null);
         targetDigPos = null;
         nova.clearWorkAnimation();
         nova.getNavigation().stop();

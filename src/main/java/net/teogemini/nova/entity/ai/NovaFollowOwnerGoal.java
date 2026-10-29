@@ -16,6 +16,7 @@ public class NovaFollowOwnerGoal extends FollowOwnerGoal {
     public boolean canUse() {
                 return nova.getNovaMoveMode() == NovaEntity.MODE_FOLLOW
                 && !nova.isOrderedToSit()
+                && (!nova.isSwordNova() || nova.getTarget() == null)
                 && !nova.isPerformingAction() && !nova.isRallying()
                 && !nova.work().inventoryOpen() && !nova.companion().panicking()
                 && super.canUse();
@@ -25,6 +26,7 @@ public class NovaFollowOwnerGoal extends FollowOwnerGoal {
     public boolean canContinueToUse() {
                 return nova.getNovaMoveMode() == NovaEntity.MODE_FOLLOW
                 && !nova.isOrderedToSit()
+                && (!nova.isSwordNova() || nova.getTarget() == null)
                 && !nova.isPerformingAction() && !nova.isRallying()
                 && !nova.work().inventoryOpen() && !nova.companion().panicking()
                 && super.canContinueToUse();

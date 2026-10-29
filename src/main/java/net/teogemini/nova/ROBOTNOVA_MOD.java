@@ -27,6 +27,8 @@ public class ROBOTNOVA_MOD implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+        net.teogemini.nova.sound.NovaSounds.register();
+        net.teogemini.nova.sound.NovaSoundController.register();
 		net.teogemini.nova.screen.NovaMenus.register();
 		ModItems.register();
 		ModBlocks.register();
@@ -35,6 +37,9 @@ public class ROBOTNOVA_MOD implements ModInitializer {
         LOGGER.info("NOVA entities registered.");    
 		NovaOwnerSessions.register();
 		NovaControlPayload.register();
+        net.teogemini.nova.ai.dialogue.NovaDialogueLoader.register();
+        net.teogemini.nova.network.NovaDialogueNetwork.register();
+        net.teogemini.nova.ai.dialogue.NovaMainChatListener.register();
         net.teogemini.nova.network.NovaRodControl.register();
         net.teogemini.nova.entity.ai.tree.NovaTreeService.register();
         net.teogemini.nova.entity.NovaChestHandler.register();

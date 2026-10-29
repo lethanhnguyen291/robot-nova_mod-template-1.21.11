@@ -1,6 +1,7 @@
 package net.teogemini.nova.entity.companion;
 
 import java.util.EnumMap;
+import net.teogemini.nova.sound.NovaSounds.Cue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,7 +16,7 @@ import net.teogemini.nova.entity.NovaEntity;
 /** Coordinates intentions; individual work Goals continue to own their jobs. */
 public final class NovaCompanion {
     public static final int NORMAL=0, RETURNING=1, RESTING=2, RAIN=3, SOCIAL=4, HELP=5, PANIC=6;
-    public enum Notice { BATTERY, TOOL, FULL, PATH, CHEST, RAIN, COMPLETE, THANKS }
+    public enum Notice { BATTERY, TOOL, FULL, PATH, CHEST, RAIN, COMPLETE, THANKS, TORCH }
     private final NovaEntity nova;
     private final NovaMemories memories = new NovaMemories();
     public final NovaRetryMemory retry = new NovaRetryMemory();
@@ -43,6 +44,7 @@ public final class NovaCompanion {
     }
     public boolean idleAllowed() {
         return nova.isTame() && nova.isAlive() && !nova.isNoAi() && !panicking()
+                && !nova.pathClearing().busy()
                 && !nova.work().inventoryOpen() && !nova.isOrderedToSit()
                 && !nova.isPerformingAction() && !nova.isRallying()
                 && !nova.isCarryingChest() && nova.getNovaMoveMode() != NovaEntity.MODE_WAIT;
@@ -64,12 +66,15 @@ public final class NovaCompanion {
     public boolean raining() { return nova.level().isRainingAt(nova.blockPosition()); }
     public void state(int value) { nova.setCompanionState(value); }
     public void hurt(Vec3 source) {
+        if (nova.isSwordNova()) return;
+        nova.pathClearing().cancel();
         panicTicks=160; danger=source; state(PANIC);
         nova.interruptCompanionAction();
         nova.clearWorkAnimation();
         nova.getNavigation().stop();
     }
     public void ownerCommand() {
+        nova.pathClearing().cancel();
         // Explicit commands cancel voluntary routines, never erase memories or work settings.
         if (!panicking()) state(NORMAL);
         pauseWorkUntil=0; helpUntil=0; retry.clear();
@@ -86,6 +91,12 @@ public final class NovaCompanion {
                 || nova.getWorkAction()!=NovaEntity.WORK_NONE || now()<gestureUntil) return;
         nova.triggerAnim("companion_gesture", name);
         gestureUntil=now()+60;
+        switch (name) {
+            case "nod" -> nova.sounds().play(Cue.ACK);
+            case "inspect" -> nova.sounds().play(Cue.CURIOUS);
+            case "proud" -> nova.sounds().play(Cue.CELEBRATE);
+            default -> { }
+        }
     }
     public void cancelGesture() {
         if (gestureUntil>now()) nova.stopTriggeredAnim("companion_gesture",null);
@@ -95,12 +106,22 @@ public final class NovaCompanion {
         if (now() < notices.getOrDefault(type, Long.MIN_VALUE)) return;
         if (nova.getOwner() instanceof ServerPlayer player && player.level() == nova.level()
                 && player.distanceToSqr(nova) <= 64 * 64) {
-            player.displayClientMessage(Component.literal(nova.getName().getString()+": "+message), true);
+            player.displayClientMessage(Component.literal(nova.getNovaDisplayName()+": "+message), true);
             notices.put(type, now()+1200);
-            if (type==Notice.BATTERY || type==Notice.FULL || type==Notice.TOOL) gesture("point");
+            switch (type) {
+                case BATTERY -> nova.sounds().play(Cue.LOW_BATTERY);
+                case COMPLETE -> nova.sounds().play(Cue.COMPLETE);
+                case THANKS -> nova.sounds().play(Cue.THANKS);
+                default -> nova.sounds().play(Cue.HELP);
+            }
+            if (type==Notice.BATTERY || type==Notice.FULL || type==Notice.TOOL || type==Notice.TORCH) gesture("point");
         }
     }
     public void stuck(BlockPos target) {
+        if (nova.pathClearing().request(target)) return;
+        needsPathHelp(target, "Mình chưa tới được chỗ đó. Bạn giúp mình mở đường nhé.");
+    }
+    public void needsPathHelp(BlockPos target, String reason) {
         if (target != null) retry.fail(target, now());
         pauseWorkUntil=now()+200;
         if (nova.getNovaMoveMode() == NovaEntity.MODE_FREE && !panicking()) {
@@ -110,7 +131,7 @@ public final class NovaCompanion {
         ownerHelped=false;
         nova.clearWorkAnimation(); nova.getNavigation().stop();
         gesture("point");
-        notifyOwner(Notice.PATH, "Mình chưa tới được chỗ đó. Bạn giúp mình mở đường nhé.");
+        notifyOwner(Notice.PATH, reason);
     }
     public void storageBlocked() {
         pauseWorkUntil=now()+200;
@@ -121,6 +142,7 @@ public final class NovaCompanion {
         if (trappedAt!=null && Vec3.atCenterOf(pos).distanceToSqr(trappedAt)<36) ownerHelped=true;
     }
     public void recharged(int before) {
+        nova.sounds().play(Cue.RECHARGE);
         if (before == 0) memories.chargedFromEmpty();
         if (now() >= nextBond) { memories.growBond(1); nextBond=now()+1200; }
         if (nova.getCompanionState() == RESTING || nova.getCompanionState() == HELP) state(NORMAL);
@@ -178,22 +200,19 @@ public final class NovaCompanion {
                 || a.is(ItemTags.SWORDS)&&b.is(ItemTags.SWORDS);
     }
     private void checkTool() {
+        if (nova.pathClearing().busy() || nova.isSwordNova()) return;
         ItemStack held=nova.getMainHandItem();
         toolBlocked=!usableTool(held);
         if (!toolBlocked || !nova.work().enabled() || nova.work().inventoryOpen() || nova.isCarryingChest()) return;
         if (memories.autoTools()) {
-            for (int i=0;i<4;i++) {
-                ItemStack spare=nova.work().spareTools.getItem(i);
-                if (!spare.isEmpty() && sameTool(held,spare) && usableTool(spare)) {
-                    nova.work().spareTools.setItem(i, ItemStack.EMPTY);
-                    nova.setItemSlot(EquipmentSlot.MAINHAND, spare);
-                    nova.setGuaranteedDrop(EquipmentSlot.MAINHAND);
-                    nova.work().spareTools.setItem(i,held);
-                    toolBlocked=false; gesture("nod"); return;
-                }
+            if (net.teogemini.nova.entity.NovaWorkSupport.swapToolFromBody(nova)) {
+                toolBlocked=false; gesture("nod"); return;
             }
         }
-        notifyOwner(Notice.TOOL,"Công cụ gần hỏng rồi. Bạn đổi giúp mình nhé.");
+        if (nova.getLinkedChest() == null) {
+            String name = net.teogemini.nova.entity.NovaWorkSupport.getToolTypeName(held);
+            notifyOwner(Notice.TOOL, "Công cụ " + name + " gần hỏng rồi và chưa có rương liên kết, bạn đổi giúp mình nhé.");
+        }
     }
     public void tick() {
         if (nova.level().isClientSide() || !nova.isAlive() || !nova.isTame() || nova.isNoAi()) return;
@@ -218,10 +237,15 @@ public final class NovaCompanion {
         for (int i=0;i<nova.getInventory().getContainerSize();i++)
             if (nova.getInventory().getItem(i).isEmpty()) { full=false; break; }
         if (full && nova.work().enabled()) notifyOwner(Notice.FULL,"Ba lô mình đầy rồi, mình cần chỗ cất đồ.");
-        if (!panicking() && !nova.work().inventoryOpen() && nova.getNavigation().isInProgress()) {
+        if (!panicking() && !nova.pathClearing().busy() && !nova.work().inventoryOpen() && nova.getNavigation().isInProgress()) {
             if (lastProgress!=null && nova.position().distanceToSqr(lastProgress)<0.04) stuckTicks+=20;
             else stuckTicks=0;
-            if (stuckTicks>=100) { stuck(nova.getNavigation().getTargetPos()); stuckTicks=0; }
+            if (stuckTicks>=100) {
+                BlockPos job = nova.pathClearing().jobDestination();
+                if (job != null) stuck(job);
+                else needsPathHelp(nova.getNavigation().getTargetPos(), "Mình bị kẹt trên đường đi. Bạn giúp mình mở đường nhé.");
+                stuckTicks=0;
+            }
         } else stuckTicks=0;
         lastProgress=nova.position();
     }

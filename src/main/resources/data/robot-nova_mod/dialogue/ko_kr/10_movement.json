@@ -1,0 +1,97 @@
+{
+  "version": 2,
+  "group": "movement",
+  "questions": [
+    {
+      "id": "MOV_001",
+      "intent": "FOLLOW",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "따라와",
+        "나를 따라와"
+      ],
+      "answer": "A_MOV_001"
+    },
+    {
+      "id": "MOV_002",
+      "intent": "FREE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "자유롭게 돌아다녀"
+      ],
+      "answer": "A_MOV_002"
+    },
+    {
+      "id": "MOV_003",
+      "intent": "WAIT",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "여기서 기다려"
+      ],
+      "answer": "A_MOV_003"
+    },
+    {
+      "id": "MOV_004",
+      "intent": "SIT",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "앉아"
+      ],
+      "answer": "A_MOV_004"
+    },
+    {
+      "id": "MOV_005",
+      "intent": "STAND",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "일어나"
+      ],
+      "answer": "A_MOV_005"
+    }
+  ],
+  "answers": {
+    "A_MOV_001": {
+      "lines": [
+        "클리어! Follow {owner} 모드로 전환했습니다. 당신이 어디를 가든지 나는 밀접하게 따라갈 것입니다!",
+        "나는 당신을 따릅니다! 7블록 이상 떨어져 있으면 자동으로 속도를 높이고 따라갑니다."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "분명해요! NOVA 전사는 경비병 {owner}를 따릅니다. 누가 공격하든 즉시 처리하겠습니다!"
+          ]
+        }
+      ]
+    },
+    "A_MOV_002": {
+      "lines": [
+        "무료 모드({profession})로 전환했습니다. 과제 할당을 켜주시면 제가 적극적으로 해당 지역을 돌아다닐 것입니다.",
+        "알았어, 여기서는 자유롭게 돌아다닐게."
+      ]
+    },
+    "A_MOV_003": {
+      "lines": [
+        "{owner}가 호출될 때까지 이 위치에서 기다리겠습니다.",
+        "분명합니다. 나는 가만히 서서 이곳을 지킬 것입니다."
+      ]
+    },
+    "A_MOV_004": {
+      "lines": [
+        "우리가 있는 곳에 앉아서 쉬자. 계속 진행하면 {owner}가 \"일어나\"라고 말하면 됩니다!",
+        "좋아, 앉아서 쉬면서 에너지를 절약하자."
+      ]
+    },
+    "A_MOV_005": {
+      "lines": [
+        "나는 일어서서 이전 요법을 계속할 준비가 되었습니다!",
+        "NOVA가 일어섰습니다! {owner} 작업을 계속하겠습니다."
+      ]
+    }
+  }
+}

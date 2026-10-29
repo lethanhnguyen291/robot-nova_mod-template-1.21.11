@@ -1,0 +1,97 @@
+{
+  "version": 2,
+  "group": "movement",
+  "questions": [
+    {
+      "id": "MOV_001",
+      "intent": "FOLLOW",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "suis-moi",
+        "viens avec moi"
+      ],
+      "answer": "A_MOV_001"
+    },
+    {
+      "id": "MOV_002",
+      "intent": "FREE",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "promène-toi librement"
+      ],
+      "answer": "A_MOV_002"
+    },
+    {
+      "id": "MOV_003",
+      "intent": "WAIT",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "attends ici"
+      ],
+      "answer": "A_MOV_003"
+    },
+    {
+      "id": "MOV_004",
+      "intent": "SIT",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "assieds-toi"
+      ],
+      "answer": "A_MOV_004"
+    },
+    {
+      "id": "MOV_005",
+      "intent": "STAND",
+      "match": "exact",
+      "priority": 50,
+      "phrases": [
+        "lève-toi"
+      ],
+      "answer": "A_MOV_005"
+    }
+  ],
+  "answers": {
+    "A_MOV_001": {
+      "lines": [
+        "Clairement ! Je suis passé en mode Suivre {owner}. Où que vous alliez, je vous suivrai de près !",
+        "Je vous suis! Si vous êtes à plus de 7 pâtés de maisons, vous accélérerez et suivrez automatiquement."
+      ],
+      "variants": [
+        {
+          "when": "sword_nova",
+          "lines": [
+            "Il est clair! Le guerrier NOVA suit le garde {owner}. Quiconque vous attaque, je m'en occuperai immédiatement !"
+          ]
+        }
+      ]
+    },
+    "A_MOV_002": {
+      "lines": [
+        "Je suis passé en mode Libre ({profession}). Si vous activez Attribuer des tâches, je travaillerai de manière proactive dans la zone.",
+        "D'accord, je me déplacerai ici librement."
+      ]
+    },
+    "A_MOV_003": {
+      "lines": [
+        "J'attendrai à cet endroit jusqu'à ce que {owner} appelle.",
+        "C'est clair, je vais rester immobile et monter la garde ici."
+      ]
+    },
+    "A_MOV_004": {
+      "lines": [
+        "Asseyons-nous et reposons-nous là où nous sommes. Lorsque vous continuez, {owner} dites simplement « lève-toi » !",
+        "D'accord, asseyons-nous, reposons-nous et économisons de l'énergie."
+      ]
+    },
+    "A_MOV_005": {
+      "lines": [
+        "Je me suis levé et j'étais prêt à continuer mon régime précédent !",
+        "NOVA s'est levé ! Continuons notre travail, {owner}."
+      ]
+    }
+  }
+}

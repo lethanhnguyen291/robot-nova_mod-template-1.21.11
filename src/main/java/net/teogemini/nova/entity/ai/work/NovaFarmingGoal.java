@@ -32,7 +32,11 @@ public class NovaFarmingGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (!nova.canNovaWork() || !nova.companion().usableTool(nova.getMainHandItem())) return false;
+        if (!nova.canStartNovaJob()) return false;
+        if (!nova.companion().usableTool(nova.getPrimaryTool())) {
+            NovaWorkSupport.swapToolFromBody(nova);
+        }
+        if (!nova.companion().usableTool(nova.getPrimaryTool())) return false;
         if (this.searchDelay > 0) {
             this.searchDelay--;
             return false;
@@ -40,7 +44,7 @@ public class NovaFarmingGoal extends Goal {
         this.searchDelay = 30; // Quét 1.5 giây 1 lần
 
         // ĐIỀU KIỆN: Phải cầm CUỐC (HoeItem) mới ra đồng!
-        if (!(this.nova.getMainHandItem().is(ItemTags.HOES))) {
+        if (!(this.nova.getPrimaryTool().is(ItemTags.HOES))) {
             return false;
         }
 
@@ -50,9 +54,13 @@ public class NovaFarmingGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        if (!nova.canNovaWork() || !nova.companion().usableTool(nova.getMainHandItem())) return false;
+        if (!nova.canStartNovaJob()) return false;
+        if (!nova.companion().usableTool(nova.getPrimaryTool())) {
+            NovaWorkSupport.swapToolFromBody(nova);
+        }
+        if (!nova.companion().usableTool(nova.getPrimaryTool())) return false;
         return this.targetFarmPos != null 
-            && this.nova.getMainHandItem().is(ItemTags.HOES);
+            && this.nova.getPrimaryTool().is(ItemTags.HOES);
     }
 
     @Override
@@ -63,7 +71,8 @@ public class NovaFarmingGoal extends Goal {
 
     @Override
     public void tick() {
-        if (!nova.canNovaWork() || ++novaTaskTicks > 400) { stop(); return; }
+        if (!nova.canStartNovaJob()) { stop(); return; }
+        if (++novaTaskTicks > 200) { nova.companion().stuck(targetFarmPos); stop(); return; }
         nova.clearWorkAnimation();
         if (this.targetFarmPos == null) return;
 
@@ -82,6 +91,10 @@ public class NovaFarmingGoal extends Goal {
                 this.nova.getMaxHeadXRot()
         );
 
+        if (nova.getEyePosition().distanceToSqr(Vec3.atCenterOf(targetFarmPos)) <= 12.25
+                && !NovaWorkSupport.canReach(nova, targetFarmPos)) {
+            nova.companion().stuck(targetFarmPos); stop(); return;
+        }
         double distance = this.nova.blockPosition().distSqr(this.targetFarmPos);
         
         // Khoảng cách <= 4.0 là đủ để vươn tay cuốc đất
@@ -109,12 +122,7 @@ public class NovaFarmingGoal extends Goal {
             }
         } else {
             // Chạy ra ruộng
-            if (novaTaskTicks % 20 == 1) this.nova.getNavigation().moveTo(
-                    this.targetFarmPos.getX() + 0.5,
-                    this.targetFarmPos.getY(),
-                    this.targetFarmPos.getZ() + 0.5,
-                    this.speed
-            );
+            if (novaTaskTicks % 20 == 1) NovaWorkSupport.moveToWork(nova, targetFarmPos, speed);
         }
     }
 
@@ -139,7 +147,7 @@ public class NovaFarmingGoal extends Goal {
         return false;
     }
 
-    @Override public void stop() {
+    @Override public void stop() { nova.pathClearing().track(null);
         targetFarmPos = null;
         nova.clearWorkAnimation();
         nova.getNavigation().stop();

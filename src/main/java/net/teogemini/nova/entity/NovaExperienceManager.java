@@ -15,7 +15,7 @@ public final class NovaExperienceManager {
                 : originalState.is(BlockTags.GOLD_ORES)
                     || originalState.is(BlockTags.REDSTONE_ORES)
                     || originalState.is(BlockTags.LAPIS_ORES) ? 4
-                : originalState.is(BlockTags.IRON_ORES)
+                : originalState.is(net.teogemini.nova.registry.NovaMaterials.ORES) || originalState.is(BlockTags.IRON_ORES)
                     || originalState.is(BlockTags.COPPER_ORES) ? 2
                 : originalState.is(BlockTags.COAL_ORES) ? 1 : 0;
         nova.addExperience(amount);

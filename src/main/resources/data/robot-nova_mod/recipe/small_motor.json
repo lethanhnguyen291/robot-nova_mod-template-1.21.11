@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:iron_ingot",
+    "minecraft:copper_ingot",
+    "minecraft:redstone"
+  ],
+  "result": {
+    "id": "robot-nova_mod:small_motor",
+    "count": 2
+  }
+}

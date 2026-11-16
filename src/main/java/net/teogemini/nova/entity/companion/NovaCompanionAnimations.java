@@ -10,7 +10,7 @@ public final class NovaCompanionAnimations {
     private NovaCompanionAnimations() {}
     public static void register(NovaEntity nova, AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<NovaEntity>("companion_gesture",6,state -> {
-            if (nova.isCarryingChest() || nova.isPerformingAction() || nova.getWorkAction()!=NovaEntity.WORK_NONE)
+            if (nova.isDormant() || nova.isCarryingChest() || nova.isPerformingAction() || nova.getWorkAction()!=NovaEntity.WORK_NONE)
                 return PlayState.STOP;
             if (nova.getCompanionState()==NovaCompanion.RESTING)
                 return state.setAndContinue(RawAnimation.begin().thenLoop("animation.nova.companion_sleep"));

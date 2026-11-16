@@ -58,6 +58,10 @@ public final class ModItems {
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS)
                 .register(entries -> {
                     entries.accept(NOVA_SPAWN_EGG);
+                });
+
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS)
+                .register(entries -> {
                     entries.accept(NOVA_DORMANT);
                 });
 

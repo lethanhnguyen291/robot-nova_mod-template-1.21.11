@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "robot-nova_mod:silicon_ore",
+    "robot-nova_mod:deepslate_silicon_ore",
+    "robot-nova_mod:energy_crystal_ore",
+    "robot-nova_mod:deepslate_energy_crystal_ore",
+    "robot-nova_mod:nova_frame_casing",
+    "robot-nova_mod:nova_head_unit",
+    "robot-nova_mod:nova_body_unit"
+  ]
+}

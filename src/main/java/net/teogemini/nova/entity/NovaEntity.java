@@ -70,7 +70,14 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
     private final NovaPathClearing novaPathClearing = new NovaPathClearing(this);
     public NovaToolBelt toolBelt() { return novaToolBelt; }
     public ItemStack getPrimaryTool() { return novaToolBelt.primary(); }
-    public NovaPathClearing pathClearing() { return novaPathClearing; }
+        public NovaPathClearing pathClearing() { return novaPathClearing; }
+    private final net.teogemini.nova.entity.ai.build.NovaConstruction novaConstruction = new net.teogemini.nova.entity.ai.build.NovaConstruction(this);
+    public net.teogemini.nova.entity.ai.build.NovaConstruction construction() { return novaConstruction; }
+    public boolean isBuilderNova() {
+        return getPrimaryTool().is(net.minecraft.tags.ItemTags.SHOVELS)
+                || getMainHandItem().is(net.minecraft.tags.ItemTags.SHOVELS)
+                || getOffhandItem().is(net.minecraft.tags.ItemTags.SHOVELS);
+    }
     public boolean canStartNovaJob() { return canNovaWork() && !novaPathClearing.busy(); }
     private final NovaCompanion novaCompanion = new NovaCompanion(this);
     private static final EntityDataAccessor<Integer> NOVA_COMPANION =
@@ -91,7 +98,35 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
     @Override public int getMaxFallDistance() { return 1; }
     @Override public boolean causeFallDamage(double distance, float multiplier, DamageSource source) { return false; }
     @Override protected int decreaseAirSupply(int air) { return getMaxAirSupply(); }
+    @Override public void knockback(double strength, double x, double z) { if (!isDormant()) super.knockback(strength, x, z); }
     @Override public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
+        if (isDormant()) {
+            if (source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+                return super.hurtServer(server, source, amount);
+            }
+            if (source.getEntity() instanceof Player player) {
+                if (isOwnedBy(player) || !isTame() || player.getAbilities().instabuild) {
+                    // dropDormantItem broadcasts the pickup sound once.
+                    server.gameEvent(player, net.minecraft.world.level.gameevent.GameEvent.BLOCK_DESTROY, blockPosition());
+                    dropDormantItem(player);
+                    discard();
+                    player.displayClientMessage(
+                            Component.literal("[" + getNovaDisplayName() + "] Đã thu hồi tượng vào túi đồ.")
+                                    .withStyle(ChatFormatting.YELLOW),
+                            true
+                    );
+                } else {
+                    sounds().play(Cue.DORMANT_HIT);
+                    server.playSound(null, blockPosition(), SoundEvents.IRON_HIT, SoundSource.BLOCKS, 0.20F, 1.0F);
+                    player.displayClientMessage(
+                            Component.literal("[" + getNovaDisplayName() + "] Chỉ chủ nhân mới có thể thu hồi tượng này.")
+                                    .withStyle(ChatFormatting.RED),
+                            true
+                    );
+                }
+            }
+            return false;
+        }
         boolean hurt=super.hurtServer(server,source,amount);
         if (hurt && isAlive()) {
             novaSelfRepair.damaged();
@@ -213,6 +248,14 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
         setPathfindingMalus(net.minecraft.world.level.pathfinder.PathType.DANGER_FIRE, -1);
         setPathfindingMalus(net.minecraft.world.level.pathfinder.PathType.DAMAGE_FIRE, -1);
             this.lookControl = new LookControl(this) {
+            @Override
+            public void tick() {
+                if (isDormant()) {
+                    return;
+                }
+                super.tick();
+            }
+
             @Override
             protected boolean resetXRotOnTick() {
                 return true;
@@ -439,6 +482,42 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
         return !isDormant() && super.isPushable();
     }
 
+    @Override
+    public void push(net.minecraft.world.entity.Entity entity) {
+        if (!isDormant()) {
+            super.push(entity);
+        }
+    }
+
+    @Override
+    protected void doPush(net.minecraft.world.entity.Entity entity) {
+        if (!isDormant()) {
+            super.doPush(entity);
+        }
+    }
+
+    @Override
+    public void aiStep() {
+        if (isDormant()) {
+            if (!this.onGround() && !this.isInWater()) {
+                this.setDeltaMovement(0, Math.max(-0.6, getDeltaMovement().y - 0.08), 0);
+            } else {
+                this.setDeltaMovement(0, 0, 0);
+            }
+            float yaw = getYRot();
+            setYRot(yaw);
+            yRotO = yaw;
+            setYHeadRot(yaw);
+            yHeadRotO = yaw;
+            setYBodyRot(yaw);
+            yBodyRotO = yaw;
+            setXRot(0);
+            xRotO = 0;
+            return;
+        }
+        super.aiStep();
+    }
+
     public void setNovaWorkEnabled(boolean enabled) {
         entityData.set(NOVA_WORK_ENABLED, enabled);
         novaWork.setEnabled(enabled);
@@ -630,6 +709,12 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
         return new BodyRotationControl(this) {
             @Override
             public void clientTick() {
+                if (isDormant()) {
+                    float yaw = getYRot();
+                    setYHeadRot(yaw);
+                    setYBodyRot(yaw);
+                    return;
+                }
                 double dx = getX() - xo;
                 double dz = getZ() - zo;
 
@@ -714,7 +799,29 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
     public void setNovaRunning(boolean running) {
         entityData.set(NOVA_RUNNING, running);
     }
-        private void tickNovaGreeting() {
+        private void tickScaffoldingClimb() {
+        if (!level().isClientSide() && !isDormant()) {
+            net.minecraft.core.BlockPos feet = blockPosition();
+            var inFeet = level().getBlockState(feet);
+            var below = level().getBlockState(feet.below());
+            if (inFeet.is(net.minecraft.world.level.block.Blocks.SCAFFOLDING) || below.is(net.minecraft.world.level.block.Blocks.SCAFFOLDING)) {
+                this.fallDistance = 0;
+                if (!onGround() && Math.abs(getDeltaMovement().y) > 0.03) sounds().play(Cue.SCAFFOLD_CLIMB);
+                if (!construction().allowed() && getNavigation().isInProgress() && getNavigation().getTargetPos() != null) {
+                    double targetY = getNavigation().getTargetPos().getY();
+                    if (targetY > getY() + 0.2) {
+                        setDeltaMovement(getDeltaMovement().x * 0.5, 0.25, getDeltaMovement().z * 0.5);
+
+                    } else if (targetY < getY() - 0.5) {
+                        setDeltaMovement(getDeltaMovement().x * 0.5, -0.22, getDeltaMovement().z * 0.5);
+
+                    }
+                }
+            }
+        }
+    }
+
+    private void tickNovaGreeting() {
         if (level().isClientSide() || !isTame() || isCarryingChest()
                 || companion().controlsLook() || companion().panicking()
                 || getWorkAction() != WORK_NONE || isRallying()) {
@@ -787,6 +894,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         novaWork.save(output.child("NovaWork"));
+        construction().save(output.child("NovaConstruction"));
         novaSelfRepair.save(output.child("NovaSelfRepair"));
         output.putInt("NovaBorrowedToolSlot", toolBelt().borrowedSlot());
         trees().save(output.child("NovaTrees"));
@@ -803,6 +911,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
         output.putInt("NovaPreviewFace", novaPreviewFace);
         output.putBoolean("NovaDormant", isDormant());
         output.putInt("NovaDormantPose", getDormantPose());
+        output.putFloat("NovaDormantYaw", getYRot());
     }
 
     @Override
@@ -810,6 +919,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
         super.readAdditionalSaveData(input);
         setLeftHanded(false);
         novaWork.load(input.childOrEmpty("NovaWork"));
+        construction().load(input.childOrEmpty("NovaConstruction"));
         novaSelfRepair.load(input.childOrEmpty("NovaSelfRepair"));
         toolBelt().restoreAfterLoad(input.getIntOr("NovaBorrowedToolSlot", 0));
         trees().load(input.childOrEmpty("NovaTrees"));
@@ -830,6 +940,17 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
         novaOwnerWasAway = input.getBooleanOr("NovaOwnerWasAway", false);
         setDormant(input.getBooleanOr("NovaDormant", false));
         setDormantPose(input.getIntOr("NovaDormantPose", 0));
+        if (isDormant()) {
+            float savedYaw = input.getFloatOr("NovaDormantYaw", getYRot());
+            setYRot(savedYaw);
+            yRotO = savedYaw;
+            setYHeadRot(savedYaw);
+            yHeadRotO = savedYaw;
+            setYBodyRot(savedYaw);
+            yBodyRotO = savedYaw;
+            setXRot(0);
+            xRotO = 0;
+        }
         novaGreetingPending = input.getBooleanOr("NovaGreetingPending", false);
         novaNextGreetingTime = input.getLongOr("NovaNextGreetingTime", 0L);
         novaNextTreeCollectTime = input.getLongOr("NovaNextTreeCollect", 0L);
@@ -876,6 +997,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
         clearWorkAnimation();
         stopRally();
         showNovaFace(27, 80);
+        sounds().play(Cue.SAD);
         companion().gesture("nod");
     }
 
@@ -914,10 +1036,26 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
         if (isDormant()) {
             getNavigation().stop();
             setDeltaMovement(0, Math.min(0, getDeltaMovement().y), 0);
-            setYHeadRot(getYRot());
-            setYBodyRot(getYRot());
+            float yaw = getYRot();
+            setYRot(yaw);
+            yRotO = yaw;
+            setYHeadRot(yaw);
+            yHeadRotO = yaw;
+            setYBodyRot(yaw);
+            yBodyRotO = yaw;
+            setXRot(0);
+            xRotO = 0;
             tickNovaFace();
             super.tick();
+            setYRot(yaw);
+            yRotO = yaw;
+            setYHeadRot(yaw);
+            yHeadRotO = yaw;
+            setYBodyRot(yaw);
+            yBodyRotO = yaw;
+            setXRot(0);
+            xRotO = 0;
+            sounds().tick();
             return;
         }
 
@@ -928,7 +1066,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
 
         pathClearing().maintain();
         companion().tick();
-        tickNovaGreeting();
+        tickNovaGreeting(); tickScaffoldingClimb();
         super.tick();
         if (!level().isClientSide() && novaWork.tickEnergy(canNovaWork() && !pathClearing().busy() && getWorkAction() != WORK_NONE && getWorkAction() != WORK_CHOP)) {
             clearWorkAnimation();
@@ -963,6 +1101,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
         goalSelector.addGoal(7, new NovaChopTreeGoal(this, 1.2));
         goalSelector.addGoal(8, new NovaFarmingGoal(this, 1.2));
         goalSelector.addGoal(9, new NovaShovelDigGoal(this, 1.2));
+        goalSelector.addGoal(9, new net.teogemini.nova.entity.ai.build.NovaConstructionGoal(this));
         goalSelector.addGoal(10, new NovaRoutineGoal(this));
         goalSelector.addGoal(10, new NovaSocialGoal(this));
         goalSelector.addGoal(11, new WaterAvoidingRandomStrollGoal(this, 0.75) {
@@ -974,7 +1113,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (hand != InteractionHand.MAIN_HAND) {
+        if (hand != InteractionHand.MAIN_HAND || player.getItemInHand(hand).is(net.teogemini.nova.registry.NovaMaterials.NOVA_OMNI_PAD)) {
             return InteractionResult.PASS;
         }
 
@@ -1118,7 +1257,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
 
     @Override
     public ItemStack getPickResult() {
-        return ItemStack.EMPTY;
+        return new ItemStack(net.teogemini.nova.registry.ModItems.NOVA_DORMANT);
     }
 
     @Override
@@ -1166,7 +1305,7 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
             serverLevel.sendParticles(ParticleTypes.SMOKE, getX(), getY() + 0.8, getZ(), 20, 0.3, 0.4, 0.3, 0.02);
             serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, getX(), getY() + 0.6, getZ(), 10, 0.25, 0.3, 0.25, 0.05);
         }
-        sounds().play(Cue.SLEEP);
+        sounds().powerDown();
         if (getOwner() instanceof Player player) {
             player.displayClientMessage(
                     Component.literal("[" + getNovaDisplayName() + "] Đã cạn sạch năng lượng (0%) và tự động chuyển sang trạng thái Chưa Kích Hoạt! Hãy dùng Khối Đá Đỏ để kích hoạt lại.")
@@ -1195,76 +1334,65 @@ public class NovaEntity extends TamableAnimal implements GeoEntity, net.minecraf
             } else {
                 spawnAtLocation(serverLevel, item);
             }
+            sounds().play(Cue.DORMANT_PICKUP);
+            serverLevel.playSound(null, blockPosition(), SoundEvents.IRON_BREAK, SoundSource.BLOCKS, 0.25F, 1.0F);
+            serverLevel.gameEvent(player, net.minecraft.world.level.gameevent.GameEvent.BLOCK_DESTROY, blockPosition());
             serverLevel.sendParticles(ParticleTypes.SMOKE, getX(), getY() + 0.5, getZ(), 10, 0.2, 0.2, 0.2, 0.02);
         }
     }
 
     private InteractionResult interactDormant(Player player, InteractionHand hand) {
+        if (player.isSpectator() || hand != InteractionHand.MAIN_HAND) return InteractionResult.PASS;
         ItemStack held = player.getItemInHand(hand);
-
-        // 1. KÍCH HOẠT BẰNG KHỐI ĐÁ ĐỎ
+        if (isTame() && !isOwnedBy(player) && !player.getAbilities().instabuild) {
+            if (!level().isClientSide()) player.displayClientMessage(Component.translatable("message.robot-nova_mod.not_owner"), true);
+            return InteractionResult.SUCCESS;
+        }
+        if (held.is(Items.REDSTONE)) {
+            if (!level().isClientSide()) player.displayClientMessage(Component.translatable("message.robot-nova_mod.activation_block"), true);
+            return InteractionResult.SUCCESS;
+        }
         if (held.is(Items.REDSTONE_BLOCK)) {
             if (!level().isClientSide()) {
-                if (!player.getAbilities().instabuild) {
-                    held.shrink(1);
-                }
+                boolean firstActivation = !isTame();
+                if (!player.getAbilities().instabuild) held.shrink(1);
                 work().setEnergy(NovaWorkData.MAX_ENERGY);
                 heal(getMaxHealth());
+                setNoAi(false);
                 setDormant(false);
-                if (!isTame()) {
+                if (firstActivation) {
                     tame(player);
+                    companion().memories().meet(player.getName().getString());
+                    setOrderedToSit(false);
+                    setNovaMoveMode(MODE_FOLLOW);
                 }
+                novaGreetingPending = true;
                 showNovaFace(0, 60);
-                companion().gesture("nod");
                 if (level() instanceof ServerLevel serverLevel) {
-                    serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, getX(), getY() + 0.6, getZ(), 35, 0.4, 0.5, 0.4, 0.1);
-                    serverLevel.sendParticles(ParticleTypes.HEART, getX(), getY() + 1.2, getZ(), 12, 0.3, 0.3, 0.3, 0.05);
-                    serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, getX(), getY() + 0.8, getZ(), 16, 0.4, 0.4, 0.4, 0.05);
+                    serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, getX(), getY()+.6, getZ(), 35, .4, .5, .4, .1);
+                    serverLevel.sendParticles(ParticleTypes.HEART, getX(), getY()+1.2, getZ(), 12, .3, .3, .3, .05);
                 }
-                sounds().play(Cue.BOOT);
-                player.displayClientMessage(
-                        Component.literal("[" + getNovaDisplayName() + "] Đã nạp đầy năng lượng từ Khối Đá Đỏ và khởi động thành công!")
-                                .withStyle(ChatFormatting.GREEN),
-                        true
-                );
+                sounds().reactivate(firstActivation);
+                player.displayClientMessage(Component.translatable("message.robot-nova_mod.activated"), true);
             }
             return InteractionResult.SUCCESS;
         }
-
-        // 2. SHIFT + TAY KHÔNG: THU HỒI
-        if (player.isShiftKeyDown() && held.isEmpty() && (isOwnedBy(player) || !isTame() || player.getAbilities().instabuild)) {
+        if (player.isShiftKeyDown() && held.isEmpty()) {
             if (!level().isClientSide()) {
                 dropDormantItem(player);
                 discard();
-                player.displayClientMessage(
-                        Component.literal("[" + getNovaDisplayName() + "] Đã thu hồi vào túi đồ.")
-                                .withStyle(ChatFormatting.YELLOW),
-                        true
-                );
+                player.displayClientMessage(Component.translatable("message.robot-nova_mod.packed"), true);
             }
             return InteractionResult.SUCCESS;
         }
-
-        // 3. NHẤP PHẢI ĐỔI 5 TƯ THẾ
         if (!level().isClientSide()) {
-            int nextPose = (getDormantPose() + 1) % 5;
-            setDormantPose(nextPose);
-            tickNovaFace();
-            playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.6F, 1.2F + nextPose * 0.1F);
-
-            String poseName = switch (nextPose) {
-                case 0 -> "Tắt nguồn ngủ đông (1/5)";
-                case 1 -> "Đứng nghiêm canh gác (2/5)";
-                case 2 -> "Ngồi gập gối chờ lệnh (3/5)";
-                case 3 -> "Giơ tay chào (4/5)";
-                case 4 -> "Chiến binh thủ thế (5/5)";
-                default -> "Chưa kích hoạt";
-            };
-            player.displayClientMessage(
-                    Component.literal("[" + getNovaDisplayName() + " - Chưa Kích Hoạt] Tư thế: " + poseName)
-                            .withStyle(ChatFormatting.AQUA),
-                    true
-            );
+            int nextPose=(getDormantPose()+1)%5;
+            setDormantPose(nextPose);tickNovaFace();sounds().dormantPose(nextPose);
+            playSound(SoundEvents.COPPER_GOLEM_BECOME_STATUE,.12F,1F);
+            if (level() instanceof ServerLevel serverLevel) serverLevel.gameEvent(player,net.minecraft.world.level.gameevent.GameEvent.BLOCK_CHANGE,blockPosition());
+            String poseName=switch(nextPose){case 0->"Tắt nguồn ngủ đông (1/5)";case 1->"Đứng nghiêm canh gác (2/5)";
+                case 2->"Ngồi gập gối chờ lệnh (3/5)";case 3->"Giơ tay chào (4/5)";case 4->"Chiến binh thủ thế (5/5)";default->"Chưa kích hoạt";};
+            player.displayClientMessage(Component.literal("["+getNovaDisplayName()+" - Chưa Kích Hoạt] Tư thế: "+poseName).withStyle(ChatFormatting.AQUA),true);
         }
         return InteractionResult.SUCCESS;
     }

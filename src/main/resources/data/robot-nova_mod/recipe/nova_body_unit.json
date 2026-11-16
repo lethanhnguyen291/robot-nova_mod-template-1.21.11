@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "MIM",
+    "CBR",
+    "MIM"
+  ],
+  "key": {
+    "M": "robot-nova_mod:small_motor",
+    "I": "minecraft:iron_ingot",
+    "C": "robot-nova_mod:nova_circuit",
+    "B": "robot-nova_mod:nova_battery",
+    "R": "minecraft:chest"
+  },
+  "result": {
+    "id": "robot-nova_mod:nova_body_unit",
+    "count": 1
+  }
+}

@@ -28,6 +28,13 @@ public final class NovaSoundGate {
         return true;
     }
 
+    /** A pickup sound must be broadcast before the entity is discarded, not queued. */
+    public boolean takeDetached(int cue, long now, int cooldown) {
+        if (!cooldownReady(cue, now)) return false;
+        next[cue] = now + cooldown;
+        return true;
+    }
+
     public void quietUntil(long until) {
         voiceUntil = Math.max(voiceUntil, until);
         mechanicalUntil = Math.max(mechanicalUntil, until);

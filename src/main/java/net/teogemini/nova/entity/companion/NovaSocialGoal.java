@@ -82,7 +82,10 @@ public final class NovaSocialGoal extends Goal {
                 nova.setInSittingPose(true);
         } else if (friend!=null && friend.isAlive()) {
             nova.getLookControl().setLookAt(friend,6,6);
-            if (ticks==20) { nova.companion().gesture("nod"); friend.showNovaFace(0,40); }
+            if (ticks==20) {
+                nova.sounds().play(net.teogemini.nova.sound.NovaSounds.Cue.SOCIAL_HELLO);
+                nova.companion().gesture("nod"); friend.showNovaFace(0,40);
+            }
         } else if (target!=null && kind==3) {
             nova.getLookControl().setLookAt(target.getX()+.5,target.getY()+.5,target.getZ()+.5,6,6);
             if (ticks==40 && nova.companion().memories().buttons().contains(
@@ -107,6 +110,7 @@ public final class NovaSocialGoal extends Goal {
                 flower.getItem().shrink(1);
                 if (flower.getItem().isEmpty()) flower.discard();
                 nova.companion().memories().remember("Tặng chủ nhân một bông hoa mình tìm thấy.");
+                nova.sounds().play(net.teogemini.nova.sound.NovaSounds.Cue.GIFT);
                 nova.companion().gesture("proud"); flower=null;
             }
         }

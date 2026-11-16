@@ -44,7 +44,7 @@ public final class NovaCompanion {
     }
     public boolean idleAllowed() {
         return nova.isTame() && nova.isAlive() && !nova.isNoAi() && !panicking()
-                && !nova.pathClearing().busy()
+                && !nova.pathClearing().busy() && !nova.construction().running()
                 && !nova.work().inventoryOpen() && !nova.isOrderedToSit()
                 && !nova.isPerformingAction() && !nova.isRallying()
                 && !nova.isCarryingChest() && nova.getNovaMoveMode() != NovaEntity.MODE_WAIT;
@@ -95,6 +95,7 @@ public final class NovaCompanion {
             case "nod" -> nova.sounds().play(Cue.ACK);
             case "inspect" -> nova.sounds().play(Cue.CURIOUS);
             case "proud" -> nova.sounds().play(Cue.CELEBRATE);
+            case "rain" -> nova.sounds().play(Cue.RAIN);
             default -> { }
         }
     }
@@ -141,8 +142,9 @@ public final class NovaCompanion {
     public void ownerClearedPath(BlockPos pos) {
         if (trappedAt!=null && Vec3.atCenterOf(pos).distanceToSqr(trappedAt)<36) ownerHelped=true;
     }
-    public void recharged(int before) {
-        nova.sounds().play(Cue.RECHARGE);
+    public void recharged(int before) { recharged(before, false); }
+    public void recharged(int before, boolean fullCharge) {
+        nova.sounds().play(fullCharge ? Cue.RECHARGE_FULL : Cue.RECHARGE);
         if (before == 0) memories.chargedFromEmpty();
         if (now() >= nextBond) { memories.growBond(1); nextBond=now()+1200; }
         if (nova.getCompanionState() == RESTING || nova.getCompanionState() == HELP) state(NORMAL);
@@ -153,7 +155,7 @@ public final class NovaCompanion {
         if (nova.work().energy()<=100) pauseWorkUntil=now()+200;
         finishedBlocks=Math.min(999,finishedBlocks+1); quietTicks=0;
         if (block.is(BlockTags.LOGS)) memories.log();
-        else if (block.is(BlockTags.DIAMOND_ORES) || block.is(BlockTags.COAL_ORES)
+        else if (block.is(net.teogemini.nova.registry.NovaMaterials.ORES) || block.is(BlockTags.DIAMOND_ORES) || block.is(BlockTags.COAL_ORES)
                 || block.is(BlockTags.IRON_ORES) || block.is(BlockTags.COPPER_ORES)
                 || block.is(BlockTags.GOLD_ORES) || block.is(BlockTags.EMERALD_ORES)
                 || block.is(BlockTags.REDSTONE_ORES) || block.is(BlockTags.LAPIS_ORES)) memories.mined();

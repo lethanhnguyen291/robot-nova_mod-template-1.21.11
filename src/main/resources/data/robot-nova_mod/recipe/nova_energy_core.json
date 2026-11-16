@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "robot-nova_mod:energy_crystal",
+    "minecraft:copper_ingot",
+    "minecraft:redstone"
+  ],
+  "result": {
+    "id": "robot-nova_mod:nova_energy_core",
+    "count": 1
+  }
+}

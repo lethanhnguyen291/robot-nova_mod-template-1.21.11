@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:iron_ingot",
+    "minecraft:iron_ingot",
+    "minecraft:iron_ingot",
+    "minecraft:copper_ingot"
+  ],
+  "result": {
+    "id": "robot-nova_mod:nova_frame_casing",
+    "count": 3
+  }
+}

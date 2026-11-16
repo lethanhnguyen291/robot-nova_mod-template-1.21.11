@@ -121,10 +121,24 @@ public final class NovaInventoryMenu extends AbstractContainerMenu {
     public int energy() { return data.get(5); }
     public float energyFraction() { return (float) energy() / NovaWorkData.MAX_ENERGY; }
 
+    public static boolean hasOmniPad(Player player) {
+        if (player == null) return false;
+        if (player.getMainHandItem().is(net.teogemini.nova.registry.NovaMaterials.NOVA_OMNI_PAD)
+                || player.getOffhandItem().is(net.teogemini.nova.registry.NovaMaterials.NOVA_OMNI_PAD)) {
+            return true;
+        }
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            if (player.getInventory().getItem(i).is(net.teogemini.nova.registry.NovaMaterials.NOVA_OMNI_PAD)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean canAccess(NovaEntity nova, Player player) {
         return nova.isAlive() && !nova.isRemoved() && nova.isTame() && nova.isOwnedBy(player)
                 && player.isAlive() && !player.isSpectator() && player.level() == nova.level()
-                && player.distanceToSqr(nova) <= 64;
+                && (player.distanceToSqr(nova) <= 64 || hasOmniPad(player));
     }
     @Override public boolean stillValid(Player player) { return !serverMenu || canAccess(nova, player); }
     @Override public void clicked(int slot, int button, ClickType type, Player player) {

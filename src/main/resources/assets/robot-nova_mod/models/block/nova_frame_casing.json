@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "robot-nova_mod:block/nova_frame_casing_front",
+    "south": "robot-nova_mod:block/nova_frame_casing_back",
+    "west": "robot-nova_mod:block/nova_frame_casing_left",
+    "east": "robot-nova_mod:block/nova_frame_casing_right",
+    "up": "robot-nova_mod:block/nova_frame_casing_top",
+    "down": "robot-nova_mod:block/nova_frame_casing_bottom",
+    "particle": "robot-nova_mod:block/nova_frame_casing_front"
+  }
+}

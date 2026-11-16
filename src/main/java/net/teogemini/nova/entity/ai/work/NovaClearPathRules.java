@@ -33,7 +33,7 @@ public final class NovaClearPathRules {
                 || state.is(Blocks.CALCITE) || state.is(Blocks.COBBLESTONE)
                 || state.is(Blocks.COBBLED_DEEPSLATE) || state.is(Blocks.NETHERRACK)
                 || state.is(Blocks.BASALT) || state.is(Blocks.BLACKSTONE) || state.is(Blocks.END_STONE)
-                || state.is(BlockTags.COAL_ORES) || state.is(BlockTags.IRON_ORES)
+                || state.is(net.teogemini.nova.registry.NovaMaterials.ORES) || state.is(BlockTags.COAL_ORES) || state.is(BlockTags.IRON_ORES)
                 || state.is(BlockTags.COPPER_ORES) || state.is(BlockTags.GOLD_ORES)
                 || state.is(BlockTags.REDSTONE_ORES) || state.is(BlockTags.LAPIS_ORES)
                 || state.is(BlockTags.DIAMOND_ORES) || state.is(BlockTags.EMERALD_ORES)

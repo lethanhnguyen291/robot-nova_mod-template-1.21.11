@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "robot-nova_mod:block/energy_crystal_ore"
+  }
+}

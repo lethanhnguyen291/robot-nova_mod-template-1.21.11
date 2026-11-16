@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "robot-nova_mod:control_chip",
+    "robot-nova_mod:silicon_wafer",
+    "minecraft:copper_ingot",
+    "robot-nova_mod:energy_crystal"
+  ],
+  "result": {
+    "id": "robot-nova_mod:nova_ai_processor",
+    "count": 1
+  }
+}

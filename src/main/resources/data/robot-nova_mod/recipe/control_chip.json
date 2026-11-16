@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "robot-nova_mod:nova_circuit",
+    "robot-nova_mod:silicon_wafer",
+    "minecraft:redstone"
+  ],
+  "result": {
+    "id": "robot-nova_mod:control_chip",
+    "count": 1
+  }
+}

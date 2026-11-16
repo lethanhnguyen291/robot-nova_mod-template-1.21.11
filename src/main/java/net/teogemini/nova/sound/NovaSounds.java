@@ -48,7 +48,26 @@ public final class NovaSounds {
         WORK_FARM("work_farm", .22F, 10, 6, false),
         WORK_PLANT("work_plant", .22F, 10, 6, false),
         RALLY("rally", .48F, 60, 22, true),
-        DISMISS("dismiss", .40F, 40, 18, true);
+        DISMISS("dismiss", .40F, 40, 18, true),
+        POWER_DOWN("power_down", .48F, 80, 30, true),
+        REACTIVATE("reactivate", .56F, 60, 30, true),
+        DORMANT_PLACE("dormant_place", .36F, 10, 9, false),
+        DORMANT_PICKUP("dormant_pickup", .36F, 10, 10, false),
+        DORMANT_HIT("dormant_hit", .28F, 8, 6, false),
+        POSE_OFF("pose_off", .27F, 8, 8, false),
+        POSE_GUARD("pose_guard", .27F, 8, 7, false),
+        POSE_SIT("pose_sit", .27F, 8, 8, false),
+        POSE_WAVE("pose_wave", .27F, 8, 8, false),
+        POSE_FIGHT("pose_fight", .28F, 8, 8, false),
+        REPAIR_METAL("repair_metal", .35F, 15, 12, false),
+        RECHARGE_FULL("recharge_full", .54F, 40, 26, true),
+        GIFT("gift", .38F, 100, 20, true),
+        SOCIAL_HELLO("social_hello", .32F, 200, 20, true),
+        RAIN("rain", .28F, 600, 20, true),
+        BUILD_PLACE("build_place", .22F, 12, 6, false),
+        SCAFFOLD_PLACE("scaffold_place", .22F, 10, 6, false),
+        SCAFFOLD_REMOVE("scaffold_remove", .22F, 10, 6, false),
+        SCAFFOLD_CLIMB("scaffold_climb", .18F, 12, 6, false);
 
         public final String path;
         public final float volume;
@@ -65,10 +84,19 @@ public final class NovaSounds {
             this.event = SoundEvent.createVariableRangeEvent(ROBOTNOVA_MOD.id("entity.nova." + path));
         }
 
+        public boolean allowed(boolean dormant) {
+            if (!dormant) return true;
+            return switch (this) {
+                case POWER_DOWN, DORMANT_PLACE, DORMANT_PICKUP, DORMANT_HIT,
+                        POSE_OFF, POSE_GUARD, POSE_SIT, POSE_WAVE, POSE_FIGHT -> true;
+                default -> false;
+            };
+        }
+
         public int priority() {
             return switch (this) {
                 case IDLE, CURIOUS, THINK, SLEEP, WAKE -> 0;
-                case BOOT, TAME, RECHARGE, LOW_BATTERY, HELP, LEVEL_UP, FEAR -> 3;
+                case BOOT, TAME, RECHARGE, LOW_BATTERY, HELP, LEVEL_UP, FEAR, POWER_DOWN, REACTIVATE, RECHARGE_FULL -> 3;
                 default -> 2;
             };
         }

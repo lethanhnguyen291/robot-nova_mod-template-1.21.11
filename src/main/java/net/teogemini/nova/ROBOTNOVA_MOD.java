@@ -33,6 +33,8 @@ public class ROBOTNOVA_MOD implements ModInitializer {
 		ModItems.register();
 		ModBlocks.register();
         ModBlockEntities.register();
+        net.teogemini.nova.registry.NovaMaterials.register();
+        net.teogemini.nova.worldgen.NovaWorldgen.register();
 		ModEntities.register();
         LOGGER.info("NOVA entities registered.");    
 		NovaOwnerSessions.register();
@@ -41,10 +43,13 @@ public class ROBOTNOVA_MOD implements ModInitializer {
         net.teogemini.nova.network.NovaDialogueNetwork.register();
         net.teogemini.nova.ai.dialogue.NovaMainChatListener.register();
         net.teogemini.nova.network.NovaRodControl.register();
+        net.teogemini.nova.entity.ai.build.NovaConstructionService.register();
         net.teogemini.nova.entity.ai.tree.NovaTreeService.register();
         net.teogemini.nova.entity.NovaChestHandler.register();
         net.teogemini.nova.entity.NovaRallyManager.register();
         net.teogemini.nova.network.NovaCompanionCommands.register();
+        net.teogemini.nova.network.NovaOmniPadNetwork.register();
+        net.teogemini.nova.server.NovaStarterKit.register();
 
 	}
 

@@ -17,8 +17,8 @@ public class NovaLookAtOwnerGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        // Không can thiệp nếu đang thực hiện động tác đặc biệt hoặc animation làm việc
-        if (nova.isPerformingAction() || nova.getWorkAction() != NovaEntity.WORK_NONE) {
+        // Không can thiệp nếu đang ở trạng thái tượng ngủ đông, thực hiện động tác đặc biệt hoặc animation làm việc
+        if (nova.isDormant() || nova.isPerformingAction() || nova.getWorkAction() != NovaEntity.WORK_NONE) {
             return false;
         }
 
@@ -43,7 +43,7 @@ public class NovaLookAtOwnerGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        if (this.target == null || !this.target.isAlive()) {
+        if (this.target == null || !this.target.isAlive() || nova.isDormant()) {
             return false;
         }
         if (nova.isPerformingAction() || nova.getWorkAction() != NovaEntity.WORK_NONE) {

@@ -16,7 +16,7 @@ public final class NovaSoundController {
     private static final Cue[] CUES = Cue.values();
     private final NovaSoundGate gate = new NovaSoundGate(CUES.length);
     private final NovaSoundQueue pending = new NovaSoundQueue();
-    private boolean wasPanicking;
+    private boolean wasPanicking, dormantAudio;
     private boolean bootPending, initialized, wasResting;
     private int lastFace = -1;
     private long nextIdle;
@@ -29,6 +29,35 @@ public final class NovaSoundController {
 
     public void spawned() { bootPending = true; }
 
+    public void powerDown() {
+        pending.clear();
+        bootPending = false;
+        dormantAudio = true;
+        play(Cue.POWER_DOWN);
+    }
+
+    public void reactivate() { reactivate(false); }
+
+    public void reactivate(boolean firstActivation) {
+        pending.clear();
+        bootPending = false;
+        dormantAudio = false;
+        wasResting = nova.isInSittingPose();
+        wasPanicking = false;
+        nextIdle = nova.level().getGameTime() + 600;
+        play(firstActivation ? Cue.BOOT : Cue.REACTIVATE);
+    }
+
+    public void dormantPose(int pose) {
+        play(switch (pose) {
+            case 1 -> Cue.POSE_GUARD;
+            case 2 -> Cue.POSE_SIT;
+            case 3 -> Cue.POSE_WAVE;
+            case 4 -> Cue.POSE_FIGHT;
+            default -> Cue.POSE_OFF;
+        });
+    }
+
     public void damaged() {
         pending.clear();
         gate.quietUntil(nova.level().getGameTime() + 25);
@@ -36,7 +65,7 @@ public final class NovaSoundController {
 
     public boolean play(Cue cue) {
         if (!(nova.level() instanceof ServerLevel server) || !nova.isAlive()
-                || nova.isRemoved() || nova.isSilent()) return false;
+                || nova.isRemoved() || nova.isSilent() || !cue.allowed(nova.isDormant())) return false;
         long now = server.getGameTime();
         if (emit(cue, server, now)) return true;
         if (cue.voice && gate.cooldownReady(cue.ordinal(), now))
@@ -45,11 +74,14 @@ public final class NovaSoundController {
     }
 
     private boolean emit(Cue cue, ServerLevel server, long now) {
-        if (!gate.ready(cue.ordinal(), now, cue.voice)) return false;
+        boolean detached = cue == Cue.DORMANT_PICKUP;
+        if (!cue.allowed(nova.isDormant())) return false;
+        if (detached ? !gate.cooldownReady(cue.ordinal(), now) : !gate.ready(cue.ordinal(), now, cue.voice)) return false;
         int x = nova.blockPosition().getX() >> 5, z = nova.blockPosition().getZ() >> 5;
         long cell = ((long) x << 32) ^ (z & 0xffffffffL);
         if (!AREAS.computeIfAbsent(server, s -> new NovaSoundGate.Areas()).take(cell, now, cue.voice)) return false;
-        gate.take(cue.ordinal(), now, cue.cooldown, cue.duration, cue.voice);
+        if (detached) gate.takeDetached(cue.ordinal(), now, cue.cooldown);
+        else gate.take(cue.ordinal(), now, cue.cooldown, cue.duration, cue.voice);
         if (pending.peek(now) == cue.ordinal()) pending.clear();
         float pitch = 0.96F + nova.getRandom().nextFloat() * 0.08F;
         nova.playSound(cue.event, cue.volume * (cue.voice ? VOICE_VOLUME : MECHANICAL_VOLUME), pitch);
@@ -82,6 +114,26 @@ public final class NovaSoundController {
     public void tick() {
         if (!(nova.level() instanceof ServerLevel server) || !nova.isAlive() || nova.isRemoved()) return;
         long now = server.getGameTime();
+        if (nova.isDormant()) {
+            if (!dormantAudio) {
+                pending.clear();
+                bootPending = false;
+                dormantAudio = true;
+            }
+            int queued = pending.peek(now);
+            if (queued >= 0) {
+                if (nova.isSilent() || !CUES[queued].allowed(true)) pending.clear();
+                else emit(CUES[queued], server, now);
+            }
+            return;
+        }
+        if (dormantAudio) {
+            pending.clear();
+            dormantAudio = false;
+            wasPanicking = false;
+            wasResting = nova.isInSittingPose();
+            nextIdle = now + 600;
+        }
         boolean resting = nova.isInSittingPose();
         if (!initialized) {
             initialized = true;

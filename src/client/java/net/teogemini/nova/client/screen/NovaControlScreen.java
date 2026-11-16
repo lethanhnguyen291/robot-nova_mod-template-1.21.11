@@ -15,6 +15,7 @@ public final class NovaControlScreen extends Screen {
     private enum SubMenu {
         NONE,
         COMMANDS,
+        WORK,
         ACTIONS
     }
 
@@ -102,11 +103,18 @@ public final class NovaControlScreen extends Screen {
                 .bounds(mainX, startY, mainW, btnH).build());
 
         // 2. Nút "Giao việc" (Thay ngọc lục bảo)
-        boolean isWorking = nova.isNovaWorkEnabled();
-        String workLabel = isWorking ? "Giao việc: [Bật]" : "Giao việc: [Tắt]";
-        addRenderableWidget(Button.builder(Component.literal(workLabel), b -> {
-            sendAction(NovaControlPayload.TOGGLE_WORK, true);
-        }).bounds(mainX, startY + gap, mainW, btnH).build());
+        if (nova.isBuilderNova()) {
+            String workArrow = currentSubMenu == SubMenu.WORK ? " ◀" : "";
+            addRenderableWidget(Button.builder(Component.literal("Giao việc" + workArrow),
+                    b -> switchSubMenu(SubMenu.WORK))
+                    .bounds(mainX, startY + gap, mainW, btnH).build());
+        } else {
+            boolean isWorking = nova.isNovaWorkEnabled();
+            String workLabel = isWorking ? "Giao việc: [Bật]" : "Giao việc: [Tắt]";
+            addRenderableWidget(Button.builder(Component.literal(workLabel), b -> {
+                sendAction(NovaControlPayload.TOGGLE_WORK, true);
+            }).bounds(mainX, startY + gap, mainW, btnH).build());
+        }
 
         // 3. Nút "Biểu cảm" (Mở màn hình xem trực tiếp không bị che robot)
         addRenderableWidget(Button.builder(Component.literal("Biểu cảm "), b -> {
@@ -161,6 +169,20 @@ public final class NovaControlScreen extends Screen {
                     Component.literal(isSitting ? "Đứng dậy" : "Ngồi"),
                     b -> sendAction(isSitting ? NovaControlPayload.STAND : NovaControlPayload.SIT, true))
                     .bounds(subX, startY + gap * 3, subW, btnH).build());
+        } else if (currentSubMenu == SubMenu.WORK && nova.isBuilderNova()) {
+            addRenderableWidget(Button.builder(Component.literal("Đào hầm"), b -> {
+                NovaEntity n = getNova();
+                if (n != null) {
+                    minecraft.setScreen(new NovaConstructionScreen(n, false));
+                }
+            }).bounds(subX, startY + gap, subW, btnH).build());
+
+            addRenderableWidget(Button.builder(Component.literal("Xây nhà"), b -> {
+                NovaEntity n = getNova();
+                if (n != null) {
+                    minecraft.setScreen(new NovaConstructionScreen(n, true));
+                }
+            }).bounds(subX, startY + gap * 2, subW, btnH).build());
         } else if (currentSubMenu == SubMenu.ACTIONS) {
             addRenderableWidget(Button.builder(Component.literal("Chào"),
                     b -> sendAction(NovaControlPayload.ACTION_WAVE, true))

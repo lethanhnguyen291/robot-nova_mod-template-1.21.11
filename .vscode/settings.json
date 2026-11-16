@@ -1,6 +1,10 @@
 {
-    "java.compile.nullAnalysis.mode": "automatic",
+    "java.compile.nullAnalysis.mode": "disabled",
     "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx8G -Xms100m -Xlog:disable",
+    
+    // Tắt tự động build ngầm vô tận của extension Java / Gradle
+    "java.autobuild.enabled": false,
+    "gradle.autoDetect": "off",
     
     // Tự động lưu an toàn khi chuyển cửa sổ (tránh lưu liên tục đè lên code của AI)
     "files.autoSave": "onFocusChange",

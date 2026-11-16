@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "robot-nova_mod:item/nova_dormant",
+    "model": {
+      "type": "geckolib:geckolib"
+    }
+  }
+}

@@ -10,6 +10,7 @@ import net.teogemini.nova.entity.NovaEntity;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.cache.model.GeoBone;
 import software.bernie.geckolib.cache.model.GeoQuad;
 import software.bernie.geckolib.cache.model.GeoVertex;
@@ -22,11 +23,14 @@ import software.bernie.geckolib.renderer.base.RenderPassInfo;
 import software.bernie.geckolib.renderer.layer.builtin.CustomBoneTextureGeoLayer;
 import software.bernie.geckolib.util.RenderUtil;
 
-public class NovaFaceLayer<R extends GeoRenderState>
-        extends CustomBoneTextureGeoLayer<NovaEntity, Void, R> {
+public class NovaFaceLayer<T extends GeoAnimatable, O, R extends GeoRenderState>
+        extends CustomBoneTextureGeoLayer<T, O, R> {
 
     private static final DataTicket<Integer> FACE =
             DataTicket.create("robot-nova_mod:face_frame", Integer.class);
+
+    private static final DataTicket<Boolean> DORMANT =
+            DataTicket.create("robot-nova_mod:face_dormant", Boolean.class);
 
     private static final DataTicket<Float> SPIN =
             DataTicket.create("robot-nova_mod:face_spin", Float.class);
@@ -69,13 +73,21 @@ public class NovaFaceLayer<R extends GeoRenderState>
             {633, 925, 303, 303}, {946, 924, 303, 303}
     };
 
-    public NovaFaceLayer(GeoRenderer<NovaEntity, Void, R> renderer) {
+    public NovaFaceLayer(GeoRenderer<T, O, R> renderer) {
         super(renderer, "face", ORIGINAL);
     }
 
     @Override
-    public void addRenderData(NovaEntity nova, Void relatedObject,
+    public void addRenderData(T animatable, O relatedObject,
                               R state, float partialTick) {
+        if (!(animatable instanceof NovaEntity nova) || nova.isDormant()) {
+            state.addGeckolibData(DORMANT, true);
+            state.addGeckolibData(FACE, -1);
+            state.addGeckolibData(SPIN, 0F);
+            return;
+        }
+
+        state.addGeckolibData(DORMANT, false);
         int frame = Math.max(0, Math.min(nova.getNovaFace(), 39));
         int phase = Math.floorMod(nova.tickCount + nova.getId() * 13, 90);
 
@@ -91,6 +103,10 @@ public class NovaFaceLayer<R extends GeoRenderState>
 
     @Override
     protected Identifier getTextureResource(R state) {
+        boolean dormant = state.getOrDefaultGeckolibData(DORMANT, false);
+        if (dormant) {
+            return ORIGINAL;
+        }
         int frame = state.getOrDefaultGeckolibData(FACE, 0);
         return frame < 8 ? ORIGINAL : frame < 24 ? SHEET_A : SHEET_B;
     }
@@ -105,8 +121,9 @@ public class NovaFaceLayer<R extends GeoRenderState>
             return;
         }
 
+        boolean dormant = state.getOrDefaultGeckolibData(DORMANT, false);
         int frame = state.getOrDefaultGeckolibData(FACE, 0);
-        int[] rect = RECTS[frame];
+        int[] rect = (dormant || frame < 0 || frame >= RECTS.length) ? RECTS[0] : RECTS[frame];
         float angle = state.getOrDefaultGeckolibData(SPIN, 0F);
         float cos = (float) Math.cos(angle);
         float sin = (float) Math.sin(angle);
@@ -140,7 +157,11 @@ public class NovaFaceLayer<R extends GeoRenderState>
                         float u = (rect[0] + 1) / 1254F;
                         float v = (rect[1] + 1) / 1254F;
 
-                        if (quad.direction() == Direction.NORTH) {
+                        if (dormant) {
+                            // Màn hình tắt nguồn: Màu kính tối unlit, không phát sáng
+                            u = 1010F / 1254F;
+                            v = 990F / 1254F;
+                        } else if (quad.direction() == Direction.NORTH) {
                             float x = (vertex.texU() * 1254F - 5F) / 303F;
                             float y = (vertex.texV() * 1254F - 5F) / 303F;
 
@@ -151,6 +172,9 @@ public class NovaFaceLayer<R extends GeoRenderState>
 
                                 x = 0.5F + dx * cos - dy * sin;
                                 y = 0.5F + dx * sin + dy * cos;
+
+                                x = Math.max(0.02F, Math.min(0.98F, x));
+                                y = Math.max(0.02F, Math.min(0.98F, y));
                             }
 
                             u = (rect[0] + x * rect[2]) / 1254F;
@@ -161,8 +185,8 @@ public class NovaFaceLayer<R extends GeoRenderState>
                                 vertex.posX(), vertex.posY(), vertex.posZ(), 1));
 
                         buffer.addVertex(
-                                point.x(), point.y(), point.z(), color,
-                                u, v, overlay, light,
+                                point.x(), point.y(), point.z(),
+                                color, u, v, overlay, light,
                                 normal.x(), normal.y(), normal.z()
                         );
                     }

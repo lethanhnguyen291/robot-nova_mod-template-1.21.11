@@ -479,7 +479,7 @@ public class NovaMineOreGoal extends Goal {
 
     // NHẬN DIỆN TẤT CẢ CÁC LOẠI QUẶNG (BAO GỒM DEEPSLATE VÀ THẺ MINECRAFT)
     public static boolean isOre(BlockState state) {
-        if (state.is(BlockTags.COAL_ORES) || state.is(BlockTags.IRON_ORES)
+        if (state.is(net.teogemini.nova.registry.NovaMaterials.ORES) || state.is(BlockTags.COAL_ORES) || state.is(BlockTags.IRON_ORES)
                 || state.is(BlockTags.COPPER_ORES) || state.is(BlockTags.GOLD_ORES)
                 || state.is(BlockTags.REDSTONE_ORES) || state.is(BlockTags.LAPIS_ORES)
                 || state.is(BlockTags.DIAMOND_ORES) || state.is(BlockTags.EMERALD_ORES)) {

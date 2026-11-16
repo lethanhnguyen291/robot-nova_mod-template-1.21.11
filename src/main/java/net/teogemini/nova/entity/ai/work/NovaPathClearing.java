@@ -40,7 +40,7 @@ public final class NovaPathClearing {
     public void track(BlockPos target) { jobDestination = target == null ? null : target.immutable(); }
     public BlockPos jobDestination() { return jobDestination; }
     public boolean allowed() {
-        return nova.canNovaWork() && nova.work().energy() > 100
+        return !nova.construction().reservesWork() && nova.canNovaWork() && nova.work().energy() > 100
                 && NovaWorkSupport.isTool(nova.getPrimaryTool())
                 && nova.companion().usableTool(nova.getPrimaryTool());
     }

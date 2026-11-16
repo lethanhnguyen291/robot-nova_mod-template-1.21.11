@@ -43,6 +43,7 @@ public final class NovaRodControl {
                     if (owner.isShiftKeyDown()) {
                         NovaWorkSupport.recallTools(nova, owner);
                     } else {
+                        nova.toolBelt().restore();
                         ServerPlayNetworking.send(owner, new Open(nova.getId(), nova.getUUID()));
                     }
                 } else {

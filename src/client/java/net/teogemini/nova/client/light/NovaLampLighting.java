@@ -70,8 +70,13 @@ public final class NovaLampLighting implements DynamicLightsInitializer {
         private void update() {
             double yaw = Math.toRadians(nova.yBodyRot);
             double y = nova.getY() + nova.getNovaLampHeight();
-            BlockPos sensor = BlockPos.containing(nova.getX(), y, nova.getZ());
+            if (nova.isDormant()) {
+                nova.setNovaLampOn(false);
+                sample = new Sample(nova.getX(), y, nova.getZ(), 0);
+                return;
+            }
 
+            BlockPos sensor = BlockPos.containing(nova.getX(), y, nova.getZ());
             // Không tính ánh sáng động của chính NOVA vào cảm biến.
             boolean on = nova.level().getMaxLocalRawBrightness(sensor) < 7;
             nova.setNovaLampOn(on);

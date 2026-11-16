@@ -74,7 +74,7 @@
     },
     "A_SYS_003": {
       "lines": [
-        "Để triệu hồi NOVA: đặt 1 Khối Sắt ở giữa, 2 Khối Redstone hai bên làm tay, 1 Khối Lưu Ly sau lưng làm ba lô và đặt Bí Ngô Khắc lên đỉnh. Gậy điều khiển ghép từ Lưu Ly + Redstone + Cột Thu Lôi. Rương NOVA ghép từ 4 Phôi Sắt, 2 Phôi Đồng, 2 Redstone quanh 1 Rương gỗ."
+        "Để tạo NOVA: ghép đầu, thân và 3 vỏ khung trên bàn chế tạo; hoặc xếp một cột Vỏ khung ở dưới, Thân ở giữa, rồi đặt Đầu cuối cùng. Cột 3 khối tạo NOVA chưa kích hoạt đứng trên một rương NOVA rỗng và liên kết sẵn với rương đó. Dùng 1 Khối Đá Đỏ để thức tỉnh, nhận chủ và đầy pin."
       ]
     },
     "A_SYS_004": {

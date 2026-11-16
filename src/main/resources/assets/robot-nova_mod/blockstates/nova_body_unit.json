@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "robot-nova_mod:block/nova_body_unit"
+    },
+    "facing=east": {
+      "model": "robot-nova_mod:block/nova_body_unit",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "robot-nova_mod:block/nova_body_unit",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "robot-nova_mod:block/nova_body_unit",
+      "y": 270
+    }
+  }
+}

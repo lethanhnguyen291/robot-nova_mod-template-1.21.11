@@ -21,18 +21,18 @@ public final class NovaCompanionPaths {
                     || state.is(Blocks.CAMPFIRE) || state.is(Blocks.SOUL_CAMPFIRE)
                     || state.is(Blocks.SWEET_BERRY_BUSH)) return false;
         }
-        if (level.getBlockState(pos.below()).getCollisionShape(level, pos.below()).isEmpty()) return false;
+        var belowState = level.getBlockState(pos.below()); if (belowState.getCollisionShape(level, pos.below()).isEmpty() && !belowState.is(Blocks.SCAFFOLDING)) return false;
         Vec3 target = Vec3.atBottomCenterOf(pos);
         return level.noCollision(nova, nova.getBoundingBox().move(target.subtract(nova.position())));
     }
-    public static Path path(NovaEntity nova, BlockPos pos) {
+    public static Path path(NovaEntity nova, BlockPos pos) { var level = nova.level();
         if (!safe(nova, pos)) return null;
         Path path = nova.getNavigation().createPath(pos, 0);
         if (path == null || !path.canReach()) return null;
         for (int i = 0; i < path.getNodeCount(); i++) {
             var node = path.getNode(i);
             if (!safe(nova, new BlockPos(node.x, node.y, node.z))) return null;
-            if (i > 0 && Math.abs(node.y - path.getNode(i - 1).y) > 1) return null;
+            if (i > 0 && Math.abs(node.y - path.getNode(i - 1).y) > 1 && !level.getBlockState(new BlockPos(node.x, node.y, node.z)).is(Blocks.SCAFFOLDING) && !level.getBlockState(new BlockPos(node.x, node.y, node.z).below()).is(Blocks.SCAFFOLDING)) return null;
         }
         return path;
     }

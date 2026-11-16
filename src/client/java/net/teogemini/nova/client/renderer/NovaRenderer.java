@@ -48,13 +48,14 @@ public class NovaRenderer<R extends EntityRenderState & GeoRenderState>
     @Override
     public void adjustModelBonesForRender(RenderPassInfo<R> pass, BoneSnapshots bones) {
         super.adjustModelBonesForRender(pass, bones);
+        NovaEquipmentLayer.applyCarryPose(pass, bones);
+
         boolean isDormant = pass.getOrDefaultGeckolibData(IS_DORMANT, false);
         if (isDormant) {
             int pose = pass.getOrDefaultGeckolibData(DORMANT_POSE, 0);
             applyDormantPose(bones, pose);
             return;
         }
-        NovaEquipmentLayer.applyCarryPose(pass, bones);
         NovaEquipmentLayer.applyHoldingPose(pass, bones);
 
         double time = pass.renderState().ageInTicks / 20.0;
@@ -112,105 +113,147 @@ public class NovaRenderer<R extends EntityRenderState & GeoRenderState>
     }
 
     private void applyDormantPose(BoneSnapshots bones, int pose) {
+        // Luôn ẩn 2 tay bê rương và khung rương
+        bones.ifPresent("carry_arm_left", b -> { b.skipRender(true); b.skipChildrenRender(true); });
+        bones.ifPresent("carry_arm_right", b -> { b.skipRender(true); b.skipChildrenRender(true); });
+        bones.ifPresent("carry_anchor", b -> { b.skipRender(true); b.skipChildrenRender(true); });
+
+        // Đảm bảo 2 tay bình thường hiển thị theo tư thế
+        bones.ifPresent("arm_left", b -> { b.skipRender(false); b.skipChildrenRender(false); });
+        bones.ifPresent("arm_right", b -> { b.skipRender(false); b.skipChildrenRender(false); });
+
+        // Lưu ý hệ trục GeckoLib BoneSnapshot của Nova:
+        // - Với head và body (nằm trên khớp xoay): rotX ÂM (-) là cúi về trước, DƯƠNG (+) là ngửa ra sau.
+        // - Với leg và arm (nằm dưới khớp xoay): rotX DƯƠNG (+) là đưa ra phía trước, ÂM (-) là gập ra phía sau.
+        // - Với arm_right / arm_left: giữ nguyên góc vai gốc (arm.getRotZ()) và cộng thêm độ mở khi cần.
         switch (pose) {
-            case 0 -> { // Slumped / Shutdown (Cúi đầu ngủ đông - Tắt nguồn)
-                bones.get("head").ifPresent(head -> {
-                    head.setRotX((float) Math.toRadians(35.0));
-                    head.setRotY(0.0F);
-                    head.setRotZ(0.0F);
-                });
-                bones.get("body").ifPresent(body -> body.setRotX((float) Math.toRadians(8.0)));
-                bones.get("arm_right").ifPresent(arm -> {
-                    arm.setRotX((float) Math.toRadians(12.0));
-                    arm.setRotY(0.0F);
-                    arm.setRotZ((float) Math.toRadians(4.0));
-                });
-                bones.get("arm_left").ifPresent(arm -> {
-                    arm.setRotX((float) Math.toRadians(12.0));
-                    arm.setRotY(0.0F);
-                    arm.setRotZ((float) Math.toRadians(-4.0));
-                });
-                bones.get("leg_right").ifPresent(leg -> { leg.setRotX(0.0F); leg.setRotY(0.0F); leg.setRotZ(0.0F); });
-                bones.get("leg_left").ifPresent(leg -> { leg.setRotX(0.0F); leg.setRotY(0.0F); leg.setRotZ(0.0F); });
-            }
-            case 1 -> { // Sentry Stand (Đứng nghiêm canh gác)
+            case 0 -> { // Sentry Stand (Mặc định khi đặt ra: Đứng nghiêm thẳng tắp)
                 bones.get("head").ifPresent(head -> {
                     head.setRotX(0.0F);
                     head.setRotY(0.0F);
                     head.setRotZ(0.0F);
                 });
-                bones.get("body").ifPresent(body -> body.setRotX(0.0F));
+                bones.get("body").ifPresent(body -> {
+                    body.setRotX(0.0F);
+                    body.setRotY(0.0F);
+                    body.setRotZ(0.0F);
+                });
                 bones.get("arm_right").ifPresent(arm -> {
                     arm.setRotX(0.0F);
                     arm.setRotY(0.0F);
-                    arm.setRotZ((float) Math.toRadians(6.0));
+                    arm.setRotZ(arm.getRotZ() - (float) Math.toRadians(10.0));
                 });
                 bones.get("arm_left").ifPresent(arm -> {
                     arm.setRotX(0.0F);
                     arm.setRotY(0.0F);
-                    arm.setRotZ((float) Math.toRadians(-6.0));
+                    arm.setRotZ(arm.getRotZ() + (float) Math.toRadians(10.0));
                 });
-                bones.get("leg_right").ifPresent(leg -> leg.setRotZ((float) Math.toRadians(5.0)));
-                bones.get("leg_left").ifPresent(leg -> leg.setRotZ((float) Math.toRadians(-5.0)));
+                bones.get("leg_right").ifPresent(leg -> { leg.setRotX(0.0F); leg.setRotY(0.0F); leg.setRotZ(0.0F); });
+                bones.get("leg_left").ifPresent(leg -> { leg.setRotX(0.0F); leg.setRotY(0.0F); leg.setRotZ(0.0F); });
             }
-            case 2 -> { // Sitting / Hibernation (Ngồi gập gối chờ lệnh)
-                bones.get("nova_root").ifPresent(root -> root.setTranslateY(root.getTranslateY() - 6.0F));
+            case 1 -> { // Slumped / Shutdown (Cúi đầu ngủ đông về phía trước)
                 bones.get("head").ifPresent(head -> {
-                    head.setRotX((float) Math.toRadians(10.0));
+                    head.setRotX((float) Math.toRadians(-22.0));
                     head.setRotY(0.0F);
-                    head.setRotZ((float) Math.toRadians(12.0));
-                });
-                bones.get("body").ifPresent(body -> body.setRotX((float) Math.toRadians(5.0)));
-                bones.get("leg_right").ifPresent(leg -> leg.setRotX((float) Math.toRadians(-75.0)));
-                bones.get("leg_left").ifPresent(leg -> leg.setRotX((float) Math.toRadians(-75.0)));
-                bones.get("arm_right").ifPresent(arm -> {
-                    arm.setRotX((float) Math.toRadians(-60.0));
-                    arm.setRotY((float) Math.toRadians(15.0));
-                });
-                bones.get("arm_left").ifPresent(arm -> {
-                    arm.setRotX((float) Math.toRadians(-60.0));
-                    arm.setRotY((float) Math.toRadians(-15.0));
-                });
-            }
-            case 3 -> { // Salute / Waving (Giơ tay chào)
-                bones.get("head").ifPresent(head -> {
-                    head.setRotX((float) Math.toRadians(-5.0));
-                    head.setRotY((float) Math.toRadians(15.0));
-                    head.setRotZ((float) Math.toRadians(-6.0));
-                });
-                bones.get("arm_right").ifPresent(arm -> {
-                    arm.setRotX((float) Math.toRadians(-115.0));
-                    arm.setRotY((float) Math.toRadians(-15.0));
-                    arm.setRotZ((float) Math.toRadians(25.0));
-                });
-                bones.get("arm_left").ifPresent(arm -> {
-                    arm.setRotX((float) Math.toRadians(-12.0));
-                    arm.setRotZ((float) Math.toRadians(-12.0));
-                });
-                bones.get("leg_right").ifPresent(leg -> leg.setRotZ((float) Math.toRadians(3.0)));
-                bones.get("leg_left").ifPresent(leg -> leg.setRotZ((float) Math.toRadians(-3.0)));
-            }
-            case 4 -> { // Hero / Combat Guard (Chiến binh thủ thế)
-                bones.get("head").ifPresent(head -> {
-                    head.setRotX((float) Math.toRadians(-8.0));
-                    head.setRotY((float) Math.toRadians(-10.0));
+                    head.setRotZ(0.0F);
                 });
                 bones.get("body").ifPresent(body -> {
                     body.setRotX((float) Math.toRadians(-5.0));
-                    body.setRotY((float) Math.toRadians(10.0));
+                    body.setRotY(0.0F);
+                    body.setRotZ(0.0F);
                 });
                 bones.get("arm_right").ifPresent(arm -> {
-                    arm.setRotX((float) Math.toRadians(-45.0));
-                    arm.setRotY((float) Math.toRadians(25.0));
-                    arm.setRotZ((float) Math.toRadians(15.0));
+                    arm.setRotX((float) Math.toRadians(12.0));
+                    arm.setRotY(0.0F);
+                    arm.setRotZ(arm.getRotZ() - (float) Math.toRadians(6.0));
                 });
                 bones.get("arm_left").ifPresent(arm -> {
-                    arm.setRotX((float) Math.toRadians(-55.0));
-                    arm.setRotY((float) Math.toRadians(-25.0));
-                    arm.setRotZ((float) Math.toRadians(-15.0));
+                    arm.setRotX((float) Math.toRadians(12.0));
+                    arm.setRotY(0.0F);
+                    arm.setRotZ(arm.getRotZ() + (float) Math.toRadians(6.0));
                 });
-                bones.get("leg_right").ifPresent(leg -> leg.setRotX((float) Math.toRadians(18.0)));
-                bones.get("leg_left").ifPresent(leg -> leg.setRotX((float) Math.toRadians(-18.0)));
+                bones.get("leg_right").ifPresent(leg -> { leg.setRotX(0.0F); leg.setRotY(0.0F); leg.setRotZ(0.0F); });
+                bones.get("leg_left").ifPresent(leg -> { leg.setRotX(0.0F); leg.setRotY(0.0F); leg.setRotZ(0.0F); });
+            }
+            case 2 -> { // Sitting / Hibernation (Ngồi duỗi 2 chân về phía trước chuẩn animation.nova.sit)
+                bones.get("nova_root").ifPresent(root -> root.setTranslateY(root.getTranslateY() - 1.7F));
+                bones.get("head").ifPresent(head -> {
+                    head.setRotX((float) Math.toRadians(-6.0));
+                    head.setRotY(0.0F);
+                    head.setRotZ(0.0F);
+                });
+                bones.get("body").ifPresent(body -> {
+                    body.setRotX((float) Math.toRadians(4.0));
+                    body.setRotY(0.0F);
+                    body.setRotZ(0.0F);
+                });
+                bones.get("leg_right").ifPresent(leg -> {
+                    leg.setRotX((float) Math.toRadians(90.0));
+                    leg.setRotY(0.0F);
+                    leg.setRotZ(0.0F);
+                });
+                bones.get("leg_left").ifPresent(leg -> {
+                    leg.setRotX((float) Math.toRadians(90.0));
+                    leg.setRotY(0.0F);
+                    leg.setRotZ(0.0F);
+                });
+                bones.get("arm_right").ifPresent(arm -> {
+                    arm.setRotX((float) Math.toRadians(15.0));
+                    arm.setRotY(0.0F);
+                    arm.setRotZ(arm.getRotZ() - (float) Math.toRadians(5.0));
+                });
+                bones.get("arm_left").ifPresent(arm -> {
+                    arm.setRotX((float) Math.toRadians(15.0));
+                    arm.setRotY(0.0F);
+                    arm.setRotZ(arm.getRotZ() + (float) Math.toRadians(5.0));
+                });
+            }
+            case 3 -> { // Salute / Waving (Giơ tay phải lên vẫy chào chuẩn animation.nova.wave)
+                bones.get("head").ifPresent(head -> {
+                    head.setRotX((float) Math.toRadians(2.0));
+                    head.setRotY(0.0F);
+                    head.setRotZ(0.0F);
+                });
+                bones.get("body").ifPresent(body -> {
+                    body.setRotX(0.0F);
+                    body.setRotY(0.0F);
+                    body.setRotZ(0.0F);
+                });
+                bones.get("arm_right").ifPresent(arm -> {
+                    arm.setRotX((float) Math.toRadians(20.0));
+                    arm.setRotY(0.0F);
+                    arm.setRotZ(arm.getRotZ() + (float) Math.toRadians(100.0));
+                });
+                bones.get("arm_left").ifPresent(arm -> {
+                    arm.setRotX(0.0F);
+                    arm.setRotY(0.0F);
+                });
+                bones.get("leg_right").ifPresent(leg -> { leg.setRotX(0.0F); leg.setRotY(0.0F); leg.setRotZ(0.0F); });
+                bones.get("leg_left").ifPresent(leg -> { leg.setRotX(0.0F); leg.setRotY(0.0F); leg.setRotZ(0.0F); });
+            }
+            case 4 -> { // Proud Guard (Ngẩng đầu tự hào, 2 tay đưa ra trước chuẩn animation.nova.companion_proud)
+                bones.get("head").ifPresent(head -> {
+                    head.setRotX((float) Math.toRadians(7.0));
+                    head.setRotY(0.0F);
+                    head.setRotZ(0.0F);
+                });
+                bones.get("body").ifPresent(body -> {
+                    body.setRotX((float) Math.toRadians(4.0));
+                    body.setRotY(0.0F);
+                    body.setRotZ(0.0F);
+                });
+                bones.get("arm_right").ifPresent(arm -> {
+                    arm.setRotX((float) Math.toRadians(45.0));
+                    arm.setRotY(0.0F);
+                    arm.setRotZ(arm.getRotZ() + (float) Math.toRadians(15.0));
+                });
+                bones.get("arm_left").ifPresent(arm -> {
+                    arm.setRotX((float) Math.toRadians(45.0));
+                    arm.setRotY(0.0F);
+                    arm.setRotZ(arm.getRotZ() - (float) Math.toRadians(15.0));
+                });
+                bones.get("leg_right").ifPresent(leg -> { leg.setRotX(0.0F); leg.setRotY(0.0F); leg.setRotZ(0.0F); });
+                bones.get("leg_left").ifPresent(leg -> { leg.setRotX(0.0F); leg.setRotY(0.0F); leg.setRotZ(0.0F); });
             }
         }
     }

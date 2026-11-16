@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "ILI",
+    "CSA",
+    " I "
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "L": "minecraft:lantern",
+    "C": "robot-nova_mod:control_chip",
+    "S": "robot-nova_mod:nova_screen",
+    "A": "robot-nova_mod:nova_ai_processor"
+  },
+  "result": {
+    "id": "robot-nova_mod:nova_head_unit",
+    "count": 1
+  }
+}

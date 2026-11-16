@@ -7,10 +7,7 @@
     " S"
   ],
   "key": {
-    "C": [
-      "minecraft:copper_ingot",
-      "minecraft:copper_nugget"
-    ],
+    "C": "minecraft:copper_ingot",
     "S": "minecraft:stick"
   },
   "result": {

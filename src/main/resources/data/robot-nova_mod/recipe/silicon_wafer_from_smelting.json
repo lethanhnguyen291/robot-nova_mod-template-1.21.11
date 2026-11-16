@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "group": "silicon_wafer",
+  "ingredient": "robot-nova_mod:raw_silicon",
+  "cookingtime": 200,
+  "experience": 0.3,
+  "result": {
+    "id": "robot-nova_mod:silicon_wafer"
+  }
+}

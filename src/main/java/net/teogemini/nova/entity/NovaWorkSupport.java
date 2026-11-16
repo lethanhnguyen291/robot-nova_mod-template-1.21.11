@@ -106,9 +106,9 @@ public final class NovaWorkSupport {
             }
 
             if (recharged || healed) {
-                nova.companion().recharged(previousEnergy);
+                nova.companion().recharged(previousEnergy, isBlock);
                 if (!player.getAbilities().instabuild) held.shrink(1);
-                nova.sounds().play(net.teogemini.nova.sound.NovaSounds.Cue.RECHARGE);
+                // recharged() emits the appropriate ordinary/full-charge cue once.
 
                 if (nova.level() instanceof ServerLevel serverLevel) {
                     serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, nova.getX(), nova.getY() + 0.8, nova.getZ(),
@@ -136,7 +136,7 @@ public final class NovaWorkSupport {
             if (nova.getHealth() < nova.getMaxHealth()) {
                 nova.heal(healAmount);
                 if (!player.getAbilities().instabuild) held.shrink(1);
-                nova.sounds().play(net.teogemini.nova.sound.NovaSounds.Cue.REPAIR);
+                nova.sounds().play(net.teogemini.nova.sound.NovaSounds.Cue.REPAIR_METAL);
 
                 if (nova.level() instanceof ServerLevel serverLevel) {
                     serverLevel.sendParticles(ParticleTypes.WAX_OFF, nova.getX(), nova.getY() + 0.7, nova.getZ(),

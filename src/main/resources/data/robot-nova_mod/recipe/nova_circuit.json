@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:copper_ingot",
+    "minecraft:redstone",
+    "minecraft:paper"
+  ],
+  "result": {
+    "id": "robot-nova_mod:nova_circuit",
+    "count": 2
+  }
+}

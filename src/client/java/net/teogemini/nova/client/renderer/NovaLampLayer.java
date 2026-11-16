@@ -34,7 +34,7 @@ public final class NovaLampLayer<R extends GeoRenderState>
     public void addRenderData(NovaEntity nova, Void relatedObject,
                               R state, float partialTick) {
         state.addGeckolibData(ENTITY_ID, nova.getId());
-        state.addGeckolibData(ON, nova.isNovaLampOn());
+        state.addGeckolibData(ON, !nova.isDormant() && nova.isNovaLampOn());
     }
 
     @Override

@@ -1,6 +1,43 @@
 {
-  "parent": "minecraft:item/generated",
+  "gui_light": "front",
   "textures": {
-    "layer0": "robot-nova_mod:item/nova_dormant"
+    "particle": "robot-nova_mod:item/nova_dormant"
+  },
+  "display": {
+    "gui": {
+      "rotation": [ 0, 165, 0 ],
+      "translation": [ 0, -0.5, 0 ],
+      "scale": [ 0.78, 0.78, 0.78 ]
+    },
+    "ground": {
+      "rotation": [ 0, 0, 0 ],
+      "translation": [ 0, 2.5, 0 ],
+      "scale": [ 0.58, 0.58, 0.58 ]
+    },
+    "fixed": {
+      "rotation": [ 0, 180, 0 ],
+      "translation": [ 0, 0, 0 ],
+      "scale": [ 0.68, 0.68, 0.68 ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [ 0, 180, 0 ],
+      "translation": [ 0, 2.5, 1.0 ],
+      "scale": [ 0.58, 0.58, 0.58 ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [ 0, 180, 0 ],
+      "translation": [ 0, 2.5, 1.0 ],
+      "scale": [ 0.58, 0.58, 0.58 ]
+    },
+    "firstperson_righthand": {
+      "rotation": [ 0, 155, 0 ],
+      "translation": [ 0.5, 1.5, 0 ],
+      "scale": [ 0.62, 0.62, 0.62 ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [ 0, 205, 0 ],
+      "translation": [ 0.5, 1.5, 0 ],
+      "scale": [ 0.62, 0.62, 0.62 ]
+    }
   }
 }

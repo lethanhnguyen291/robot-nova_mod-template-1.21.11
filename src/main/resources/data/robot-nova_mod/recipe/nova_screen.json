@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    [
+      "minecraft:glass",
+      "minecraft:glass_pane"
+    ],
+    "minecraft:iron_ingot",
+    "minecraft:lapis_lazuli",
+    "minecraft:redstone"
+  ],
+  "result": {
+    "id": "robot-nova_mod:nova_screen",
+    "count": 1
+  }
+}

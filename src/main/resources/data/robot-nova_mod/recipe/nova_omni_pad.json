@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "WAW",
+    "CSC",
+    " B "
+  ],
+  "key": {
+    "W": "robot-nova_mod:silicon_wafer",
+    "A": "robot-nova_mod:nova_ai_processor",
+    "C": "robot-nova_mod:nova_circuit",
+    "S": "robot-nova_mod:nova_screen",
+    "B": "robot-nova_mod:nova_battery"
+  },
+  "result": {
+    "id": "robot-nova_mod:nova_omni_pad",
+    "count": 1
+  }
+}

@@ -1,14 +1,15 @@
 {
-	"required": true,
-	"package": "net.teogemini.nova.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"NovaSummoningMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"overwrites": {
-		"requireAnnotations": true
-	}
+  "required": true,
+  "package": "net.teogemini.nova.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "NovaCommandBroadcastMixin",
+    "NovaStarterSpawnMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
 }
